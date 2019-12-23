@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>title</title>
+        <link rel="stylesheet" href="reset.css">
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,700&display=swap" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="home.js"></script>
+        <script src="jquery.ajax-cross-origin.min.js"></script>
+    </head>
+    <body>
+        <div class="searcher">
+            <input id="search_summoner_input">
+            <button id="search_summoner_btn">search</button>
+        </div>
+        <div class="user-repr-info">
+            <div class="profile-icon-wrapper">
+                <img id="current_summoner_profile_icon_img" src="http://ddragon.leagueoflegends.com/cdn/9.24.2/img/profileicon/0.png">
+                <span class="summoner-level" id="current_summoner_level">-</span>
+            </div>
+            <div class="user-repr-info-wrapper">
+                <span class="summoner-name" id="current_summoner_name">SummonerName</span>
+                <div class="info-detail-wrapper" id="tier_info_detail_wrapper">
+                </div>
+            </div>
+        </div>
+        <div class="info-tab-container">
+            <div style="grid-column: 1;">
+                <span>최근 전적</span>
+            </div>
+            <div style="grid-column: 2;">
+                <span>현재 게임 정보</span>
+            </div>
+            <div style="grid-column: 3;">
+                <span>숙련도</span>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="game-history-summary-container">
+                전적 개요 정리
+            </div>
+            <div class="game-history-list" id="game_history_list_container">
+                <div class="game-history-item lose-type howling-abyss">
+                    <div class="item-wrapper">
+                        <div class="item-detail-1">
+                            <span class="map-type">칼바람 나락</span>
+                            <span class="win-or-lose">패배</span>
+                        </div>
+                        <div class="item-detail-2">
+                            <div class="upper-div">
+                                <div class="main-champion-illust-wrapper">
+                                    <div class="last-champion-level">13</div>
+                                </div>
+                            </div>
+                            <div class="spell-wrapper">
+                                <div class="mid-container">
+                                    <div class="spell-img"></div>
+                                    <div class="spell-img"></div>
+                                </div>
+                            </div>
+                            <div class="spell-wrapper">
+                                <div class="mid-container">
+                                    <div class="rune-img"></div>
+                                    <div class="rune-img zoom-out"></div>
+                                </div>                                
+                            </div>
+                            <div class="champion-name">
+                                <span>아트록스</span>
+                            </div>
+                        </div>
+                        <div class="item-detail-3">
+                            <div class="KDA-wrapper">
+                                <div class="KDA-score">4.00</div>
+                                <div class="KDA">
+                                    <span class="kill">5</span>
+                                    <span class="slash">/</span>
+                                    <span class="death">2</span>
+                                    <span class="slash">/</span>
+                                    <span class="assist">3</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-detail-4">
+                            <div class="item-wrapper">
+                                <div class="item-item"></div>
+                                <div class="item-item"></div>
+                                <div class="item-item"></div>
+                                <div class="item-item"></div>
+                                <div class="item-item"></div>
+                                <div class="item-item"></div>
+                                <div class="item-item"></div>
+                                <!-- <div class="item-item"></div> -->
+                            </div>
+                        </div>
+                        <div class="item-detail-5">
+                            <div class="gold-wrapper">
+                                <span>12,536 G</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+
+<!-- lRq22FSVZ5sGyZOJuQI1UxUby5xVY0oi_lxP8LQomt3dSVs -->

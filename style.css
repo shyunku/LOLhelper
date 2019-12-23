@@ -1,0 +1,413 @@
+body{
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #252525;
+    color: white;
+}
+
+.searcher{
+    display: block;
+    padding: 5px;
+}
+
+.user-repr-info{
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+
+    box-sizing: border-box;
+    /* background-color: #262626; */
+}
+
+#current_summoner_profile_icon_img{
+    width: 100%;
+    height: 100%;
+    box-shadow:  0 0 5px #CCC;
+}
+
+.profile-icon-wrapper{
+    position: relative;
+    float: left;
+    width: 100px;
+    height: 100px;
+}
+
+.user-repr-info-wrapper{
+    display: inline-block;
+    width: 75%;
+}
+
+.summoner-name{
+    font-size: 30px;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+
+    color: white;
+    box-sizing: border-box;
+}
+
+.summoner-level{
+    position: absolute;
+    margin-left: -17px;
+    margin-top: -15px;
+    top: 100%;
+    left: 50%;
+    font-size: 12px;
+    padding: 5px 7px;
+    width: 20px;
+
+    color: rgb(136, 255, 249);
+    text-align: center;
+
+    background-color: #111;
+    border: 1px solid #AAA;
+    border-radius: 8px;
+}
+
+.info-detail-wrapper{
+    display: inline-block;
+    width: 100%;
+    padding: 10px 5px;
+
+    box-sizing: border-box;
+}
+
+.small-info-box{
+    display: inline-block;
+    font-size: 12px;
+    padding: 5px;
+    margin-left: 5px;
+    background-color: #151515;
+
+    color: white;
+}
+
+.info-tab-container{
+    display: grid;
+    background-color: #444;
+    margin-top: 10px;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+}
+
+.info-tab-container > div{
+    display: inline-block;
+
+    text-align: center;
+}
+
+.info-tab-container > div:hover{
+    background-color: #555;
+    cursor: pointer;
+}
+
+.info-tab-container span{
+    display: inline-block;
+    width: 100%;
+    padding: 12px 0;
+
+    box-sizing: border-box;
+    border-left: 1px solid #666;
+}
+
+.main-content{
+    display: inline-block;
+    width: 100%;
+}
+
+.game-history-summary-container{
+    display: block;
+    height: 120px;
+    background-color: gray;
+}
+
+.game-history-item{
+    position: relative;
+    width: 100%;
+    height: 80px;
+    /* background-color: cyan; */
+    
+    background-size: cover;
+
+    z-index: 2;
+    border-bottom: 1px solid #333;
+}
+
+.game-history-item::after{
+    content: "";
+    position: absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    
+    z-index: 1;
+}
+
+.howling-abyss{
+    background-image: url("img/howling_abyss_bg.png");
+    background-position: 0px -40px;
+}
+
+.summoners-rift{
+    background-image: url("img/summoners_rift_bg.jpg");
+    background-position: 0px -80px;
+}
+
+.win-type::after{
+    background-image: linear-gradient(to right,rgba(51, 107, 170, 0.9), rgba(59, 17, 17, 0.6));
+}
+
+.lose-type::after{
+    background-image: linear-gradient(to right,rgba(185, 49, 49, 0.9), rgba(59, 17, 17, 0.6));
+}
+
+.game-history-item .item-wrapper{
+    position: absolute;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+}
+
+.game-history-item .item-detail-1{
+    display: inline-block;
+    width: 15%;
+    height: 100%;
+    text-align: center;
+    /* background-color: #33952855; */
+    vertical-align: top;
+}
+
+.game-history-item .item-detail-2{
+    display: inline-block;
+    width: 21%;
+    height: 100%;
+    /* background-color: #33952855; */
+    vertical-align: top;
+}
+
+.game-history-item .item-detail-3{
+    display: inline-block;
+    width: 15%;
+    height: 100%;
+    /* background-color: #33952855; */
+    /* background-color: #00000045; */
+    padding: 10px 0;
+
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.game-history-item .item-detail-4{
+    display: inline-block;
+    width: 20%;
+    height: 100%;
+    /* background-color: #33952855; */
+
+    padding: 15px 0;
+
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.game-history-item .item-detail-5{
+    display: inline-block;
+    width: 25%;
+    height: 100%;
+    /* background-color: #33952855; */
+
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.map-type{
+    display: inline-block;
+    width: 100%;
+    font-size: 11px;
+    margin-top: 24px;
+
+    text-shadow: 2px 2px 2px #222;
+}
+
+.win-or-lose{
+    display: block;
+    font-size: 11px;
+    margin-top: 10px;
+
+
+    text-shadow: 2px 2px 2px #333;
+}
+
+.win-type .win-or-lose{
+    color: rgb(167, 208, 255);
+}
+
+.lose-type .win-or-lose{
+    color: rgb(255, 167, 167);
+}
+
+.main-champion-illust-wrapper{
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-size: 110%;
+    background-position: center;
+    box-shadow: 0 0 5px black;
+}
+
+.last-champion-level{
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    margin-left: -14px;
+    margin-top: -14px;
+    background-color: #000000A0;
+    padding: 3px;
+
+    font-size: 10px;
+    font-weight: lighter;
+
+    border-radius: 50%;
+}
+
+.item-detail-2 > .upper-div{
+    display: inline-block;
+    padding: 7px 3px 3px 3px;
+
+    box-sizing: border-box;
+}
+
+.item-detail-2 > .champion-name{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    font-weight: lighter;
+    padding: 5px 0;
+    text-shadow: 1px 1px 1px black;
+}
+
+.item-detail-3 .KDA-wrapper{
+    padding: 8px 0;
+    text-align: center;
+    /* background-color: cyan; */
+    /* background-color: #00000060; */
+    /* background-image: radial-gradient(ellipse, #00000080 50%, #00000010 70%, transparent 60%); */
+    /* border-radius: 15px;  */
+    /* box-shadow: 0 0 10px #00000060; */
+}
+
+.KDA-wrapper > div{
+    text-align: center;
+}
+
+.KDA-wrapper .KDA{
+    margin-top: 3px;
+    font-size: 15px;
+    /* background-color: #00000060; */
+}
+
+.KDA-wrapper .KDA-score{
+    display: inline-block;
+    font-weight: lighter;
+    font-size: 11px;
+    text-shadow: 1px 1px 3px black;
+    background-color: rgba(38, 0, 206, 0.941);
+    border-radius: 4px;
+    padding: 3px 4px;
+}
+
+.KDA > .kill{
+    color: rgb(163, 172, 255);
+}
+
+.KDA > .death{
+    color: rgb(255, 118, 118);
+}
+
+.KDA > .assist{
+    color: rgb(224, 211, 137);
+}
+
+.KDA > .slash{
+    color: rgb(185, 185, 185);
+}
+
+.KDA span{
+    text-shadow: 1px 1px 3px black;
+    font-size: 13px;
+}
+
+.spell-wrapper{
+    display: inline-block;
+    width: 20px;
+    height: 50px;
+
+    vertical-align: top;
+}
+
+.spell-wrapper .mid-container{
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.spell-img{
+    width: 20px;
+    height: 20px;
+    background-color: gray;
+    background-size: cover;
+    margin-top: 4px;
+
+    border-radius: 3px;
+
+    box-shadow: 0 0 3px #111;
+}
+
+.rune-img{
+    width: 20px;
+    height: 20px;
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 4px;
+
+    border-radius: 3px;
+    box-shadow: 0 0 3px #111;
+}
+
+.item-detail-4 .item-wrapper{
+    display: inline-block;
+    width: 20%;
+    /* background-color: orange; */
+    padding: 2px;
+
+    box-sizing: border-box;
+}
+
+.item-detail-4 .item-item{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #111;
+    background-position: center;
+    background-size: cover;
+    border-radius: 3px;
+    box-shadow: 0 0 3px black;
+
+    margin-bottom: 2px;
+}
+
+.item-detail-5{
+    text-align: center;
+}
+
+.item-detail-5 .gold-wrapper{
+    margin-top: 10px;
+    font-weight: 300;
+    font-size: 14px;
+    display: block;
+}
