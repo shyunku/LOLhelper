@@ -11,7 +11,7 @@ let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
 
-const itemCall = 6;
+const maxHistoryItemCall = 5;
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
@@ -114,7 +114,7 @@ function getSummonerInfo(method, data){
             "api_key": key,
         },
         success: function(res){
-            console.log("Success to get Summoner's Data");
+            // console.log("Success to get Summoner's Data");
             loadSummonerGeneralInfo(res);
             getSummonerLeagueInfoBySummonerID(res.id)
             getSummonerRecentGameHistoryBySummonerAccountID(res);
@@ -122,8 +122,8 @@ function getSummonerInfo(method, data){
         },
         error: function(req, stat, err){
             console.log(err);
-            if(err == "Not Found") alert("없는 소환사입니다.");
-            else if(err == "Forbidden") alert("API_KEY 만료됨.");
+            if(err == "Not Found") alert("존재하지 않는 소환사");
+            else if(err == "Forbidden") alert("API_KEY 만료됨");
         },
     });
 }
@@ -136,10 +136,10 @@ function getSummonerRecentGameHistoryBySummonerAccountID(userInfo){
         data: {
             "api_key": key,
             "beginIndex": 0,
-            "endIndex": itemCall-1,
+            "endIndex": maxHistoryItemCall-1,
         },
         success: function(res){
-            console.log("Success to get Summoner's Match Data List");
+            // console.log("Success to get Summoner's Match Data List");
             loadSummonerMatchHistory(userInfo, res);
         },
         error: function(req, stat, err){
@@ -157,11 +157,12 @@ function getSummonerLeagueInfoBySummonerID(id){
             "api_key": key,
         },
         success: function(res){
-            console.log("Success to get Summoner's League Data");
+            // console.log("Success to get Summoner's League Data");
             loadSummonerLeagueInfo(res);
         },
         error: function(req, stat, err){
             console.log(err);
+            if(err == "Service Unavailable") alert('현재 API 서버 사용 불가능함');
         },
     });
 }
@@ -172,11 +173,16 @@ function loadSummonerMatchHistory(userInfo, info){
     const gameHistoryItemBundle = $('.game-history-item');
 
     //Point
-    // gameHistoryItemBundle.remove();
+    gameHistoryItemBundle.remove();
 
+    let nativeHistoryItemBundle = [];
+    let loadHistoryItemCallback = [];
+    nativeHistoryItemBundle.length = matchList.length;
+
+    
     for(let i=0;i<matchList.length;i++){
         let matchItemInfo = matchList[i];
-        $.ajax({
+        let request = $.ajax({
             url: "https://kr.api.riotgames.com/lol/match/v4/matches/"+matchItemInfo.gameId,
             type: "GET",
             dataType: "json",
@@ -197,7 +203,10 @@ function loadSummonerMatchHistory(userInfo, info){
                 let MapLabel = "";
                 let curChampionInfo = getChampionInfoFromKey(curUserInfo.championId);
                 let KDA = (curUserInfo.stats.kills + curUserInfo.stats.assists)/curUserInfo.stats.deaths;
-                console.log(curUserInfo.stats);
+                let curUserStat = curUserInfo.stats;
+                // console.log(curUserStat);
+                // console.log(matchItemInfo);
+                console.log("Queue ID: "+res.queueId);
                 switch(res.queueId){
                     case 450:
                         MapType = "howling-abyss";
@@ -215,45 +224,73 @@ function loadSummonerMatchHistory(userInfo, info){
                         MapLabel = "자유 랭크";
                         MapType = "summoners-rift";
                         break;
+                    case 830:
+                        MapLabel = "입문 봇전";
+                        MapType = "summoners-rift";
+                        break;
+                    case 840:
+                        MapLabel = "초보 봇전";
+                        MapType = "summoners-rift";
+                        break;
+                    case 850:
+                        MapLabel = "중급 봇전";
+                        MapType = "summoners-rift";
+                        break;
                 }
-                gameHistoryListContainer.append(`
+                let lastSecondContainer = MapLabel==="무작위 총력전"?`
+                <div class="cc-wrapper">
+                    <span>CC</span>
+                    <span>${curUserStat.totalTimeCrowdControlDealt}s</span>
+                </div>
+                `:`
+                <div class="ward-wrapper">
+                    <span>Ward</span>
+                    <span class="normal-ward-num">${curUserStat.sightWardsBoughtInGame}</span><span
+                    >/</span><span class="pink-ward-num">${curUserStat.visionWardsBoughtInGame}</span>
+                </div>
+                `
+                let timeGap = new Date() - matchItemInfo.timestamp;
+                let historyHTMLdocSegment = (`
                 <div class="game-history-item ${isWinType}-type ${MapType}">
                     <div class="item-wrapper">
                         <div class="item-detail-1">
                             <span class="map-type">${MapLabel}</span>
                             <span class="win-or-lose">${isWinLabel}</span>
+                            <span class="timelapse">${elapsedTimeFormatter(timeGap)}</span>
                         </div>
                         <div class="item-detail-2">
-                            <div class="upper-div">
-                                <div class="main-champion-illust-wrapper" id="main_champion_illust_${i}">
-                                    <div class="last-champion-level">${curUserInfo.stats.champLevel}</div>
+                            <div class="champ-wrapper">
+                                <div class="upper-div">
+                                    <div class="main-champion-illust-wrapper" id="main_champion_illust_${i}">
+                                        <div class="last-champion-level">${curUserStat.champLevel}</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="spell-wrapper">
-                                <div class="mid-container">
-                                    <div class="spell-img" id="spell_img_${i}_1"></div>
-                                    <div class="spell-img" id="spell_img_${i}_2"></div>
+                                <div class="spell-wrapper">
+                                    <div class="mid-container">
+                                        <div class="spell-img" id="spell_img_${i}_1"></div>
+                                        <div class="spell-img" id="spell_img_${i}_2"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="spell-wrapper">
-                                <div class="mid-container">
-                                    <div class="rune-img" id="rune_img_${i}_1"></div>
-                                    <div class="rune-img" id="rune_img_${i}_2"></div>
-                                </div>                                
-                            </div>
-                            <div class="champion-name">
-                                <span>${curChampionInfo.name}</span>
+                                <div class="spell-wrapper">
+                                    <div class="mid-container">
+                                        <div class="rune-img" id="rune_img_${i}_1"></div>
+                                        <div class="rune-img" id="rune_img_${i}_2"></div>
+                                    </div>                                
+                                </div>
+                                <div class="champion-name">
+                                    <span>${curChampionInfo.name}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="item-detail-3">
                             <div class="KDA-wrapper">
-                                <div class="KDA-score">${refineKDA(KDA)}</div>
+                                <div class="KDA-score" id="KDA_score_${i}">${refineKDA(KDA)}</div>
                                 <div class="KDA">
-                                    <span class="kill">${curUserInfo.stats.kills}</span>
+                                    <span class="kill">${curUserStat.kills}</span>
                                     <span class="slash">/</span>
-                                    <span class="death">${curUserInfo.stats.deaths}</span>
+                                    <span class="death">${curUserStat.deaths}</span>
                                     <span class="slash">/</span>
-                                    <span class="assist">${curUserInfo.stats.assists}</span>
+                                    <span class="assist">${curUserStat.assists}</span>
                                 </div>
                             </div>
                         </div>
@@ -271,59 +308,89 @@ function loadSummonerMatchHistory(userInfo, info){
                         </div>
                         <div class="item-detail-5">
                             <div class="gold-wrapper">
-                                <span>- G</span>
+                                <span>${numberWithCommas(curUserStat.goldEarned)} G</span>
+                            </div>
+                        ${lastSecondContainer}
+                            <div class="cs-wrapper">
+                                <span>CS</span>
+                                <span class="total-cs">${curUserStat.totalMinionsKilled}</span><span 
+                                class="average-cs">(8.5)</span>
                             </div>
                         </div>
                     </div>
                 </div>
                 `);
-                let champion_img_url = getLatestDataDragonURL()+"/img/champion/"+curChampionInfo.id+".png";
-                let perk_url = "https://ddragon.leagueoflegends.com/cdn/img/"+".png";
-                let spell1_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell1Id).id+".png";
-                let spell2_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell2Id).id+".png";
-                let perk1_info = getDetailPerkInfoFromKey(curUserInfo.stats.perk0);
-                let perk2_info = getPerkInfoFromKey(curUserInfo.stats.perkSubStyle);
 
-                let perk1_url_def = "https://ddragon.leagueoflegends.com/cdn/img/"+getRightPathOfDetailPerkImage(perk1_info.iconPath);
-                let perk2_url_def = "https://ddragon.leagueoflegends.com/cdn/img/"+perk2_info.icon;
-                $('#main_champion_illust_'+i).css("background-image", `url(${champion_img_url})`);
-                $('#spell_img_'+i+"_1").css("background-image", `url(${spell1_url_def})`);
-                $('#spell_img_'+i+"_2").css("background-image", `url(${spell2_url_def})`);
-
-                const rune1 = $('#rune_img_'+i+"_1");
-                const rune2 = $('#rune_img_'+i+"_2");
-                rune1.css("background-image", `url(${perk1_url_def})`);
-                rune1.css("background-size", "100%");
-                rune2.css("background-image", `url(${perk2_url_def})`);
-                rune2.css("background-size", "80%");
-                $('.rune-img').css("background-color", "#111");
-                
-                let itemList = [];
-                // console.log(curUserInfo.stats['item0']);
-                for(let j=0; j<=5; j++) {
-                    let itemItem = curUserInfo.stats['item'+j];
-                    let itemInfo = itemImageData[itemItem];
-                    if(itemItem != 0)
-                        itemList.push(itemInfo);
-                }
-                let sorted = sortItemListWithPrice(itemList);
-                console.log("개수: "+sorted.length);
-                for(let j=0; j<sorted.length; j++) {
-                    let itemImageName = sorted[j].image.full;
-                    let itemURL = getLatestDataDragonURL()+"/img/item/"+itemImageName;
-                    $('#item_item_img_'+i+'_'+j).css("background-image", `url(${itemURL})`);
-                }
-
-                //장신구는 따로 설정
-                let decoItemCode = curUserInfo.stats['item6'];
-                let decoItemURL = getLatestDataDragonURL()+"/img/item/"+itemImageData[decoItemCode].image.full;
-                $('#item_item_img_'+i+'_deco').css("background-image", `url(${decoItemURL})`);
+                nativeHistoryItemBundle[i] = {
+                    segment: historyHTMLdocSegment,
+                    curChampInfo: getChampionInfoFromKey(curUserInfo.championId),
+                    curUserInfo: curUserInfo,
+                    userKDA: KDA,
+                };
             },
             error: function(req, stat, err){
                 console.log(err);
+                if(err == "Too Many Requests") alert('요청이 너무 빠릅니다!');
             },
         });
+
+        loadHistoryItemCallback.push(request);
     }
+
+    $.when.apply(null, loadHistoryItemCallback).done(function(){
+        for(let i=0;i<matchList.length;i++){
+            nativeInfoSegment = nativeHistoryItemBundle[i];
+
+            gameHistoryListContainer.append(nativeInfoSegment.segment);
+            let curChampionInfo = nativeInfoSegment.curChampInfo;
+            let curUserInfo = nativeInfoSegment.curUserInfo;
+            let curUserKDA = nativeInfoSegment.userKDA;
+
+            let champion_img_url = getLatestDataDragonURL()+"/img/champion/"+curChampionInfo.id+".png";
+            let perk_url = "https://ddragon.leagueoflegends.com/cdn/img/"+".png";
+            let spell1_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell1Id).id+".png";
+            let spell2_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell2Id).id+".png";
+            let perk1_info = getDetailPerkInfoFromKey(curUserInfo.stats.perk0);
+            let perk2_info = getPerkInfoFromKey(curUserInfo.stats.perkSubStyle);
+
+            let perk1_url_def = "https://ddragon.leagueoflegends.com/cdn/img/"+getRightPathOfDetailPerkImage(perk1_info.iconPath);
+            let perk2_url_def = "https://ddragon.leagueoflegends.com/cdn/img/"+perk2_info.icon;
+            $('#main_champion_illust_'+i).css("background-image", `url(${champion_img_url})`);
+            $('#spell_img_'+i+"_1").css("background-image", `url(${spell1_url_def})`);
+            $('#spell_img_'+i+"_2").css("background-image", `url(${spell2_url_def})`);
+
+            const rune1 = $('#rune_img_'+i+"_1");
+            const rune2 = $('#rune_img_'+i+"_2");
+            rune1.css("background-image", `url(${perk1_url_def})`);
+            rune1.css("background-size", "100%");
+            rune2.css("background-image", `url(${perk2_url_def})`);
+            rune2.css("background-size", "80%");
+            $('.rune-img').css("background-color", "#111");
+            
+            $('#KDA_score_'+i).css("background-color", getColorFromKDA(curUserKDA));
+
+            let itemList = [];
+            for(let j=0; j<=5; j++) {
+                let itemItem = curUserInfo.stats['item'+j];
+                let itemInfo = itemImageData[itemItem];
+                if(itemItem != 0)
+                    itemList.push(itemInfo);
+            }
+            let sorted = sortItemListWithPrice(itemList);
+            for(let j=0; j<sorted.length; j++) {
+                let itemImageName = sorted[j].image.full;
+                let itemURL = getLatestDataDragonURL()+"/img/item/"+itemImageName;
+                $('#item_item_img_'+i+'_'+j).css("background-image", `url(${itemURL})`);
+            }
+
+            //장신구는 따로 설정
+            let decoItemCode = curUserInfo.stats['item6'];
+            if(decoItemCode != 0){
+                let decoItemURL = getLatestDataDragonURL()+"/img/item/"+itemImageData[decoItemCode].image.full;
+                $('#item_item_img_'+i+'_deco').css("background-image", `url(${decoItemURL})`);
+            }
+        }
+    });
 }
 
 function loadSummonerGeneralInfo(info){
@@ -357,7 +424,42 @@ function loadSummonerLeagueInfo(info){
     }
 }
 
-//user func
+function getColorFromKDA(kda){
+    if(kda<1.5) return "rgba(161, 0, 0, 0.941)";
+    if(kda<3) return "rgba(115, 140, 0, 0.941)";
+    if(kda<4.5) return "rgba(0, 138, 120, 0.941)";
+    if(kda<10) return "rgba(9, 124, 255, 0.941)";
+    return "rgba(145, 86, 255, 0.941)";
+}
+
+function refineCS(cs){
+    return cs.toFixed(3);
+}
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function elapsedTimeFormatter(ctime){
+    let stime = parseInt(ctime/1000);
+    const year = parseInt(86400*(365.25));
+    const month = parseInt(86400*30.4375);
+    const day = 86400;
+    const hour = 3600;
+    const min = 60;
+
+    if(stime >= year) return parseInt(stime/year) + "년 전";
+    if(stime >= month) return parseInt(stime/month) + "달 전";
+    if(stime >= day) return parseInt(stime/day) + "일 전";
+    if(stime >= hour) return parseInt(stime/hour) + "시간 전";
+    return parseInt(stime/min) + "분 전";
+}
+
+function ccTimeFormatter(cc){
+    let mt = parseInt(cc / 60);
+    let st = parseInt(cc % 60);
+    return String(mt) + ":"+String(st);
+}
 
 function itemPriceComparator(a, b){
     let ag = a.gold.total;
@@ -366,7 +468,6 @@ function itemPriceComparator(a, b){
 }
 
 function sortItemListWithPrice(list){
-    console.log(list);
     list.sort(itemPriceComparator);
     return list;
 }
