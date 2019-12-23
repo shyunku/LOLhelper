@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="style.css">
         <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,700&display=swap" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
         <script src="home.js"></script>
         <script src="jquery.ajax-cross-origin.min.js"></script>
     </head>
@@ -26,20 +27,25 @@
             </div>
         </div>
         <div class="info-tab-container">
-            <div style="grid-column: 1;">
+            <div style="grid-column: 1;" class="info-tab">
                 <span>최근 전적</span>
             </div>
-            <div style="grid-column: 2;">
+            <div style="grid-column: 2;" class="info-tab" id="current_game_info_tab">
                 <span>현재 게임 정보</span>
             </div>
-            <div style="grid-column: 3;">
+            <div style="grid-column: 3;" class="info-tab">
                 <span>숙련도</span>
             </div>
         </div>
         <div class="main-content">
             <div class="game-history-summary-container">
                 <div class="recent-game-summary-chart-wrapper">
-                    
+                    <canvas class="win-rate-pie-chart" id="win_rate_pie_chart"></canvas>
+                    <div id="win_rate_chart_desc">
+                        <span id="user_win_num"></span>
+                        <span id="user_lose_num"></span>
+                    </div>
+                    <span id="win_rate_chart_percentage"></span>
                 </div>
             </div>
             <div class="game-history-list" id="game_history_list_container">
@@ -117,6 +123,3 @@
         </div>
     </body>
 </html>
-
-
-<!-- lRq22FSVZ5sGyZOJuQI1UxUby5xVY0oi_lxP8LQomt3dSVs -->

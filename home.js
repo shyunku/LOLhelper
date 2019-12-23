@@ -11,7 +11,7 @@ let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
 
-const maxHistoryItemCall = 5;
+const maxHistoryItemCall = 9;
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
@@ -118,6 +118,7 @@ function getSummonerInfo(method, data){
             loadSummonerGeneralInfo(res);
             getSummonerLeagueInfoBySummonerID(res.id)
             getSummonerRecentGameHistoryBySummonerAccountID(res);
+            getCurrentMatchBySummonerID(res.id);
             console.log(res);
         },
         error: function(req, stat, err){
@@ -136,7 +137,7 @@ function getSummonerRecentGameHistoryBySummonerAccountID(userInfo){
         data: {
             "api_key": key,
             "beginIndex": 0,
-            "endIndex": maxHistoryItemCall-1,
+            "endIndex": maxHistoryItemCall,
         },
         success: function(res){
             // console.log("Success to get Summoner's Match Data List");
@@ -167,6 +168,24 @@ function getSummonerLeagueInfoBySummonerID(id){
     });
 }
 
+function getCurrentMatchBySummonerID(id){
+    $.ajax({
+        url: "https://kr.api.riotgames.com/lol/spectator/v4/active-games/by-summoner/"+id,
+        type: "GET",
+        dataType: "json",
+        data: {
+            "api_key": key,
+        },
+        success: function(res){
+            console.log(res);
+            $('#current_game_info_tab').css("box-shadow", "0 0 8px rgb(9, 255, 9)");
+        },
+        error: function(req, stat, err){
+            console.log(err);
+        },
+    });
+}
+
 function loadSummonerMatchHistory(userInfo, info){
     let matchList = info.matches;
     const gameHistoryListContainer = $('#game_history_list_container');
@@ -177,7 +196,9 @@ function loadSummonerMatchHistory(userInfo, info){
 
     let nativeHistoryItemBundle = [];
     let loadHistoryItemCallback = [];
+    let participantInfoBundle = [];
     nativeHistoryItemBundle.length = matchList.length;
+    participantInfoBundle.length = matchList.length;
 
     
     for(let i=0;i<matchList.length;i++){
@@ -206,7 +227,7 @@ function loadSummonerMatchHistory(userInfo, info){
                 let curUserStat = curUserInfo.stats;
                 // console.log(curUserStat);
                 // console.log(matchItemInfo);
-                console.log("Queue ID: "+res.queueId);
+                // console.log("Queue ID: "+res.queueId);
                 switch(res.queueId){
                     case 450:
                         MapType = "howling-abyss";
@@ -327,10 +348,15 @@ function loadSummonerMatchHistory(userInfo, info){
                     curUserInfo: curUserInfo,
                     userKDA: KDA,
                 };
+
+                participantInfoBundle[i] = {
+                    participantIdentities: res.participantIdentities,
+                    participants: res.participants,
+                }
             },
             error: function(req, stat, err){
                 console.log(err);
-                if(err == "Too Many Requests") alert('요청이 너무 빠릅니다!');
+                // if(err == "Too Many Requests") alert('요청이 너무 빠릅니다!');
             },
         });
 
@@ -347,7 +373,6 @@ function loadSummonerMatchHistory(userInfo, info){
             let curUserKDA = nativeInfoSegment.userKDA;
 
             let champion_img_url = getLatestDataDragonURL()+"/img/champion/"+curChampionInfo.id+".png";
-            let perk_url = "https://ddragon.leagueoflegends.com/cdn/img/"+".png";
             let spell1_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell1Id).id+".png";
             let spell2_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell2Id).id+".png";
             let perk1_info = getDetailPerkInfoFromKey(curUserInfo.stats.perk0);
@@ -390,6 +415,54 @@ function loadSummonerMatchHistory(userInfo, info){
                 $('#item_item_img_'+i+'_deco').css("background-image", `url(${decoItemURL})`);
             }
         }
+
+        const winRateInfo = getWinRateInfo(matchList, userInfo , participantInfoBundle);
+        let winRate = winRateInfo.winRate;
+        let winNum = winRateInfo.winNum;
+        let loseNum = winRateInfo.loseNum;
+
+        const winRatePieChartElem = $('#win_rate_pie_chart');
+        const winRatePercentageText = $('#win_rate_chart_percentage');
+        const winNumText = $('#user_win_num');
+        const loseNumText = $('#user_lose_num');
+        let winRatePieChart = new Chart(winRatePieChartElem, {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: [winRate, 100-winRate],
+                    backgroundColor: [
+                        'rgb(0, 214, 230)',
+                        'rgb(250, 40, 40)',
+                    ],
+                    borderWidth: 0,
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                cutoutPercentage: 75,
+                animation: {
+                    easing: 'easeInOutCirc',
+                }
+            }
+        });
+
+        $({
+            curPercentValue: 0,
+            winNumValue: 0,
+            loseNumValue: 0,
+        }).animate({
+            curPercentValue: parseInt(winRate),
+            winNumValue: winNum,
+            loseNumValue: loseNum,
+        }, {
+            duration: 800,
+            easing: 'swing',
+            step: function(){
+                winRatePercentageText.text(Math.ceil(this.curPercentValue)+"%");
+                winNumText.text(Math.ceil(this.winNumValue)+"W");
+                loseNumText.text(Math.ceil(this.loseNumValue)+"L");
+            },
+        });
     });
 }
 
@@ -422,6 +495,25 @@ function loadSummonerLeagueInfo(info){
             box.css("border", `1px solid ${tier_info.color}`);
         }
     }
+}
+
+//user func
+
+function getWinRateInfo(matchList, userInfo, partyInfoBundle){
+    let winSum = 0;
+    for(let i=0;i<matchList.length;i++){
+        let partyInfo = partyInfoBundle[i];
+        let userIndex = getUserIndexFromMatchInfo(userInfo, partyInfo.participantIdentities);
+        const curUserInfo = partyInfo.participants[userIndex];
+        let isWin = curUserInfo.stats.win;
+        if(isWin) winSum+=1;
+    }
+    let winRate = winSum*100/matchList.length;
+    return {
+        winRate: winRate,
+        winNum: winSum,
+        loseNum: matchList.length - winSum,
+    };
 }
 
 function getColorFromKDA(kda){
