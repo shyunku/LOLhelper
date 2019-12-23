@@ -1,4 +1,4 @@
-const key = "RGAPI-c213de1d-8874-4438-8124-9793c698562a";
+const key = "RGAPI-25304fcd-9e78-465d-b5de-b3cd94c57abc";
 let championData = undefined;
 let spellData = undefined;
 let perkData = undefined;
@@ -10,6 +10,8 @@ let spellKeyDict = {};
 let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
+
+const itemCall = 6;
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
@@ -66,7 +68,7 @@ $(document).ready(function(){
                     latestDataDragonVer = res[0];
                     console.log("DataDragon lastest version : "+latestDataDragonVer);
                     getSummonerInfo("puuid", puuid);
-                }
+                },
             });
         }
     });
@@ -121,6 +123,7 @@ function getSummonerInfo(method, data){
         error: function(req, stat, err){
             console.log(err);
             if(err == "Not Found") alert("없는 소환사입니다.");
+            else if(err == "Forbidden") alert("API_KEY 만료됨.");
         },
     });
 }
@@ -133,7 +136,7 @@ function getSummonerRecentGameHistoryBySummonerAccountID(userInfo){
         data: {
             "api_key": key,
             "beginIndex": 0,
-            "endIndex": 9,
+            "endIndex": itemCall-1,
         },
         success: function(res){
             console.log("Success to get Summoner's Match Data List");
@@ -169,7 +172,7 @@ function loadSummonerMatchHistory(userInfo, info){
     const gameHistoryItemBundle = $('.game-history-item');
 
     //Point
-    gameHistoryItemBundle.remove();
+    // gameHistoryItemBundle.remove();
 
     for(let i=0;i<matchList.length;i++){
         let matchItemInfo = matchList[i];
@@ -259,16 +262,16 @@ function loadSummonerMatchHistory(userInfo, info){
                             <div class="item-item" id="item_item_img_${i}_0"></div>
                             <div class="item-item" id="item_item_img_${i}_1"></div>
                             <div class="item-item" id="item_item_img_${i}_2"></div>
+                            <div class="item-item" id="item_item_img_${i}_deco"></div>
                             <div class="item-item" id="item_item_img_${i}_3"></div>
                             <div class="item-item" id="item_item_img_${i}_4"></div>
                             <div class="item-item" id="item_item_img_${i}_5"></div>
-                            <div class="item-item" id="item_item_img_${i}_6"></div>
                             <!-- <div class="item-item"></div> -->
                         </div>
                         </div>
                         <div class="item-detail-5">
                             <div class="gold-wrapper">
-                                <span>12,536 G</span>
+                                <span>- G</span>
                             </div>
                         </div>
                     </div>
@@ -297,24 +300,30 @@ function loadSummonerMatchHistory(userInfo, info){
                 
                 let itemList = [];
                 // console.log(curUserInfo.stats['item0']);
-                for(let j=0; j<=6; j++) {
+                for(let j=0; j<=5; j++) {
                     let itemItem = curUserInfo.stats['item'+j];
                     let itemInfo = itemImageData[itemItem];
-                    itemList.push(curUserInfo.stats['item'+j]);
-                    let itemURL = getLatestDataDragonURL()+"/img/item/"+itemItem+".png";
+                    if(itemItem != 0)
+                        itemList.push(itemInfo);
+                }
+                let sorted = sortItemListWithPrice(itemList);
+                console.log("개수: "+sorted.length);
+                for(let j=0; j<sorted.length; j++) {
+                    let itemImageName = sorted[j].image.full;
+                    let itemURL = getLatestDataDragonURL()+"/img/item/"+itemImageName;
                     $('#item_item_img_'+i+'_'+j).css("background-image", `url(${itemURL})`);
                 }
-                sortItemListWithPrice(itemList);
+
+                //장신구는 따로 설정
+                let decoItemCode = curUserInfo.stats['item6'];
+                let decoItemURL = getLatestDataDragonURL()+"/img/item/"+itemImageData[decoItemCode].image.full;
+                $('#item_item_img_'+i+'_deco').css("background-image", `url(${decoItemURL})`);
             },
             error: function(req, stat, err){
                 console.log(err);
             },
         });
     }
-}
-
-function sortItemListWithPrice(list){
-    console.log(list);
 }
 
 function loadSummonerGeneralInfo(info){
@@ -349,6 +358,18 @@ function loadSummonerLeagueInfo(info){
 }
 
 //user func
+
+function itemPriceComparator(a, b){
+    let ag = a.gold.total;
+    let bg = b.gold.total;
+    return bg - ag;
+}
+
+function sortItemListWithPrice(list){
+    console.log(list);
+    list.sort(itemPriceComparator);
+    return list;
+}
 
 function getRightPathOfDetailPerkImage(original){
     let slash_index = getPosition(original, "/", 4);
