@@ -107,26 +107,23 @@ $(document).ready(function(){
     const animationDelay = 500;
 
     innerItem.on("click", function(){
-        let isFolded = $(this).hasClass('folded');
+        let isFolded = totalItemWrapper.hasClass('folded');
         if(isFolded){
-            $(this).removeClass('folded');
-            $(this).addClass('unfolded');
-
-            console.log(rolledTabHeight);
-
             rolledTab.css("display", "inline-block");
             totalItemWrapper.animate({
                 height: strechedTotalWrapperHeight
-            }, animationDelay, animationStyle);
+            }, animationDelay, animationStyle, function(){
+                totalItemWrapper.removeClass('folded');
+                totalItemWrapper.addClass('unfolded');
+            });
         }
         else {
-            $(this).removeClass('unfolded');
-            $(this).addClass('folded');
-
             totalItemWrapper.animate({
                 height: originalTotalWrapperHeight
             }, animationDelay, animationStyle, function(){
                 rolledTab.css("display", "none");
+                totalItemWrapper.removeClass('unfolded');
+                totalItemWrapper.addClass('folded');
             });
         }
     });
@@ -311,8 +308,8 @@ function loadSummonerMatchHistory(userInfo, info){
                 `
                 let timeGap = new Date() - matchItemInfo.timestamp;
                 let historyHTMLdocSegment = (`
-                <div class="game-history-item-wrapper" id="game_history_item_wrapper_${i}">
-                    <div class="game-history-item ${isWinType}-type ${MapType} folded" id="game_history_item_${i}">
+                <div class="game-history-item-wrapper ${MapType} folded" id="game_history_item_wrapper_${i}">
+                    <div class="game-history-item ${isWinType}-type" id="game_history_item_${i}">
                         <div class="item-wrapper">
                             <div class="item-detail-1">
                                 <span class="map-type">${MapLabel}</span>
@@ -355,18 +352,6 @@ function loadSummonerMatchHistory(userInfo, info){
                                     </div>
                                 </div>
                             </div>
-                            <div class="item-detail-4">
-                                <div class="item-wrapper">
-                                    <div class="item-item" id="item_item_img_${i}_0"></div>
-                                    <div class="item-item" id="item_item_img_${i}_1"></div>
-                                    <div class="item-item" id="item_item_img_${i}_2"></div>
-                                    <div class="item-item" id="item_item_img_${i}_deco"></div>
-                                    <div class="item-item" id="item_item_img_${i}_3"></div>
-                                    <div class="item-item" id="item_item_img_${i}_4"></div>
-                                    <div class="item-item" id="item_item_img_${i}_5"></div>
-                                    <!-- <div class="item-item"></div> -->
-                                </div>
-                            </div>
                             <div class="item-detail-5">
                                 <div class="gold-wrapper">
                                     <span>${numberWithCommas(curUserStat.goldEarned)} G</span>
@@ -378,6 +363,18 @@ function loadSummonerMatchHistory(userInfo, info){
                                     class="average-cs">(8.5)</span>
                                 </div>
                             </div>
+                            <div class="item-detail-4">
+                            <div class="item-wrapper">
+                                <div class="item-item" id="item_item_img_${i}_0"></div>
+                                <div class="item-item" id="item_item_img_${i}_1"></div>
+                                <div class="item-item" id="item_item_img_${i}_2"></div>
+                                <div class="item-item" id="item_item_img_${i}_deco"></div>
+                                <div class="item-item" id="item_item_img_${i}_3"></div>
+                                <div class="item-item" id="item_item_img_${i}_4"></div>
+                                <div class="item-item" id="item_item_img_${i}_5"></div>
+                                <!-- <div class="item-item"></div> -->
+                            </div>
+                        </div>
                         </div>
                     </div>
                     <div class="game-history-item-description-tab" id="game_history_item_desc_${i}">${i}<br>${i}<br>${i}asdfv</div>
@@ -472,24 +469,23 @@ function loadSummonerMatchHistory(userInfo, info){
             const animationDelay = 500;
         
             innerItem.on("click", function(){
-                let isFolded = $(this).hasClass('folded');
+                let isFolded = totalItemWrapper.hasClass('folded');
                 if(isFolded){
-                    $(this).removeClass('folded');
-                    $(this).addClass('unfolded');
-
                     rolledTab.css("display", "inline-block");
                     totalItemWrapper.animate({
                         height: strechedTotalWrapperHeight
-                    }, animationDelay, animationStyle);
+                    }, animationDelay, animationStyle, function(){
+                        totalItemWrapper.removeClass('folded');
+                        totalItemWrapper.addClass('unfolded');
+                    });
                 }
                 else {
-                    $(this).removeClass('unfolded');
-                    $(this).addClass('folded');
-
                     totalItemWrapper.animate({
                         height: originalTotalWrapperHeight
                     }, animationDelay, animationStyle, function(){
                         rolledTab.css("display", "none");
+                        totalItemWrapper.removeClass('unfolded');
+                        totalItemWrapper.addClass('folded');
                     });
                 }
             });
@@ -748,21 +744,6 @@ function getConvertedLeagueTier(tier){
             color: "#69F",
             color2: "#DE8",
         };
-        default: return tier;
-    }
-}
-
-function getLevelFromLeagueTier(tier){
-    switch(tier){
-        case "IRON": return 0;
-        case "BRONZE": return "브론즈";
-        case "SILVER": return "실버";
-        case "GOLD": return "골드";
-        case "PLATINUM": return "플레티넘";
-        case "DIAMOND": return "다이아몬드";
-        case "MASTER": return "마스터";
-        case "GRANDMASTER": return "그랜드마스터";
-        case "CHALLENGER": return "챌린저";
         default: return tier;
     }
 }

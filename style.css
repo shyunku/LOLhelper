@@ -176,6 +176,7 @@ body{
     position: absolute;
     top: 50%;
     left: 50%;
+    font-size: 18px;
 
     display: inline-block;
     width: 60px;
@@ -185,15 +186,7 @@ body{
     /* background-color: rgb(37, 37, 37); */
     border-radius: 50%;
     transform:  translate(-50%, -50%);
-    margin-top: 10px;
-}
-
-.game-history-item-wrapper{
-    /* border-bottom: 1px solid #333; */
-    position: relative;
-    display: block;
-    height: 80px;
-    box-sizing: border-box;
+    margin-top: 12px;
 }
 
 .game-history-list{
@@ -201,7 +194,7 @@ body{
     /* background-color: cyan; */
 }
 
-.game-history-item{
+.game-history-item-wrapper{
     position: relative;
     display: inline-block;
     width: 100%;
@@ -211,13 +204,10 @@ body{
     background-size: cover;
 }
 
-.game-history-item::after{
-    position: absolute;
-    top:0;
-    left:0;
+.game-history-item{
+    display: inline-block;
     width: 100%;
-    height: 100%;
-    content: "";
+    height: 80px;
     
     z-index: 10000;
 }
@@ -232,19 +222,20 @@ body{
     background-position: 0px -80px;
 }
 
-.win-type::after{
-    background-image: linear-gradient(to right,rgba(51, 107, 170, 0.8), rgba(17, 34, 59, 0.3));
+.win-type{
+    background: linear-gradient(to right,rgba(51, 107, 170, 0.85), rgba(17, 34, 59, 0.35));
+    /* background: rgba(0, 108, 196, 0.452); */
 }
 
-.lose-type::after{
-    background-image: linear-gradient(to right,rgba(185, 49, 49, 0.8), rgba(59, 17, 17, 0.3));
+.lose-type{
+    background: linear-gradient(to right,rgba(185, 49, 49, 0.85), rgba(59, 17, 17, 0.35));
+    /* background: rgba(233, 17, 17, 0.603); */
 }
 
 .game-history-item .item-wrapper{
-    position: absolute;
     display: inline-block;
     width: 100%;
-    height: 80px;
+    height: 100%;
     z-index: 10001;
 }
 
@@ -267,7 +258,7 @@ body{
 
 .game-history-item .item-detail-3{
     display: inline-block;
-    width: 20%;
+    width: 18%;
     height: 100%;
     /* background-color: #33952855; */
     /* background-color: #00000045; */
@@ -279,7 +270,7 @@ body{
 
 .game-history-item .item-detail-4{
     display: inline-block;
-    width: 19%;
+    width: 24%;
     height: 100%;
     /* background-color: #33952855; */
 
@@ -287,11 +278,13 @@ body{
 
     box-sizing: border-box;
     vertical-align: top;
+
+    text-align: center;
 }
 
 .game-history-item .item-detail-5{
     display: inline-block;
-    width: 20%;
+    width: 17%;
     height: 100%;
     /* background-color: #33952855; */
 
@@ -464,12 +457,15 @@ body{
     box-shadow: 0 0 3px #111;
 }
 
-.item-detail-4 .item-wrapper{
+.item-detail-4 > .item-wrapper{
     display: inline-block;
-    width: 20%;
     /* background-color: orange; */
     padding: 2px;
+    height: 100%;
+    padding-top: 5px;
+    padding-left: 5px;
 
+    text-align: left;
     box-sizing: border-box;
 }
 
@@ -563,8 +559,214 @@ body{
     /* height: 120px; */
     /* background-color: green; */
 
-    padding: 15px;
+    /* padding: 0 15px; */
     box-sizing: border-box;
     
+    background-color: rgba(255, 255, 255, 0.295);
     left: 0;
+}
+
+.item-detail-menu-list-tab{
+    display: grid;
+}
+
+.detail-menu-list-tab{
+    text-align: center;
+    padding: 5px 0;
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.788);
+    color: rgb(236, 236, 236);
+    /* text-shadow: 1px 1px 1px rgb(212, 212, 212); */
+
+    cursor: pointer;
+}
+
+.detail-menu-list-tab:hover{
+    background-color: rgba(0, 0, 0, 0.418);
+}
+
+.item-detail-desc-content-wrapper{
+    display: inline-block;
+    width: 100%;
+    /* background-color: cyan; */
+}
+
+.item-detail-desc-content{
+    display: inline-block;
+    width: 100%;
+}
+
+.team-desc-label-wrapper{
+    display: inline-block;
+    width: 100%;
+    padding: 8px 10px;
+    background-color: rgba(0, 89, 131, 0.5);
+}
+
+.team-desc-label-wrapper > span{
+    display: inline-block;
+    text-align: center;
+}
+
+.team-desc-win-or-lose{
+    width: 50px;
+}
+
+.team-desc-win-or-lose.win{
+    color: rgb(126, 208, 255);
+}
+
+.team-label{
+    font-size: 11px;
+    color: rgb(207, 207, 207);
+}
+
+.participant-info-container{
+    display: inline-block;
+    width: 100%;
+}
+
+.participant-info{
+    display: inline-block;
+    width: 100%;
+    height: 50px;
+    /* background-color: cyan; */
+    padding: 5px 5px;
+
+    box-sizing: border-box;
+}
+
+.participant-detail-info-1{
+    display: inline-block;
+    width: 9%;
+    height: 100%;
+
+    text-align: center;
+    /* background-color: rgba(255, 78, 78, 0.637); */
+}
+
+.participant-champion-img{
+    display: inline-block;
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/9.24.2/img/champion/Aatrox.png');
+    background-size: cover;
+    width: 40px;
+    height: 40px;
+    /* background-color: red; */
+}
+
+.participant-detail-info-2{
+    display: inline-block;
+    height: 100%;
+    padding: 0;
+
+    text-align: center;
+    /* background-color: red; */
+}
+
+.participant-summoner-spell-wrapper{
+    display: inline-block;
+    height: 100%;
+    /* background-color: yellow; */
+}
+
+.participant-summoner-perk-wrapper{
+    display: inline-block;
+    height: 100%;
+    margin-left: 3px;
+    /* background-color: yellow; */
+}
+
+.participant-spell{
+    width: 19px;
+    height: 19px;
+    background-color: black;
+    margin-top: 1px;
+}
+
+.participant-perk{
+    width: 19px;
+    height: 19px;
+    background-color: black;
+    border-radius: 50%;
+    margin-top: 1px;
+}
+
+.participant-detail-info-3{
+    display: inline-block;
+    height: 100%;
+    width: 19%;
+
+    /* background-color: rgba(255, 78, 78, 0.637); */
+    text-align: left;
+
+    vertical-align: top;
+    font-size: 11px;
+
+    margin-left: 3px;
+
+    box-sizing: border-box;
+}
+
+.participant-info-wrapper{
+    width: 100%;
+}
+
+.participant-info-wrapper span{
+    padding: 3px 5px;
+    display: inline-block;
+}
+
+.participant-username{
+    margin-top: 2px;
+    /* background-color: orange; */
+}
+
+.participant-tier-level{
+    margin-top: 2px;
+    background-color: black;
+    border-radius: 4px;
+    font-weight: lighter;
+}
+
+.participant-detail-info-4{
+    display: inline-block;
+    height: 100%;
+    width: 16%;
+
+    text-align: left;
+
+    vertical-align: top;
+    font-size: 11px;
+    margin-left: 3px;
+    box-sizing: border-box;
+    /* background-color: red; */
+}
+
+.participant-detail-info-4 > span{
+    background-color: black;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+
+.participant-kda-wrapper{
+    display: inline-block;
+    width: 100%;
+    /* background-color: orange; */
+    vertical-align: top;
+}
+
+.participant-kda-wrapper span{
+    padding: 3px 5px;
+    display: block;
+    text-align: center;
+}
+
+.participant-kda-score{
+    margin-top: 2px;
+    color: rgb(216, 216, 216);
+    /* background-color: orange; */
+}
+
+.participant-kda{
+    margin-top: 2px;
 }
