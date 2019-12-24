@@ -2,11 +2,13 @@
 <html>
     <head>
         <title>title</title>
+        <meta name="viewport" content="width=500px, initial-scale=1.0">
         <link rel="stylesheet" href="reset.css">
         <link rel="stylesheet" href="style.css">
-        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,400,700&display=swap" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="home.js"></script>
         <script src="jquery.ajax-cross-origin.min.js"></script>
     </head>
@@ -49,74 +51,79 @@
                 </div>
             </div>
             <div class="game-history-list" id="game_history_list_container">
-                <div class="game-history-item lose-type howling-abyss">
-                    <div class="item-wrapper">
-                        <div class="item-detail-1">
-                            <span class="map-type">Example</span>
-                            <span class="win-or-lose">패배</span>
-                            <span class="timelapse">5분 전</span>
-                        </div>
-                        <div class="item-detail-2">
-                            <div class="champ-wrapper">
-                                <div class="upper-div">
-                                    <div class="main-champion-illust-wrapper">
-                                        <div class="last-champion-level">23</div>
+                <div class="game-history-item-wrapper" id="game_history_item_wrapper">
+                    <div class="game-history-item summoners-rift lose-type folded" id="game_history_item">
+                        <div class="item-wrapper">
+                            <div class="item-detail-1">
+                                <span class="map-type">Example</span>
+                                <span class="win-or-lose">패배</span>
+                                <span class="timelapse">5분 전</span>
+                            </div>
+                            <div class="item-detail-2">
+                                <div class="champ-wrapper">
+                                    <div class="upper-div">
+                                        <div class="main-champion-illust-wrapper">
+                                            <div class="last-champion-level">23</div>
+                                        </div>
+                                    </div>
+                                    <div class="spell-wrapper">
+                                        <div class="mid-container">
+                                            <div class="spell-img"></div>
+                                            <div class="spell-img"></div>
+                                        </div>
+                                    </div>
+                                    <div class="spell-wrapper">
+                                        <div class="mid-container">
+                                            <div class="rune-img"></div>
+                                            <div class="rune-img zoom-out"></div>
+                                        </div>                                
+                                    </div>
+                                    <div class="champion-name">
+                                        <span>아트록스</span>
                                     </div>
                                 </div>
-                                <div class="spell-wrapper">
-                                    <div class="mid-container">
-                                        <div class="spell-img"></div>
-                                        <div class="spell-img"></div>
+                            </div>
+                            <div class="item-detail-3">
+                                <div class="KDA-wrapper">
+                                    <div class="KDA-score">-4.00</div>
+                                    <div class="KDA">
+                                        <span class="kill">5</span>
+                                        <span class="slash">/</span>
+                                        <span class="death">2</span>
+                                        <span class="slash">/</span>
+                                        <span class="assist">3</span>
                                     </div>
                                 </div>
-                                <div class="spell-wrapper">
-                                    <div class="mid-container">
-                                        <div class="rune-img"></div>
-                                        <div class="rune-img zoom-out"></div>
-                                    </div>                                
-                                </div>
-                                <div class="champion-name">
-                                    <span>아트록스</span>
-                                </div>
                             </div>
-                        </div>
-                        <div class="item-detail-3">
-                            <div class="KDA-wrapper">
-                                <div class="KDA-score">-4.00</div>
-                                <div class="KDA">
-                                    <span class="kill">5</span>
-                                    <span class="slash">/</span>
-                                    <span class="death">2</span>
-                                    <span class="slash">/</span>
-                                    <span class="assist">3</span>
+                            <div class="item-detail-4">
+                                <div class="item-wrapper">
+                                    <div class="item-item"></div>
+                                    <div class="item-item"></div>
+                                    <div class="item-item"></div>
+                                    <div class="item-item"></div>
+                                    <div class="item-item"></div>
+                                    <div class="item-item"></div>
+                                    <div class="item-item"></div>
+                                    <!-- <div class="item-item"></div> -->
                                 </div>
                             </div>
-                        </div>
-                        <div class="item-detail-4">
-                            <div class="item-wrapper">
-                                <div class="item-item"></div>
-                                <div class="item-item"></div>
-                                <div class="item-item"></div>
-                                <div class="item-item"></div>
-                                <div class="item-item"></div>
-                                <div class="item-item"></div>
-                                <div class="item-item"></div>
-                                <!-- <div class="item-item"></div> -->
+                            <div class="item-detail-5">
+                                <div class="gold-wrapper">
+                                    <span>12,543 G</span>
+                                </div>
+                                <div class="cc-wrapper">
+                                    <span>CC</span>
+                                    <span>25s</span>
+                                </div>
+                                <div class="cs-wrapper">
+                                    <span>CS</span>
+                                    <span class="total-cs">63</span><span class="average-cs">(2.5/m)</span>
+                                </div>
                             </div>
                         </div>
-                        <div class="item-detail-5">
-                            <div class="gold-wrapper">
-                                <span>12,543 G</span>
-                            </div>
-                            <div class="cc-wrapper">
-                                <span>CC</span>
-                                <span>25s</span>
-                            </div>
-                            <div class="cs-wrapper">
-                                <span>CS</span>
-                                <span class="total-cs">63</span><span class="average-cs">(2.5/m)</span>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="game-history-item-description-tab" id="game_history_item_desc">
+                        ads fsdf
                     </div>
                 </div>
             </div>

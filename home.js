@@ -1,4 +1,4 @@
-const key = "RGAPI-25304fcd-9e78-465d-b5de-b3cd94c57abc";
+const key = "RGAPI-a03c58b3-6844-4d42-bef4-e767b778146f";
 let championData = undefined;
 let spellData = undefined;
 let perkData = undefined;
@@ -11,7 +11,7 @@ let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
 
-const maxHistoryItemCall = 9;
+const maxHistoryItemCall = 7;
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
@@ -90,6 +90,45 @@ $(document).ready(function(){
 
     searcherInput.on("keydown", function(e){
         if(e.key == "Enter") getSummonerInfo("name", searcherInput.val());
+    });
+
+    let totalItemWrapper = $('#game_history_item_wrapper');
+    let innerItem = $('#game_history_item');
+    let rolledTab = $('#game_history_item_desc');
+
+    let rolledTabHeight = rolledTab.outerHeight();
+    let originalTotalWrapperHeight = totalItemWrapper.height();
+    let strechedTotalWrapperHeight = originalTotalWrapperHeight + rolledTabHeight;
+    let rolledTopOffset = -rolledTabHeight;
+    rolledTab.css("top", (originalTotalWrapperHeight)+"px");
+    rolledTab.css("z-index", "9950");
+
+    const animationStyle = 'easeOutBounce';
+    const animationDelay = 500;
+
+    innerItem.on("click", function(){
+        let isFolded = $(this).hasClass('folded');
+        if(isFolded){
+            $(this).removeClass('folded');
+            $(this).addClass('unfolded');
+
+            console.log(rolledTabHeight);
+
+            rolledTab.css("display", "inline-block");
+            totalItemWrapper.animate({
+                height: strechedTotalWrapperHeight
+            }, animationDelay, animationStyle);
+        }
+        else {
+            $(this).removeClass('unfolded');
+            $(this).addClass('folded');
+
+            totalItemWrapper.animate({
+                height: originalTotalWrapperHeight
+            }, animationDelay, animationStyle, function(){
+                rolledTab.css("display", "none");
+            });
+        }
     });
 });
 
@@ -192,7 +231,7 @@ function loadSummonerMatchHistory(userInfo, info){
     const gameHistoryItemBundle = $('.game-history-item');
 
     //Point
-    gameHistoryItemBundle.remove();
+    // gameHistoryItemBundle.remove();
 
     let nativeHistoryItemBundle = [];
     let loadHistoryItemCallback = [];
@@ -272,73 +311,76 @@ function loadSummonerMatchHistory(userInfo, info){
                 `
                 let timeGap = new Date() - matchItemInfo.timestamp;
                 let historyHTMLdocSegment = (`
-                <div class="game-history-item ${isWinType}-type ${MapType}">
-                    <div class="item-wrapper">
-                        <div class="item-detail-1">
-                            <span class="map-type">${MapLabel}</span>
-                            <span class="win-or-lose">${isWinLabel}</span>
-                            <span class="timelapse">${elapsedTimeFormatter(timeGap)}</span>
-                        </div>
-                        <div class="item-detail-2">
-                            <div class="champ-wrapper">
-                                <div class="upper-div">
-                                    <div class="main-champion-illust-wrapper" id="main_champion_illust_${i}">
-                                        <div class="last-champion-level">${curUserStat.champLevel}</div>
-                                    </div>
-                                </div>
-                                <div class="spell-wrapper">
-                                    <div class="mid-container">
-                                        <div class="spell-img" id="spell_img_${i}_1"></div>
-                                        <div class="spell-img" id="spell_img_${i}_2"></div>
-                                    </div>
-                                </div>
-                                <div class="spell-wrapper">
-                                    <div class="mid-container">
-                                        <div class="rune-img" id="rune_img_${i}_1"></div>
-                                        <div class="rune-img" id="rune_img_${i}_2"></div>
-                                    </div>                                
-                                </div>
-                                <div class="champion-name">
-                                    <span>${curChampionInfo.name}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-detail-3">
-                            <div class="KDA-wrapper">
-                                <div class="KDA-score" id="KDA_score_${i}">${refineKDA(KDA)}</div>
-                                <div class="KDA">
-                                    <span class="kill">${curUserStat.kills}</span>
-                                    <span class="slash">/</span>
-                                    <span class="death">${curUserStat.deaths}</span>
-                                    <span class="slash">/</span>
-                                    <span class="assist">${curUserStat.assists}</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item-detail-4">
+                <div class="game-history-item-wrapper" id="game_history_item_wrapper_${i}">
+                    <div class="game-history-item ${isWinType}-type ${MapType} folded" id="game_history_item_${i}">
                         <div class="item-wrapper">
-                            <div class="item-item" id="item_item_img_${i}_0"></div>
-                            <div class="item-item" id="item_item_img_${i}_1"></div>
-                            <div class="item-item" id="item_item_img_${i}_2"></div>
-                            <div class="item-item" id="item_item_img_${i}_deco"></div>
-                            <div class="item-item" id="item_item_img_${i}_3"></div>
-                            <div class="item-item" id="item_item_img_${i}_4"></div>
-                            <div class="item-item" id="item_item_img_${i}_5"></div>
-                            <!-- <div class="item-item"></div> -->
-                        </div>
-                        </div>
-                        <div class="item-detail-5">
-                            <div class="gold-wrapper">
-                                <span>${numberWithCommas(curUserStat.goldEarned)} G</span>
+                            <div class="item-detail-1">
+                                <span class="map-type">${MapLabel}</span>
+                                <span class="win-or-lose">${isWinLabel}</span>
+                                <span class="timelapse">${elapsedTimeFormatter(timeGap)}</span>
                             </div>
-                        ${lastSecondContainer}
-                            <div class="cs-wrapper">
-                                <span>CS</span>
-                                <span class="total-cs">${curUserStat.totalMinionsKilled}</span><span 
-                                class="average-cs">(8.5)</span>
+                            <div class="item-detail-2">
+                                <div class="champ-wrapper">
+                                    <div class="upper-div">
+                                        <div class="main-champion-illust-wrapper" id="main_champion_illust_${i}">
+                                            <div class="last-champion-level">${curUserStat.champLevel}</div>
+                                        </div>
+                                    </div>
+                                    <div class="spell-wrapper">
+                                        <div class="mid-container">
+                                            <div class="spell-img" id="spell_img_${i}_1"></div>
+                                            <div class="spell-img" id="spell_img_${i}_2"></div>
+                                        </div>
+                                    </div>
+                                    <div class="spell-wrapper">
+                                        <div class="mid-container">
+                                            <div class="rune-img" id="rune_img_${i}_1"></div>
+                                            <div class="rune-img" id="rune_img_${i}_2"></div>
+                                        </div>                                
+                                    </div>
+                                    <div class="champion-name">
+                                        <span>${curChampionInfo.name}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-detail-3">
+                                <div class="KDA-wrapper">
+                                    <div class="KDA-score" id="KDA_score_${i}">${refineKDA(KDA)}</div>
+                                    <div class="KDA">
+                                        <span class="kill">${curUserStat.kills}</span>
+                                        <span class="slash">/</span>
+                                        <span class="death">${curUserStat.deaths}</span>
+                                        <span class="slash">/</span>
+                                        <span class="assist">${curUserStat.assists}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item-detail-4">
+                                <div class="item-wrapper">
+                                    <div class="item-item" id="item_item_img_${i}_0"></div>
+                                    <div class="item-item" id="item_item_img_${i}_1"></div>
+                                    <div class="item-item" id="item_item_img_${i}_2"></div>
+                                    <div class="item-item" id="item_item_img_${i}_deco"></div>
+                                    <div class="item-item" id="item_item_img_${i}_3"></div>
+                                    <div class="item-item" id="item_item_img_${i}_4"></div>
+                                    <div class="item-item" id="item_item_img_${i}_5"></div>
+                                    <!-- <div class="item-item"></div> -->
+                                </div>
+                            </div>
+                            <div class="item-detail-5">
+                                <div class="gold-wrapper">
+                                    <span>${numberWithCommas(curUserStat.goldEarned)} G</span>
+                                </div>
+                            ${lastSecondContainer}
+                                <div class="cs-wrapper">
+                                    <span>CS</span>
+                                    <span class="total-cs">${curUserStat.totalMinionsKilled}</span><span 
+                                    class="average-cs">(8.5)</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div class="game-history-item-description-tab" id="game_history_item_desc_${i}">${i}<br>${i}<br>${i}asdfv</div>
                 </div>
                 `);
 
@@ -414,6 +456,43 @@ function loadSummonerMatchHistory(userInfo, info){
                 let decoItemURL = getLatestDataDragonURL()+"/img/item/"+itemImageData[decoItemCode].image.full;
                 $('#item_item_img_'+i+'_deco').css("background-image", `url(${decoItemURL})`);
             }
+
+            let totalItemWrapper = $('#game_history_item_wrapper_'+i);
+            let innerItem = $('#game_history_item_'+i);
+            let rolledTab = $('#game_history_item_desc_'+i);
+        
+            let rolledTabHeight = rolledTab.outerHeight();
+            let originalTotalWrapperHeight = totalItemWrapper.height();
+            let strechedTotalWrapperHeight = originalTotalWrapperHeight + rolledTabHeight;
+            let rolledTopOffset = -rolledTabHeight;
+            rolledTab.css("top", (originalTotalWrapperHeight)+"px");
+            rolledTab.css("z-index", (9900-i)+"");
+        
+            const animationStyle = 'easeOutBounce';
+            const animationDelay = 500;
+        
+            innerItem.on("click", function(){
+                let isFolded = $(this).hasClass('folded');
+                if(isFolded){
+                    $(this).removeClass('folded');
+                    $(this).addClass('unfolded');
+
+                    rolledTab.css("display", "inline-block");
+                    totalItemWrapper.animate({
+                        height: strechedTotalWrapperHeight
+                    }, animationDelay, animationStyle);
+                }
+                else {
+                    $(this).removeClass('unfolded');
+                    $(this).addClass('folded');
+
+                    totalItemWrapper.animate({
+                        height: originalTotalWrapperHeight
+                    }, animationDelay, animationStyle, function(){
+                        rolledTab.css("display", "none");
+                    });
+                }
+            });
         }
 
         const winRateInfo = getWinRateInfo(matchList, userInfo , participantInfoBundle);
