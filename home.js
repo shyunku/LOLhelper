@@ -11,7 +11,7 @@ let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
 
-const maxHistoryItemCall = 7;
+const maxHistoryItemCall = 3;
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
@@ -225,10 +225,10 @@ function getCurrentMatchBySummonerID(id){
 function loadSummonerMatchHistory(userInfo, info){
     let matchList = info.matches;
     const gameHistoryListContainer = $('#game_history_list_container');
-    const gameHistoryItemBundle = $('.game-history-item');
+    const gameHistoryItemBundle = $('.game-history-item-wrapper');
 
     //Point
-    // gameHistoryItemBundle.remove();
+    gameHistoryItemBundle.remove();
 
     let nativeHistoryItemBundle = [];
     let loadHistoryItemCallback = [];
@@ -263,6 +263,8 @@ function loadSummonerMatchHistory(userInfo, info){
                 let curUserStat = curUserInfo.stats;
                 // console.log(curUserStat);
                 // console.log(matchItemInfo);
+                console.log(res.participants);
+                console.log(res.participantIdentities);
                 // console.log("Queue ID: "+res.queueId);
                 switch(res.queueId){
                     case 450:
@@ -377,15 +379,110 @@ function loadSummonerMatchHistory(userInfo, info){
                         </div>
                         </div>
                     </div>
-                    <div class="game-history-item-description-tab" id="game_history_item_desc_${i}">${i}<br>${i}<br>${i}asdfv</div>
+                    <div class="game-history-item-description-tab" id="game_history_item_desc_${i}">
+                        <div class="item-detail-menu-list-tab">
+                            <div class="detail-menu-list-tab" style="grid-column: 1;">
+                                <span>일반 정보</span>
+                            </div>
+                            <div class="detail-menu-list-tab" style="grid-column: 2;">
+                                <span>딜량 확인</span>
+                            </div>
+                        </div>
+                        <div class="item-detail-desc-content-wrapper">
+                            <div class="item-detail-desc-content">
+                                <div class="team-desc-label-wrapper win">
+                                    <span class="team-desc-win-or-lose">승리</span>
+                                    <span class="team-label">레드 팀</span>
+                                </div>
+                                <div class="participant-info-container win" id="participant_info_container_1_${i}">
+                                </div>
+                                <div class="team-desc-label-wrapper lose">
+                                    <span class="team-desc-win-or-lose">패배</span>
+                                    <span class="team-label">블루 팀</span>
+                                </div>
+                                <div class="participant-info-container lose" id="participant_info_container_2_${i}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 `);
+
+                let team1infoBundle = [];
+                let team2infoBundle = [];
+
+                for(let j=0; j<res.participants.length;j++){
+                    let participantTeam = res.participants[j].teamId;
+                    let participantIdentity = res.participantIdentities[j];
+                    let participantStat = res.participants[j].stats;
+                    let pKDA = (participantStat.kills + participantStat.assists)/participantStat.deaths;
+                    let historyItemDescriptionSegment = `
+                    <div class="participant-info">
+                        <div class="participant-detail-info-1">
+                            <div class="participant-champion-img" id="participant_champion_image_${i}_${j}"></div>
+                        </div>
+                        <div class="participant-detail-info-2">
+                            <div class="participant-summoner-spell-wrapper">
+                                <div class="participant-spell" id="participant_spell1_${i}_${j}"></div>
+                                <div class="participant-spell" id="participant_spell2_${i}_${j}"></div>
+                            </div><div class="participant-summoner-perk-wrapper">
+                                <div class="participant-perk" id="participant_perk1_${i}_${j}"></div>
+                                <div class="participant-perk zoom-out" id="participant_perk2_${i}_${j}"></div>
+                            </div>
+                        </div>
+                        <div class="participant-detail-info-3">
+                            <div class="participant-info-wrapper">
+                                <span class="participant-username">
+                                    <a href="#" onclick="findNewSummoner('${participantIdentity.player.summonerName}');">${participantIdentity.player.summonerName}</a>
+                                </span>
+                                <span class="participant-tier-level" id="participant_tier_level_${i}_${j}">Unknown</span>
+                            </div>
+                        </div>
+                        <div class="participant-detail-info-4">
+                            <div class="participant-kda-wrapper">
+                                <span class="participant-kda-score">${refineKDA(pKDA)}</span>
+                                <span class="participant-kda">
+                                    <span class="kill">${participantStat.kills}</span>
+                                    <span class="slash">/</span>
+                                    <span class="death">${participantStat.deaths}</span>
+                                    <span class="slash">/</span>
+                                    <span class="assist">${participantStat.assists}</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="participant-detail-info-5">
+                            <div class="participant-cs-wrapper">
+                                <span class="participant-gold">${numberWithCommas(participantStat.goldEarned)} G</span>
+                                <span class="participant-cs">CS ${participantStat.totalMinionsKilled}(15.6)</span>
+                            </div>
+                        </div>
+                        <div class="participant-detail-info-6">
+                            <div class="participant-item-wrapper">
+                                <div class="participant-item"></div>
+                                <div class="participant-item"></div>
+                                <div class="participant-item"></div>
+                                <div class="participant-item"></div>
+                                <div class="participant-item"></div>
+                                <div class="participant-item"></div>
+                                <div class="participant-item"></div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                    if(participantTeam == 100){
+                        team1infoBundle.push(historyItemDescriptionSegment);
+                    }else{
+                        team2infoBundle.push(historyItemDescriptionSegment);
+                    }
+                }
 
                 nativeHistoryItemBundle[i] = {
                     segment: historyHTMLdocSegment,
                     curChampInfo: getChampionInfoFromKey(curUserInfo.championId),
                     curUserInfo: curUserInfo,
                     userKDA: KDA,
+                    team1infoBundle, team1infoBundle,
+                    team2infoBundle, team2infoBundle,
                 };
 
                 participantInfoBundle[i] = {
@@ -410,6 +507,12 @@ function loadSummonerMatchHistory(userInfo, info){
             let curChampionInfo = nativeInfoSegment.curChampInfo;
             let curUserInfo = nativeInfoSegment.curUserInfo;
             let curUserKDA = nativeInfoSegment.userKDA;
+            let curTeam1Info = nativeInfoSegment.team1infoBundle;
+            let curTeam2Info = nativeInfoSegment.team2infoBundle;
+
+
+            let participantIdentitiesInfo = participantInfoBundle[i].participantIdentities;
+            let participantsInfo = participantInfoBundle[i].participants;
 
             let champion_img_url = getLatestDataDragonURL()+"/img/champion/"+curChampionInfo.id+".png";
             let spell1_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell1Id).id+".png";
@@ -454,6 +557,48 @@ function loadSummonerMatchHistory(userInfo, info){
                 $('#item_item_img_'+i+'_deco').css("background-image", `url(${decoItemURL})`);
             }
 
+            const team1Container = $('#participant_info_container_1_'+i);
+            const team2Container = $('#participant_info_container_2_'+i);
+
+            for(let j=0;j<curTeam1Info.length;j++){
+                team1Container.append(curTeam1Info[j]);
+            }
+            for(let j=0;j<curTeam2Info.length;j++){
+                team2Container.append(curTeam2Info[j]);
+            }
+            //팀 유저 정보
+
+            for(let j=0;j<participantsInfo.length;j++){
+                let participantChampionImageView = $('#participant_champion_image_'+i+"_"+j);
+                let participantSpell1ImageView = $('#participant_spell1_'+i+"_"+j);
+                let participantSpell2ImageView = $('#participant_spell2_'+i+"_"+j);
+                let participantPerk1ImageView = $('#participant_perk1_'+i+"_"+j);
+                let participantPerk2ImageView = $('#participant_perk2_'+i+"_"+j);
+                let participantTierView = $('#participant_tier_level_'+i+"_"+j)
+
+                let participantInfo = participantsInfo[j];
+                let participantIdentityInfo = participantIdentitiesInfo[j];
+                let participantChampInfo = getChampionInfoFromKey(participantInfo.championId);
+                let perk1Info = getDetailPerkInfoFromKey(participantInfo.stats.perk0);
+                let perk2Info = getPerkInfoFromKey(participantInfo.stats.perkSubStyle);
+
+                let participantChampionImgURL = getLatestDataDragonURL()+"/img/champion/"+participantChampInfo.id+".png";
+                let spell1ImageURL = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(participantInfo.spell1Id).id+".png";
+                let spell2ImageURL = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(participantInfo.spell2Id).id+".png";
+                let perk1ImageURL = "https://ddragon.leagueoflegends.com/cdn/img/"+getRightPathOfDetailPerkImage(perk1Info.iconPath);
+                let perk2ImageURL = "https://ddragon.leagueoflegends.com/cdn/img/"+perk2Info.icon;
+
+                participantChampionImageView.css("background-image", `url(${participantChampionImgURL})`);
+                participantSpell1ImageView.css("background-image", `url(${spell1ImageURL})`);
+                participantSpell2ImageView.css("background-image", `url(${spell2ImageURL})`);
+                participantPerk1ImageView.css("background-image", `url(${perk1ImageURL})`);
+                participantPerk2ImageView.css("background-image", `url(${perk2ImageURL})`);
+                participantPerk2ImageView.css("background-size", "80%");
+
+                getAndLoadParticipantsLeagueInfoBySummonerID(participantTierView, participantIdentityInfo.player.summonerId);
+            }
+
+            //상세 설명 탭 확장 애니메이션
             let totalItemWrapper = $('#game_history_item_wrapper_'+i);
             let innerItem = $('#game_history_item_'+i);
             let rolledTab = $('#game_history_item_desc_'+i);
@@ -541,6 +686,91 @@ function loadSummonerMatchHistory(userInfo, info){
     });
 }
 
+function getAndLoadParticipantsLeagueInfoBySummonerID(span, id){
+    $.ajax({
+        url: "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/"+id,
+        type: "GET",
+        dataType: "json",
+        data: {
+            "api_key": key,
+        },
+        success: function(res){
+            let candidates = [];
+            for(let i=0;i<res.length;i++){
+                let tier_info = getConvertedLeagueTier(res[i].tier);
+                let type_info = getConvertedLeagueType(res[i].queueType);
+                let label_info = tier_info.name + " " + res[i].rank;
+                candidates.push({
+                    tierInfo: tier_info,
+                    typeInfo: type_info,
+                    labelInfo: label_info,
+                });
+            }
+
+            for(let i=0;i<candidates.length;i++){
+                candidate = candidates[i];
+                if(candidate.typeInfo.level === 3){
+                    let tierInfo = candidate.tierInfo;
+                    span.text(candidate.labelInfo);
+                    if(tierInfo.level > 5)
+                        span.css("background-image", `linear-gradient( 150deg, ${tierInfo.color}, ${tierInfo.color2})`);
+                    else
+                        span.css("background-color", `${tierInfo.color})`);
+                    return;
+                }
+            }
+            for(let i=0;i<candidates.length;i++){
+                candidate = candidates[i];
+                if(candidate.typeInfo.level === 2){
+                    let tierInfo = candidate.tierInfo;
+                    span.text(candidate.labelInfo);
+                    if(tierInfo.level > 5)
+                        span.css("border-image", `linear-gradient( 150deg, ${tierInfo.color}, ${tierInfo.color2})`);
+                    else
+                        span.css("border-image", `${tierInfo.color})`);
+                    span.css("border", "1px");
+                    span.css("border-style", "solid");
+                    span.css("border-image-slice", "1");
+                    return;
+                }
+            }
+            for(let i=0;i<candidates.length;i++){
+                candidate = candidates[i];
+                if(candidate.typeInfo.level === 1){
+                    span.text(candidate.labelInfo);
+                    span.css("background", "green");
+                    return;
+                }
+            }
+            $.ajax({
+                url: "https://kr.api.riotgames.com/lol/summoner/v4/summoners/"+id,
+                type: "GET",
+                aync: false,
+                dataType: "json",
+                data: {
+                    "api_key": key,
+                },
+                success: function(res){
+                    span.text(res.summonerLevel+" 레벨");
+                },
+                error: function(req, stat, err){
+                    if(err == "Not Found") console.log("존재하지 않는 소환사_id: "+id);
+                    else if(err == "Forbidden") console.log("API_KEY 만료됨");
+                    else{
+                        console.log(err);
+                        if(err == "Too Many Requests") span.text('Error-1');
+                        else span.text('Error-2');
+                    }
+                },
+            });
+        },
+        error: function(req, stat, err){
+            console.log(err);
+            if(err == "Service Unavailable") alert('현재 API 서버 사용 불가능함');
+        },
+    });
+}
+
 function loadSummonerGeneralInfo(info){
     $('#current_summoner_profile_icon_img').attr("src", getLatestDataDragonURL()+"/img/profileicon/"+info.profileIconId+".png");
     $('#current_summoner_name').text(info.name);
@@ -554,7 +784,7 @@ function loadSummonerLeagueInfo(info){
     for(let i=0;i<info.length;i++){
         let tier_info = getConvertedLeagueTier(info[i].tier);
         let tier_rank = tier_info.name+" "+info[i].rank;
-        let converted_type = getConvertedLeagueType(info[i].queueType);
+        let converted_type = getConvertedLeagueType(info[i].queueType).type;
         let new_rank_label = converted_type+" | "+tier_rank;
         tierInfoWrapper.append(`<div class="small-info-box" id="info_box_${converted_type}">${new_rank_label}</div>`);
         
@@ -573,6 +803,11 @@ function loadSummonerLeagueInfo(info){
 }
 
 //user func
+
+function findNewSummoner(username){
+    console.log(username);
+    getSummonerInfo("name", username);
+}
 
 function getWinRateInfo(matchList, userInfo, partyInfoBundle){
     let winSum = 0;
@@ -688,9 +923,18 @@ function getUserIndexFromMatchInfo(userInfo, participants){
 
 function getConvertedLeagueType(type){
     switch(type){
-        case "RANKED_FLEX_SR": return "Flex";
-        case "RANKED_SOLO_5x5": return "Solo";
-        default: return type;
+        case "RANKED_FLEX_SR": return {
+            type: "Flex",
+            level: 2,
+        };
+        case "RANKED_SOLO_5x5": return {
+            type: "Solo",
+            level: 3,
+        };
+        default: return {
+            type: type,
+            level: 1,
+        };;
     }
 }
 

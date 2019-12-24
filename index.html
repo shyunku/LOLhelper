@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=500px, initial-scale=1.0">
         <link rel="stylesheet" href="reset.css">
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="clear.css">
         <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:100,400,700&display=swap" rel="stylesheet">
         <script src="https://code.jquery.com/jquery-latest.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
@@ -75,7 +76,7 @@
                                     <div class="spell-wrapper">
                                         <div class="mid-container">
                                             <div class="rune-img"></div>
-                                            <div class="rune-img zoom-out"></div>
+                                            <div class="rune-img"></div>
                                         </div>                                
                                     </div>
                                     <div class="champion-name">
@@ -133,11 +134,11 @@
                         </div>
                         <div class="item-detail-desc-content-wrapper">
                             <div class="item-detail-desc-content">
-                                <div class="team-desc-label-wrapper">
-                                    <span class="team-desc-win-or-lose win">승리</span>
+                                <div class="team-desc-label-wrapper win">
+                                    <span class="team-desc-win-or-lose">승리</span>
                                     <span class="team-label">레드 팀</span>
                                 </div>
-                                <div class="participant-info-container">
+                                <div class="participant-info-container win">
                                     <div class="participant-info">
                                         <div class="participant-detail-info-1">
                                             <div class="participant-champion-img"></div>
@@ -153,17 +154,44 @@
                                         </div>
                                         <div class="participant-detail-info-3">
                                             <div class="participant-info-wrapper">
-                                                <span class="participant-username">아다먹고싶다</span>
+                                                <span class="participant-username">존 냥</span>
                                                 <span class="participant-tier-level">그랜드마스터 IV</span>
                                             </div>
                                         </div>
                                         <div class="participant-detail-info-4">
                                             <div class="participant-kda-wrapper">
                                                 <span class="participant-kda-score">2.52</span>
-                                                <span class="participant-kda">62 / 65 / 66</span>
+                                                <span class="participant-kda">
+                                                    <span class="kill">5</span>
+                                                    <span class="slash">/</span>
+                                                    <span class="death">2</span>
+                                                    <span class="slash">/</span>
+                                                    <span class="assist">3</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="participant-detail-info-5">
+                                            <div class="participant-cs-wrapper">
+                                                <span class="participant-gold">612,563 G</span>
+                                                <span class="participant-cs">CS 325(15.6)</span>
+                                            </div>
+                                        </div>
+                                        <div class="participant-detail-info-6">
+                                            <div class="participant-item-wrapper">
+                                                <div class="participant-item"></div>
+                                                <div class="participant-item"></div>
+                                                <div class="participant-item"></div>
+                                                <div class="participant-item"></div>
+                                                <div class="participant-item"></div>
+                                                <div class="participant-item"></div>
+                                                <div class="participant-item"></div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="team-desc-label-wrapper lose">
+                                    <span class="team-desc-win-or-lose">패배</span>
+                                    <span class="team-label">블루 팀</span>
                                 </div>
                             </div>
                         </div>

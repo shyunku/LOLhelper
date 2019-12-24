@@ -399,15 +399,15 @@ body{
     box-shadow: 2px 2px 3px rgb(26, 26, 26);
 }
 
-.KDA > .kill{
-    color: rgb(163, 172, 255);
+.kill{
+    color: rgb(93, 190, 255);
 }
 
-.KDA > .death{
+.death{
     color: rgb(255, 118, 118);
 }
 
-.KDA > .assist{
+.assist{
     color: rgb(224, 211, 137);
 }
 
@@ -600,7 +600,14 @@ body{
     display: inline-block;
     width: 100%;
     padding: 8px 10px;
-    background-color: rgba(0, 89, 131, 0.5);
+}
+
+.team-desc-label-wrapper.win{
+    background-color: rgba(0, 57, 95, 0.863);
+}
+
+.team-desc-label-wrapper.lose{
+    background-color: rgba(129, 7, 7, 0.863);
 }
 
 .team-desc-label-wrapper > span{
@@ -612,8 +619,12 @@ body{
     width: 50px;
 }
 
-.team-desc-win-or-lose.win{
-    color: rgb(126, 208, 255);
+.win .team-desc-win-or-lose{
+    color: rgb(95, 196, 255);
+}
+
+.lose .team-desc-win-or-lose{
+    color: rgb(255, 95, 95);
 }
 
 .team-label{
@@ -626,13 +637,22 @@ body{
     width: 100%;
 }
 
+.participant-info-container.win{
+    background-color: rgba(25, 112, 170, 0.863);
+}
+
+.participant-info-container.lose{
+    background-color: rgba(170, 25, 25, 0.863);
+}
+
 .participant-info{
     display: inline-block;
     width: 100%;
-    height: 50px;
+    height: 45px;
     /* background-color: cyan; */
-    padding: 5px 5px;
+    padding: 3px 3px;
 
+    border-bottom: 1px solid #9b9b9b;
     box-sizing: border-box;
 }
 
@@ -647,17 +667,17 @@ body{
 
 .participant-champion-img{
     display: inline-block;
-    background-image: url('http://ddragon.leagueoflegends.com/cdn/9.24.2/img/champion/Aatrox.png');
+    background: rgb(51, 51, 51);
     background-size: cover;
-    width: 40px;
-    height: 40px;
+    width: 39px;
+    height: 39px;
     /* background-color: red; */
 }
 
 .participant-detail-info-2{
     display: inline-block;
     height: 100%;
-    padding: 0;
+    margin-left: -2px;
 
     text-align: center;
     /* background-color: red; */
@@ -677,18 +697,23 @@ body{
 }
 
 .participant-spell{
-    width: 19px;
-    height: 19px;
+    width: 18px;
+    height: 18px;
     background-color: black;
     margin-top: 1px;
+
+    background-size: cover;
 }
 
 .participant-perk{
-    width: 19px;
-    height: 19px;
+    width: 18px;
+    height: 18px;
     background-color: black;
     border-radius: 50%;
     margin-top: 1px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .participant-detail-info-3{
@@ -700,9 +725,9 @@ body{
     text-align: left;
 
     vertical-align: top;
-    font-size: 11px;
+    font-size: 10px;
 
-    margin-left: 3px;
+    margin-left: 2px;
 
     box-sizing: border-box;
 }
@@ -712,26 +737,30 @@ body{
 }
 
 .participant-info-wrapper span{
-    padding: 3px 5px;
     display: inline-block;
 }
 
 .participant-username{
-    margin-top: 2px;
+    width: 100%;
+    margin-top: 3px;
     /* background-color: orange; */
+    font-weight: normal;
+    font-size: 11px;
 }
 
 .participant-tier-level{
-    margin-top: 2px;
-    background-color: black;
+    margin-top: 5px;
+    background-color: rgb(209, 209, 209);
     border-radius: 4px;
-    font-weight: lighter;
+    font-weight: normal;
+    padding: 3px 5px;
+    color: black;
 }
 
 .participant-detail-info-4{
     display: inline-block;
     height: 100%;
-    width: 16%;
+    width: 17%;
 
     text-align: left;
 
@@ -739,13 +768,13 @@ body{
     font-size: 11px;
     margin-left: 3px;
     box-sizing: border-box;
-    /* background-color: red; */
+    /* background-color: orange; */
 }
 
 .participant-detail-info-4 > span{
     background-color: black;
     border-radius: 4px;
-    padding: 2px 4px;
+    padding: 2px 0;
 }
 
 .participant-kda-wrapper{
@@ -755,8 +784,8 @@ body{
     vertical-align: top;
 }
 
-.participant-kda-wrapper span{
-    padding: 3px 5px;
+.participant-kda-wrapper > span{
+    padding: 3px 0;
     display: block;
     text-align: center;
 }
@@ -769,4 +798,82 @@ body{
 
 .participant-kda{
     margin-top: 2px;
+}
+
+.participant-detail-info-5{
+    display: inline-block;
+    height: 100%;
+    width: 17%;
+
+    text-align: left;
+
+    vertical-align: top;
+    font-size: 12px;
+    margin-left: 2px;
+    box-sizing: border-box;
+    /* background-color: red; */
+    /* font-weight: lighter; */
+}
+
+.participant-detail-info-5 > span{
+    background-color: black;
+    border-radius: 4px;
+}
+
+.participant-cs-wrapper{
+    display: inline-block;
+    width: 100%;
+    /* background-color: orange; */
+    vertical-align: top;
+}
+
+.participant-cs-wrapper span{
+    padding: 3px 0;
+    display: block;
+    text-align: center;
+}
+
+.participant-gold{
+    margin-top: 2px;
+    color: rgb(255, 251, 23);
+    font-weight: lighter;
+    /* background-color: orange; */
+}
+
+.participant-cs{
+    margin-top: 0px;
+}
+
+.participant-detail-info-6{
+    display: inline-block;
+    height: 100%;
+    width: 20%;
+
+    text-align: center;
+
+    vertical-align: top;
+    font-size: 11px;
+    margin-left: 2px;
+    box-sizing: border-box;
+    /* background-color: red; */
+}
+
+.participant-item-wrapper{
+    display: inline-block;
+    width: 85px;
+    height: 100%;
+    /* background-color: cyan; */
+    text-align: left;
+    padding-top: 2px;
+
+    box-sizing: border-box;
+}
+
+.participant-item{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: black;
+    padding-right: 1px;
+    border-radius: 3px;
 }
