@@ -30,171 +30,205 @@
             </div>
         </div>
         <div class="info-tab-container">
-            <div style="grid-column: 1;" class="info-tab">
+            <div style="grid-column: 1;" class="info-tab" id="recent_game_history_info_tab">
                 <span>최근 전적</span>
             </div>
-            <div style="grid-column: 2;" class="info-tab" id="current_game_info_tab">
-                <span>현재 게임 정보</span>
-            </div>
-            <div style="grid-column: 3;" class="info-tab">
+            <div style="grid-column: 2;" class="info-tab" id="mastery_info_tab">
                 <span>숙련도</span>
+            </div>
+            <div style="grid-column: 3;" class="info-tab" id="current_game_info_tab">
+                <span>현재 게임 정보</span>
             </div>
         </div>
         <div class="main-content">
-            <div class="game-history-summary-container">
-                <div class="recent-game-summary-chart-wrapper">
-                    <canvas class="win-rate-pie-chart" id="win_rate_pie_chart"></canvas>
-                    <div id="win_rate_chart_desc">
-                        <span id="user_win_num"></span>
-                        <span id="user_lose_num"></span>
+            <div class="recent-game-info main-info-tab" id="recent_game_info_container">
+                <div class="game-history-summary-container" id="game_history_summary_container">
+                    <div class="recent-game-summary-chart-wrapper">
+                        <canvas class="win-rate-pie-chart" id="win_rate_pie_chart"></canvas>
+                        <div id="win_rate_chart_desc">
+                            <span id="user_win_num"></span>
+                            <span id="user_lose_num"></span>
+                        </div>
+                        <span id="win_rate_chart_percentage"></span>
                     </div>
-                    <span id="win_rate_chart_percentage"></span>
+                </div>
+                <div class="game-history-list" id="game_history_list_container">
+                    <div class="game-history-item-wrapper summoners-rift folded" id="game_history_item_wrapper">
+                        <div class="game-history-item lose-type" id="game_history_item">
+                            <div class="item-wrapper">
+                                <div class="item-detail-1">
+                                    <span class="map-type">Example</span>
+                                    <span class="win-or-lose">패배</span>
+                                    <span class="timelapse">5분 전</span>
+                                </div>
+                                <div class="item-detail-2">
+                                    <div class="champ-wrapper">
+                                        <div class="upper-div">
+                                            <div class="main-champion-illust-wrapper">
+                                                <div class="last-champion-level">23</div>
+                                            </div>
+                                        </div>
+                                        <div class="spell-wrapper">
+                                            <div class="mid-container">
+                                                <div class="spell-img"></div>
+                                                <div class="spell-img"></div>
+                                            </div>
+                                        </div>
+                                        <div class="spell-wrapper">
+                                            <div class="mid-container">
+                                                <div class="rune-img"></div>
+                                                <div class="rune-img"></div>
+                                            </div>                                
+                                        </div>
+                                        <div class="champion-name">
+                                            <span>아트록스</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-detail-3">
+                                    <div class="KDA-wrapper">
+                                        <div class="KDA-score">-4.00</div>
+                                        <div class="KDA">
+                                            <span class="kill">5</span>
+                                            <span class="slash">/</span>
+                                            <span class="death">2</span>
+                                            <span class="slash">/</span>
+                                            <span class="assist">3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item-detail-5">
+                                    <div class="gold-wrapper">
+                                        <span>12,543 G</span>
+                                    </div>
+                                    <div class="cc-wrapper">
+                                        <span>CC</span>
+                                        <span>25s</span>
+                                    </div>
+                                    <div class="cs-wrapper">
+                                        <span>CS</span>
+                                        <span class="total-cs">63</span><span class="average-cs">(2.5)</span>
+                                    </div>
+                                </div>
+                                <div class="item-detail-4">
+                                    <div class="item-wrapper">
+                                        <div class="item-item"></div>
+                                        <div class="item-item"></div>
+                                        <div class="item-item"></div>
+                                        <div class="item-item"></div>
+                                        <div class="item-item"></div>
+                                        <div class="item-item"></div>
+                                        <div class="item-item"></div>
+                                        <!-- <div class="item-item"></div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="game-history-item-description-tab" id="game_history_item_desc">
+                            <div class="item-detail-menu-list-tab">
+                                <div class="detail-menu-list-tab" style="grid-column: 1;">
+                                    <span>일반 정보</span>
+                                </div>
+                                <div class="detail-menu-list-tab" style="grid-column: 2;">
+                                    <span>딜량 확인</span>
+                                </div>
+                            </div>
+                            <div class="item-detail-desc-content-wrapper">
+                                <div class="item-detail-desc-content">
+                                    <div class="team-desc-label-wrapper win">
+                                        <span class="team-desc-win-or-lose">승리</span>
+                                        <span class="team-label">레드 팀</span>
+                                    </div>
+                                    <div class="participant-info-container win">
+                                        <div class="participant-info">
+                                            <div class="participant-detail-info-1">
+                                                <div class="participant-champion-img"></div>
+                                            </div>
+                                            <div class="participant-detail-info-2">
+                                                <div class="participant-summoner-spell-wrapper">
+                                                    <div class="participant-spell"></div>
+                                                    <div class="participant-spell"></div>
+                                                </div><div class="participant-summoner-perk-wrapper">
+                                                    <div class="participant-perk"></div>
+                                                    <div class="participant-perk"></div>
+                                                </div>
+                                            </div>
+                                            <div class="participant-detail-info-3">
+                                                <div class="participant-info-wrapper">
+                                                    <span class="participant-username">존 냥</span>
+                                                    <span class="participant-tier-level">그랜드마스터 IV</span>
+                                                </div>
+                                            </div>
+                                            <div class="participant-detail-info-4">
+                                                <div class="participant-kda-wrapper">
+                                                    <span class="participant-kda-score">2.52</span>
+                                                    <span class="participant-kda">
+                                                        <span class="kill">5</span>
+                                                        <span class="slash">/</span>
+                                                        <span class="death">2</span>
+                                                        <span class="slash">/</span>
+                                                        <span class="assist">3</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="participant-detail-info-5">
+                                                <div class="participant-cs-wrapper">
+                                                    <span class="participant-gold">612,563 G</span>
+                                                    <span class="participant-cs">CS 325(15.6)</span>
+                                                </div>
+                                            </div>
+                                            <div class="participant-detail-info-6">
+                                                <div class="participant-item-wrapper">
+                                                    <div class="participant-item"></div>
+                                                    <div class="participant-item"></div>
+                                                    <div class="participant-item"></div>
+                                                    <div class="participant-item"></div>
+                                                    <div class="participant-item"></div>
+                                                    <div class="participant-item"></div>
+                                                    <div class="participant-item"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="team-desc-label-wrapper lose">
+                                        <span class="team-desc-win-or-lose">패배</span>
+                                        <span class="team-label">블루 팀</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="game-history-list" id="game_history_list_container">
-                <div class="game-history-item-wrapper summoners-rift folded" id="game_history_item_wrapper">
-                    <div class="game-history-item lose-type" id="game_history_item">
-                        <div class="item-wrapper">
-                            <div class="item-detail-1">
-                                <span class="map-type">Example</span>
-                                <span class="win-or-lose">패배</span>
-                                <span class="timelapse">5분 전</span>
-                            </div>
-                            <div class="item-detail-2">
-                                <div class="champ-wrapper">
-                                    <div class="upper-div">
-                                        <div class="main-champion-illust-wrapper">
-                                            <div class="last-champion-level">23</div>
-                                        </div>
-                                    </div>
-                                    <div class="spell-wrapper">
-                                        <div class="mid-container">
-                                            <div class="spell-img"></div>
-                                            <div class="spell-img"></div>
-                                        </div>
-                                    </div>
-                                    <div class="spell-wrapper">
-                                        <div class="mid-container">
-                                            <div class="rune-img"></div>
-                                            <div class="rune-img"></div>
-                                        </div>                                
-                                    </div>
-                                    <div class="champion-name">
-                                        <span>아트록스</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-detail-3">
-                                <div class="KDA-wrapper">
-                                    <div class="KDA-score">-4.00</div>
-                                    <div class="KDA">
-                                        <span class="kill">5</span>
-                                        <span class="slash">/</span>
-                                        <span class="death">2</span>
-                                        <span class="slash">/</span>
-                                        <span class="assist">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="item-detail-5">
-                                <div class="gold-wrapper">
-                                    <span>12,543 G</span>
-                                </div>
-                                <div class="cc-wrapper">
-                                    <span>CC</span>
-                                    <span>25s</span>
-                                </div>
-                                <div class="cs-wrapper">
-                                    <span>CS</span>
-                                    <span class="total-cs">63</span><span class="average-cs">(2.5)</span>
-                                </div>
-                            </div>
-                            <div class="item-detail-4">
-                                <div class="item-wrapper">
-                                    <div class="item-item"></div>
-                                    <div class="item-item"></div>
-                                    <div class="item-item"></div>
-                                    <div class="item-item"></div>
-                                    <div class="item-item"></div>
-                                    <div class="item-item"></div>
-                                    <div class="item-item"></div>
-                                    <!-- <div class="item-item"></div> -->
-                                </div>
-                            </div>
+            <div class="mastery-info main-info-tab" id="mastery_info_container">
+                <div class="mastery-summary">
+                    <div class="total-mastery">
+                        <span id="total_mastery_label">숙련도 총합</span>
+                        <span id="total_mastery">- 점</span>
+                    </div>
+                    <div class="detail-mastery">
+                        <div class="mastery-amount-box">
+                            <img src="img/mastery/Champion_Mastery_Level_7_Flair.png" class="champion_mastery_img">
+                            <span class="champion-mastery-level-amount" id="champion_mastery7_total_value">-</span>
+                        </div>
+                        <div class="mastery-amount-box">
+                            <img src="img/mastery/Champion_Mastery_Level_6_Flair.png" class="champion_mastery_img">
+                            <span class="champion-mastery-level-amount" id="champion_mastery6_total_value">-</span>
+                        </div>
+                        <div class="mastery-amount-box">
+                            <img src="img/mastery/Champion_Mastery_Level_5_Flair.png" class="champion_mastery_img">
+                            <span class="champion-mastery-level-amount" id="champion_mastery5_total_value">-</span>
+                        </div>
+                        <div class="mastery-amount-box">
+                            <img src="img/mastery/Champion_Mastery_Level_4_Flair.png" class="champion_mastery_img">
+                            <span class="champion-mastery-level-amount" id="champion_mastery4_total_value">-</span>
+                        </div>
+                        <div class="mastery-amount-box">
+                            <img src="img/mastery/Champion_Mastery_Level_3_Flair.png" class="champion_mastery_img">
+                            <span class="champion-mastery-level-amount" id="champion_mastery3_total_value">-</span>
                         </div>
                     </div>
-                    <div class="game-history-item-description-tab" id="game_history_item_desc">
-                        <div class="item-detail-menu-list-tab">
-                            <div class="detail-menu-list-tab" style="grid-column: 1;">
-                                <span>일반 정보</span>
-                            </div>
-                            <div class="detail-menu-list-tab" style="grid-column: 2;">
-                                <span>딜량 확인</span>
-                            </div>
-                        </div>
-                        <div class="item-detail-desc-content-wrapper">
-                            <div class="item-detail-desc-content">
-                                <div class="team-desc-label-wrapper win">
-                                    <span class="team-desc-win-or-lose">승리</span>
-                                    <span class="team-label">레드 팀</span>
-                                </div>
-                                <div class="participant-info-container win">
-                                    <div class="participant-info">
-                                        <div class="participant-detail-info-1">
-                                            <div class="participant-champion-img"></div>
-                                        </div>
-                                        <div class="participant-detail-info-2">
-                                            <div class="participant-summoner-spell-wrapper">
-                                                <div class="participant-spell"></div>
-                                                <div class="participant-spell"></div>
-                                            </div><div class="participant-summoner-perk-wrapper">
-                                                <div class="participant-perk"></div>
-                                                <div class="participant-perk"></div>
-                                            </div>
-                                        </div>
-                                        <div class="participant-detail-info-3">
-                                            <div class="participant-info-wrapper">
-                                                <span class="participant-username">존 냥</span>
-                                                <span class="participant-tier-level">그랜드마스터 IV</span>
-                                            </div>
-                                        </div>
-                                        <div class="participant-detail-info-4">
-                                            <div class="participant-kda-wrapper">
-                                                <span class="participant-kda-score">2.52</span>
-                                                <span class="participant-kda">
-                                                    <span class="kill">5</span>
-                                                    <span class="slash">/</span>
-                                                    <span class="death">2</span>
-                                                    <span class="slash">/</span>
-                                                    <span class="assist">3</span>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div class="participant-detail-info-5">
-                                            <div class="participant-cs-wrapper">
-                                                <span class="participant-gold">612,563 G</span>
-                                                <span class="participant-cs">CS 325(15.6)</span>
-                                            </div>
-                                        </div>
-                                        <div class="participant-detail-info-6">
-                                            <div class="participant-item-wrapper">
-                                                <div class="participant-item"></div>
-                                                <div class="participant-item"></div>
-                                                <div class="participant-item"></div>
-                                                <div class="participant-item"></div>
-                                                <div class="participant-item"></div>
-                                                <div class="participant-item"></div>
-                                                <div class="participant-item"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="team-desc-label-wrapper lose">
-                                    <span class="team-desc-win-or-lose">패배</span>
-                                    <span class="team-label">블루 팀</span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="champion-mastery-list" id="champion_mastery_list">
                     </div>
                 </div>
             </div>

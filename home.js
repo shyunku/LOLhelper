@@ -1,4 +1,4 @@
-const key = "RGAPI-a03c58b3-6844-4d42-bef4-e767b778146f";
+const key = "RGAPI-fb157409-7c41-45ab-9303-d72e43b2b09c";
 let championData = undefined;
 let spellData = undefined;
 let perkData = undefined;
@@ -11,46 +11,55 @@ let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
 
-const maxHistoryItemCall = 3;
+const maxHistoryItemCall = 7;
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
 
-    $.ajax({
+    let loadInitialDataRequestCallback = [];
+    let getItemJsonRequest = $.ajax({
         url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/ko_KR/item.json",
         type: "GET",
         dataType: "json",
         success: function(res){
             itemImageData = res.data;
-            $.ajax({
-                url: "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json",
-                type: "GET",
-                dataType: "json",
-                success: function(res){
-                    for(let i=0;i<res.length;i++){
-                        let val = res[i];
-                        detailPerkKeyDict[val.id] = val;
-                    }
-                    $.ajax({
-                        url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/en_US/runesReforged.json",
-                        type: "GET",
-                        dataType: "json",
-                        success: function(res){
-                            for(let i=0;i<res.length;i++){
-                                let val = res[i];
-                                perkKeyDict[val.id] = val;
-                            }
-                            $.ajax({
-                                url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/en_US/summoner.json",
-                                type: "GET",
-                                dataType: "json",
-                                success: function(res){
-                                    spellData = res.data;
-                                    for(let key in spellData){
-                                        let value = spellData[key];
-                                        spellKeyDict[value.key] = value.id;
-                                    }
-    $.ajax({
+        }
+    });
+    let getPerkJsonRequest = $.ajax({
+        url: "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json",
+        type: "GET",
+        dataType: "json",
+        success: function(res){
+            for(let i=0;i<res.length;i++){
+                let val = res[i];
+                detailPerkKeyDict[val.id] = val;
+            }
+        }
+    });
+    let getRuneJsonRequest = $.ajax({
+        url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/en_US/runesReforged.json",
+        type: "GET",
+        dataType: "json",
+        success: function(res){
+            for(let i=0;i<res.length;i++){
+                let val = res[i];
+                perkKeyDict[val.id] = val;
+            }
+        }
+    });
+    let getSummonerSpellJsonRequest = $.ajax({
+        url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/en_US/summoner.json",
+        type: "GET",
+        dataType: "json",
+        success: function(res){
+            spellData = res.data;
+            for(let key in spellData){
+                let value = spellData[key];
+                spellKeyDict[value.key] = value.id;
+            }
+        }
+    });
+    let getChampionJsonRequest = $.ajax({
         url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/ko_KR/champion.json",
         type: "GET",
         dataType: "json",
@@ -60,28 +69,27 @@ $(document).ready(function(){
                 let value = championData[key];
                 championKeyDict[value.key] = value.id;
             }
-            $.ajax({
-                url: "https://ddragon.leagueoflegends.com/api/versions.json",
-                type: "GET",
-                dataType: "json",
-                success: function(res){
-                    latestDataDragonVer = res[0];
-                    console.log("DataDragon lastest version : "+latestDataDragonVer);
-                    getSummonerInfo("puuid", puuid);
-                },
-            });
         }
     });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
+    let getLatestDataDragonVersionRequest = $.ajax({
+        url: "https://ddragon.leagueoflegends.com/api/versions.json",
+        type: "GET",
+        dataType: "json",
+        success: function(res){
+            latestDataDragonVer = res[0];
+        },
     });
+    loadInitialDataRequestCallback.push(getItemJsonRequest);
+    loadInitialDataRequestCallback.push(getPerkJsonRequest);
+    loadInitialDataRequestCallback.push(getRuneJsonRequest);
+    loadInitialDataRequestCallback.push(getSummonerSpellJsonRequest);
+    loadInitialDataRequestCallback.push(getChampionJsonRequest);
+    loadInitialDataRequestCallback.push(getLatestDataDragonVersionRequest);
 
-    
+    //Load
+    $.when.apply(null, loadInitialDataRequestCallback).done(function(){
+        getSummonerInfo("puuid", puuid);
+    });
 
     const searcherInput = $('#search_summoner_input');
     $('#search_summoner_btn').on("click", function(){
@@ -103,8 +111,9 @@ $(document).ready(function(){
     rolledTab.css("top", (originalTotalWrapperHeight)+"px");
     rolledTab.css("z-index", "9950");
 
-    const animationStyle = 'easeOutBounce';
-    const animationDelay = 500;
+    // 디버깅용 탭 상세 펼치기
+    let animationStyle = 'easeOutCirc';
+    let animationDelay = 800;
 
     innerItem.on("click", function(){
         let isFolded = totalItemWrapper.hasClass('folded');
@@ -126,6 +135,35 @@ $(document).ready(function(){
                 totalItemWrapper.addClass('folded');
             });
         }
+    });
+
+    const recentGameInfoContent = $('#recent_game_info_container');
+    const masteryInfo = $('#mastery_info_container');
+    const mainInfoContainers = $('.main-info-tab');
+
+    const recentGameHistoryInfoTab = $('#recent_game_history_info_tab');
+    const currentGameInfoTab = $('#current_game_info_tab');
+    const masteryInfoTab = $('#mastery_info_tab');
+    const InfoTabBundle = $('.info-tab');
+
+    animationDelay = 800;
+    animationStyle = "easeOutQuint";
+
+    recentGameHistoryInfoTab.on("click", function(){
+        recentGameInfoContent.animate({
+            left: 0,
+        }, animationDelay, animationStyle);
+        masteryInfo.animate({
+            left: '100%',
+        }, animationDelay, animationStyle);
+    });
+    masteryInfoTab.on("click", function(){
+        recentGameInfoContent.animate({
+            left: '-100%',
+        }, animationDelay, animationStyle);
+        masteryInfo.animate({
+            left: 0,
+        }, animationDelay, animationStyle);
     });
 });
 
@@ -155,12 +193,30 @@ function getSummonerInfo(method, data){
             getSummonerLeagueInfoBySummonerID(res.id)
             getSummonerRecentGameHistoryBySummonerAccountID(res);
             getCurrentMatchBySummonerID(res.id);
+            getSummonerMasteryInfoBySummonerID(res.id);
             console.log(res);
         },
         error: function(req, stat, err){
             console.log(err);
             if(err == "Not Found") alert("존재하지 않는 소환사");
             else if(err == "Forbidden") alert("API_KEY 만료됨");
+        },
+    });
+}
+
+function getSummonerMasteryInfoBySummonerID(id){
+    $.ajax({
+        url: "https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/"+id,
+        type: "GET",
+        dataType: "json",
+        data: {
+            "api_key": key,
+        },
+        success: function(res){
+            loadSummonerMasteryList(res)
+        },
+        error: function(req, stat, err){
+            console.log(err);
         },
     });
 }
@@ -217,9 +273,66 @@ function getCurrentMatchBySummonerID(id){
             $('#current_game_info_tab').css("box-shadow", "0 0 8px rgb(9, 255, 9)");
         },
         error: function(req, stat, err){
-            console.log(err);
+            if(err == "Not Found") console.log("게임 중이 아님");
+            else console.log(err);
         },
     });
+}
+
+function loadSummonerMasteryList(masteryEntries){
+    const championMasteryList = $('#champion_mastery_list');
+    const championMasteryItems = $('.champion-mastery-item');
+    championMasteryItems.remove();
+
+    let masteryTotalScore = 0;
+    let masteryLevelStack = [0,0,0,0,0,0,0,0];
+    masteryLevelStack.length = 8;
+
+    for(let i=0;i<masteryEntries.length;i++){
+        let masteryEntry = masteryEntries[i];
+        let entryLabel = "normal-mastery";
+        let entryIndex = i+1;
+        if(i<3) entryLabel = "highest"+entryIndex+"-mastery";
+        let championInfo = getChampionInfoFromKey(masteryEntry.championId);
+        let championImgPath = getLatestDataDragonURL()+"/img/champion/"+championInfo.id+".png";
+        let masteryAmount = masteryEntry.championPoints;
+        let masteryLevel = masteryEntry.championLevel;
+
+        let masterySegment = `
+        <div class="champion-mastery-item ${entryLabel}" id="champion_mastery_item_${i}">
+            <div class="mastery-champion-img" id="mastery_champion_img_${i}"></div>
+            <span class="mastery-champion-name">${championInfo.name}</span>
+            <span class="champion-mastery">${numberWithCommas(masteryAmount)} 점</span>
+        </div>
+        `;
+
+        championMasteryList.append(masterySegment);
+        $('#mastery_champion_img_'+i).css("background-image", `url(${championImgPath})`);
+        let championMasteryItemView = $('#champion_mastery_item_'+i);
+        switch(masteryLevel){
+            case 7:
+                championMasteryItemView.css("background", "linear-gradient(to right, #009683, #111)");
+                break;
+            case 6:
+                championMasteryItemView.css("background", "linear-gradient(to right, #b800b0, #111)");
+                break;
+            case 5:
+                championMasteryItemView.css("background", "linear-gradient(to right, #c10, #111)");
+                break;
+            default:
+                championMasteryItemView.css("background", "linear-gradient(to right, #6f6f6f, #111)");
+                break;
+        }
+        
+        masteryLevelStack[masteryLevel]++;
+        masteryTotalScore += masteryAmount;
+    }
+    for(let i=7;i>=3;i--){
+        let masterySegAmountView = $(`#champion_mastery${i}_total_value`);
+        masterySegAmountView.text(masteryLevelStack[i]);
+    }
+    $('#total_mastery').text(numberWithCommas(masteryTotalScore)+" 점");
+    console.log(masteryEntries);
 }
 
 function loadSummonerMatchHistory(userInfo, info){
@@ -261,11 +374,11 @@ function loadSummonerMatchHistory(userInfo, info){
                 let curChampionInfo = getChampionInfoFromKey(curUserInfo.championId);
                 let KDA = (curUserInfo.stats.kills + curUserInfo.stats.assists)/curUserInfo.stats.deaths;
                 let curUserStat = curUserInfo.stats;
-                // console.log(curUserStat);
-                // console.log(matchItemInfo);
-                console.log(res.participants);
-                console.log(res.participantIdentities);
+                // console.log(res.participants);
+                // console.log(res.participantIdentities);
                 // console.log("Queue ID: "+res.queueId);
+
+                //http://static.developer.riotgames.com/docs/lol/queues.json 참고
                 switch(res.queueId){
                     case 450:
                         MapType = "howling-abyss";
@@ -294,6 +407,13 @@ function loadSummonerMatchHistory(userInfo, info){
                     case 850:
                         MapLabel = "중급 봇전";
                         MapType = "summoners-rift";
+                        break;
+                    case 920:
+                        MapLabel = "포로왕";
+                        MapType = "howling-abyss";
+                        break;
+                    default:
+                        MapLabel = "qType "+res.queueId;
                         break;
                 }
                 let lastSecondContainer = MapLabel==="무작위 총력전"?`
@@ -458,13 +578,13 @@ function loadSummonerMatchHistory(userInfo, info){
                         </div>
                         <div class="participant-detail-info-6">
                             <div class="participant-item-wrapper">
-                                <div class="participant-item"></div>
-                                <div class="participant-item"></div>
-                                <div class="participant-item"></div>
-                                <div class="participant-item"></div>
-                                <div class="participant-item"></div>
-                                <div class="participant-item"></div>
-                                <div class="participant-item"></div>
+                                <div class="participant-item" id="participant_item0_${i}_${j}"></div>
+                                <div class="participant-item" id="participant_item1_${i}_${j}"></div>
+                                <div class="participant-item" id="participant_item2_${i}_${j}"></div>
+                                <div class="participant-item" id="participant_item_deco_${i}_${j}"></div>
+                                <div class="participant-item" id="participant_item3_${i}_${j}"></div>
+                                <div class="participant-item" id="participant_item4_${i}_${j}"></div>
+                                <div class="participant-item" id="participant_item5_${i}_${j}"></div>
                             </div>
                         </div>
                     </div>
@@ -595,7 +715,28 @@ function loadSummonerMatchHistory(userInfo, info){
                 participantPerk2ImageView.css("background-image", `url(${perk2ImageURL})`);
                 participantPerk2ImageView.css("background-size", "80%");
 
-                getAndLoadParticipantsLeagueInfoBySummonerID(participantTierView, participantIdentityInfo.player.summonerId);
+                //전적 아이템마다 같이한 사람들 정보 로드 - request가 많으므로 Product 검사 끝나면 주석 처리 뺄 것
+                // getAndLoadParticipantsLeagueInfoBySummonerID(participantTierView, participantIdentityInfo.player.summonerId);
+            
+                let participantItemList = [];
+                for(let k=0; k<=5; k++) {
+                    let pitemCode = participantInfo.stats['item'+k];
+                    let pitemInfo = itemImageData[pitemCode];
+                    if(pitemCode != 0)
+                        participantItemList.push(pitemInfo);
+                }
+                let sorted = sortItemListWithPrice(participantItemList);
+                for(let k=0; k<sorted.length; k++) {
+                    let itemImageName = sorted[k].image.full;
+                    let itemURL = getLatestDataDragonURL()+"/img/item/"+itemImageName;
+                    $('#participant_item'+k+"_"+i+'_'+j).css("background-image", `url(${itemURL})`);
+                }
+
+                let pdecoItemCode = participantInfo.stats['item6'];
+                if(pdecoItemCode != 0){
+                    let pdecoItemURL = getLatestDataDragonURL()+"/img/item/"+itemImageData[pdecoItemCode].image.full;
+                    $('#participant_item_deco'+"_"+i+'_'+j).css("background-image", `url(${pdecoItemURL})`);
+                }
             }
 
             //상세 설명 탭 확장 애니메이션
@@ -610,8 +751,8 @@ function loadSummonerMatchHistory(userInfo, info){
             rolledTab.css("top", (originalTotalWrapperHeight)+"px");
             rolledTab.css("z-index", (9900-i)+"");
         
-            const animationStyle = 'easeOutBounce';
-            const animationDelay = 500;
+            const animationStyle = 'easeOutQuint';
+            const animationDelay = 600;
         
             innerItem.on("click", function(){
                 let isFolded = totalItemWrapper.hasClass('folded');
@@ -725,12 +866,9 @@ function getAndLoadParticipantsLeagueInfoBySummonerID(span, id){
                     let tierInfo = candidate.tierInfo;
                     span.text(candidate.labelInfo);
                     if(tierInfo.level > 5)
-                        span.css("border-image", `linear-gradient( 150deg, ${tierInfo.color}, ${tierInfo.color2})`);
+                        span.css("background-image", `linear-gradient( 150deg, ${tierInfo.color}, ${tierInfo.color2})`);
                     else
-                        span.css("border-image", `${tierInfo.color})`);
-                    span.css("border", "1px");
-                    span.css("border-style", "solid");
-                    span.css("border-image-slice", "1");
+                        span.css("background-color", `${tierInfo.color})`);
                     return;
                 }
             }
@@ -765,8 +903,10 @@ function getAndLoadParticipantsLeagueInfoBySummonerID(span, id){
             });
         },
         error: function(req, stat, err){
-            console.log(err);
-            if(err == "Service Unavailable") alert('현재 API 서버 사용 불가능함');
+            
+            if(err == "Service Unavailable") console.log('현재 API 서버 사용 불가능');
+            else if(err == "Too Many Requests") console.log('요청이 너무 빠름');
+            else console.log(err);
         },
     });
 }
@@ -791,13 +931,13 @@ function loadSummonerLeagueInfo(info){
         let box = $('#info_box_'+converted_type);
         
         if(tier_info.level > 5){
-            box.css("border", "1px");
+            box.css("border", "2px");
             box.css("border-style", "solid");
             box.css("border-image", `linear-gradient( 150deg, ${tier_info.color}, ${tier_info.color2})`);
             box.css("border-image-slice", "1");
         }
         else{
-            box.css("border", `1px solid ${tier_info.color}`);
+            box.css("border", `2px solid ${tier_info.color}`);
         }
     }
 }
@@ -958,7 +1098,7 @@ function getConvertedLeagueTier(tier){
         case "GOLD": return {
             name: "골드",
             level: 3,
-            color: "#BB8",
+            color: "#FFD700",
         };
         case "PLATINUM": return {
             name: "플레티넘",

@@ -116,6 +116,7 @@ body{
 }
 
 .main-content{
+    position: relative;
     display: inline-block;
     width: 100%;
 }
@@ -191,6 +192,8 @@ body{
 
 .game-history-list{
     position: relative;
+    display: inline-block;
+    width: 100%;
     /* background-color: cyan; */
 }
 
@@ -742,19 +745,22 @@ body{
 
 .participant-username{
     width: 100%;
-    margin-top: 3px;
+    margin-top: 5px;
     /* background-color: orange; */
     font-weight: normal;
     font-size: 11px;
+    text-shadow: 1px 1px 2px black;
+    text-overflow: ellipsis;
 }
 
 .participant-tier-level{
     margin-top: 5px;
-    background-color: rgb(209, 209, 209);
-    border-radius: 4px;
+    background-color: rgb(235, 235, 235);
+    border-radius: 3px;
     font-weight: normal;
-    padding: 3px 5px;
+    padding: 3px 4px;
     color: black;
+    box-shadow: 1px 1px 2px rgb(34, 34, 34);
 }
 
 .participant-detail-info-4{
@@ -793,11 +799,13 @@ body{
 .participant-kda-score{
     margin-top: 2px;
     color: rgb(216, 216, 216);
+    text-shadow: 1px 1px 2px black;
     /* background-color: orange; */
 }
 
 .participant-kda{
-    margin-top: 2px;
+    margin-top: 0px;
+    text-shadow: 1px 1px 2px black;
 }
 
 .participant-detail-info-5{
@@ -831,11 +839,13 @@ body{
     padding: 3px 0;
     display: block;
     text-align: center;
+    text-shadow: 1px 1px 2px black;
 }
 
 .participant-gold{
-    margin-top: 2px;
+    margin-top: 1px;
     color: rgb(255, 251, 23);
+    text-shadow: 1px 1px 2px black;
     font-weight: lighter;
     /* background-color: orange; */
 }
@@ -873,7 +883,212 @@ body{
     display: inline-block;
     width: 18px;
     height: 18px;
-    background-color: black;
+    background-color: rgb(46, 46, 46);
+    background-size: cover;
     padding-right: 1px;
     border-radius: 3px;
+}
+
+.recent-game-info{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    background-color: red;
+}
+
+.main-info-tab{
+    position: absolute;
+}
+
+
+/* 숙련도 탭 */
+.mastery-info{
+    position: relative;
+    left: 100%;
+    width: 100%;
+}
+
+.mastery-summary{
+    display: inline-block;
+    width: 100%;
+    /* background-color: red; */
+
+    box-sizing: border-box;
+}
+
+.total-mastery{
+    display: inline-block;
+    width: 100%;
+    height: 65px;
+    /* background-color: blue; */
+    padding: 0 10px;
+
+    box-sizing: border-box;
+    background-color: rgb(24, 24, 24);
+}
+
+.total-mastery > span{
+    line-height: 65px;
+    vertical-align: middle;
+}
+
+#total_mastery_label{
+    font-size: 25px;
+}
+
+#total_mastery{
+    float: right;
+    font-size: 40px;
+    text-shadow: 0 0 5px rgb(0, 255, 170);
+    /* font-weight: bold; */
+}
+
+.detail-mastery{
+    display: inline-block;
+    width: 100%;
+    padding: 8px 5px;
+    background: linear-gradient(to left, #1b1b1b, rgb(99, 99, 99));
+    box-sizing: border-box;
+}
+
+.mastery-amount-box{
+    float: left;
+    background-color: rgb(17, 17, 17);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 3px;
+    padding: 1px 6px 1px 3px;
+    margin-right: 5px;
+
+    box-shadow: 0 0 4px rgb(255, 0, 0);
+}
+
+.champion_mastery_img{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    /* background-color: yellow; */
+}
+
+.champion-mastery-level-amount{
+    display: inline-block;
+    vertical-align: top;
+    padding: 6px 0;
+    /* background-color: cyan; */
+}
+
+.champion-mastery-list{
+    display: inline-block;
+    width: 100%;
+}
+
+.champion-mastery-item{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid black;
+    padding: 4px;
+}
+
+.mastery-champion-img{
+    float: left;
+    background-size: cover;
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/9.24.2/img/champion/Aatrox.png');
+}
+
+.highest1-mastery .mastery-champion-img{
+    width: 50px;
+    height: 50px;
+}
+
+.highest2-mastery .mastery-champion-img{
+    width: 40px;
+    height: 40px;
+}
+
+.highest3-mastery .mastery-champion-img{
+    width: 33px;
+    height: 33px;
+}
+
+.normal-mastery .mastery-champion-img{
+    width: 30px;
+    height: 30px;
+}
+
+.mastery-champion-info{
+    position: absolute;
+    display: inline-block;
+    top: 5px;
+    right: 15px;
+    width: 380px;
+    /* background-color: cyan; */
+}
+
+.mastery-champion-info > span{
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+}
+
+.mastery-champion-name{
+    font-weight: bold;
+    padding: 0 5px;
+    margin-left: 8px;
+    /* background-color: green; */
+}
+
+.champion-mastery{
+    float: right;
+    vertical-align: top;
+    width: 140px;
+    margin-top: 3px;
+    margin-right: 15px;
+    /* background-color: cyan; */
+    text-align: right;
+    text-shadow: 1px 1px 3px rgb(0, 0, 0);
+}
+
+
+.highest1-mastery .mastery-champion-name{
+    font-size: 30px;
+    line-height: 50px;
+    text-shadow: 2px 2px 3px rgb(0, 0, 0);
+}
+
+.highest2-mastery .mastery-champion-name{
+    font-size: 25px;
+    line-height: 40px;
+    text-shadow: 2px 2px 2px rgb(0, 0, 0);
+}
+
+.highest3-mastery .mastery-champion-name{
+    font-size: 20px;
+    line-height: 33px;
+    text-shadow: 2px 2px 2px rgb(0, 0, 0);
+}
+
+.normal-mastery .mastery-champion-name{
+    font-size: 18px;
+    line-height: 30px;
+    text-shadow: 1px 1px 1px rgb(0, 0, 0);
+}
+
+.highest1-mastery .champion-mastery{
+    font-size: 23px;
+    padding: 11px 5px;
+}
+
+.highest2-mastery .champion-mastery{
+    font-size: 20px;
+    padding: 8px 5px;
+}
+
+.highest3-mastery .champion-mastery{
+    font-size: 18px;
+    padding: 5px 5px;
+}
+
+.normal-mastery .champion-mastery{
+    font-size: 17px;
+    padding: 3px 5px;
 }
