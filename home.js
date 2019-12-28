@@ -1,4 +1,4 @@
-const key = "RGAPI-fb157409-7c41-45ab-9303-d72e43b2b09c";
+const key = "RGAPI-f47e6f81-b29b-4fd1-9851-ffdc4fa050d5";
 let championData = undefined;
 let spellData = undefined;
 let perkData = undefined;
@@ -137,10 +137,13 @@ $(document).ready(function(){
         }
     });
 
+    //Content Containers
     const recentGameInfoContent = $('#recent_game_info_container');
     const masteryInfo = $('#mastery_info_container');
+    const currentGameInfo = $('#current_game_info_container');
     const mainInfoContainers = $('.main-info-tab');
 
+    //Selector Tab
     const recentGameHistoryInfoTab = $('#recent_game_history_info_tab');
     const currentGameInfoTab = $('#current_game_info_tab');
     const masteryInfoTab = $('#mastery_info_tab');
@@ -156,6 +159,12 @@ $(document).ready(function(){
         masteryInfo.animate({
             left: '100%',
         }, animationDelay, animationStyle);
+        currentGameInfo.animate({
+            left: '200%',
+        }, animationDelay, animationStyle);
+
+        InfoTabBundle.css("background-color", "#444");
+        $(this).css("background-color", "#222");
     });
     masteryInfoTab.on("click", function(){
         recentGameInfoContent.animate({
@@ -164,7 +173,30 @@ $(document).ready(function(){
         masteryInfo.animate({
             left: 0,
         }, animationDelay, animationStyle);
+        currentGameInfo.animate({
+            left: '100%',
+        }, animationDelay, animationStyle);
+
+        InfoTabBundle.css("background-color", "#444");
+        $(this).css("background-color", "#222");
     });
+    currentGameInfoTab.on("click", function(){
+        recentGameInfoContent.animate({
+            left: '-200%',
+        }, animationDelay, animationStyle);
+        masteryInfo.animate({
+            left: '-100%',
+        }, animationDelay, animationStyle);
+        currentGameInfo.animate({
+            left: 0,
+        }, animationDelay, animationStyle);
+
+        InfoTabBundle.css("background-color", "#444");
+        $(this).css("background-color", "#222");
+    });
+
+    //Point
+    currentGameInfoTab.click();
 });
 
 function getSummonerInfo(method, data){
@@ -269,7 +301,7 @@ function getCurrentMatchBySummonerID(id){
             "api_key": key,
         },
         success: function(res){
-            console.log(res);
+            // console.log(res);
             $('#current_game_info_tab').css("box-shadow", "0 0 8px rgb(9, 255, 9)");
         },
         error: function(req, stat, err){
@@ -332,7 +364,7 @@ function loadSummonerMasteryList(masteryEntries){
         masterySegAmountView.text(masteryLevelStack[i]);
     }
     $('#total_mastery').text(numberWithCommas(masteryTotalScore)+" 점");
-    console.log(masteryEntries);
+    // console.log(masteryEntries);
 }
 
 function loadSummonerMatchHistory(userInfo, info){
