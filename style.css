@@ -6,7 +6,35 @@ body{
 
 .searcher{
     display: block;
-    padding: 5px;
+    padding: 10px;
+}
+
+#search_summoner_input{
+    display: inline-block;
+    padding: 5px 10px;
+    width: 75%;
+    border: none;
+    border-bottom: 2px solid white;
+    background-color: transparent;
+    font-size: 15px;
+    color: white;
+}
+
+#search_summoner_input:focus{
+    outline: none;
+}
+
+#search_summoner_btn{
+    float: right;
+    padding: 5px 25px;
+    background-color: rgb(236, 236, 236);
+    border: none;
+    font-family: inherit;
+}
+
+#search_summoner_btn:hover{
+    background-color: rgb(143, 143, 143);
+    font-family: inherit;
 }
 
 .user-repr-info{
@@ -579,6 +607,7 @@ body{
     height: calc(100% - 22px);
 
     box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.678) inset;
+    pointer-events: none;
 }
 
 .item-detail-menu-list-tab{
@@ -1138,7 +1167,7 @@ body{
 
 .current-game-content-wrapper{
     position: relative;
-    display: inline-block;
+    display: none;
     width: 100%;
 
     background-image: url('img/howling_abyss_bg.png');
@@ -1186,5 +1215,3 @@ body{
     height: 150px;
     background-color: red;
 }
-
-.current-tea

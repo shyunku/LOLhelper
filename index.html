@@ -15,8 +15,8 @@
     </head>
     <body>
         <div class="searcher">
-            <input id="search_summoner_input">
-            <button id="search_summoner_btn">search</button>
+            <input id="search_summoner_input" placeholder="소환사명을 입력하세요..">
+            <button id="search_summoner_btn">검색</button>
         </div>
         <div class="user-repr-info">
             <div class="profile-icon-wrapper">
@@ -234,10 +234,10 @@
             </div>
             <div class="current-game-info main-info-tab" id="current_game_info_container">
                 <!-- current game doesn't exist -->
-                <!-- <div class="not-playing-now-msg-container">
+                <div class="not-playing-now-msg-container" id="not_playing_now_container">
                     <span class="not-playing-title">해당 플레이어는<br>현재 게임 중이 아닙니다.</span>
-                </div> -->
-                <div class="current-game-content-wrapper">
+                </div>
+                <div class="current-game-content-wrapper" id="current_game_info_content_wrapper">
                     <div class="current-game-content">
                         <span class="current-game-map-type">칼바람 나락</span>
                         <span class="current-game-elapsed-time">23분 10초</span>

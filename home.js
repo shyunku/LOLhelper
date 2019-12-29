@@ -1,4 +1,4 @@
-const key = "RGAPI-f47e6f81-b29b-4fd1-9851-ffdc4fa050d5";
+const key = "RGAPI-47b9b85b-9100-415c-9085-11f54a00084d";
 let championData = undefined;
 let spellData = undefined;
 let perkData = undefined;
@@ -113,7 +113,7 @@ $(document).ready(function(){
 
     // 디버깅용 탭 상세 펼치기
     let animationStyle = 'easeOutCirc';
-    let animationDelay = 800;
+    let animationDelay = 500;
 
     innerItem.on("click", function(){
         let isFolded = totalItemWrapper.hasClass('folded');
@@ -149,7 +149,7 @@ $(document).ready(function(){
     const masteryInfoTab = $('#mastery_info_tab');
     const InfoTabBundle = $('.info-tab');
 
-    animationDelay = 800;
+    animationDelay = 500;
     animationStyle = "easeOutQuint";
 
     recentGameHistoryInfoTab.on("click", function(){
@@ -196,7 +196,7 @@ $(document).ready(function(){
     });
 
     //Point
-    currentGameInfoTab.click();
+    // currentGameInfoTab.click();
 });
 
 function getSummonerInfo(method, data){
@@ -303,9 +303,16 @@ function getCurrentMatchBySummonerID(id){
         success: function(res){
             // console.log(res);
             $('#current_game_info_tab').css("box-shadow", "0 0 8px rgb(9, 255, 9)");
+
+            $('#current_game_info_content_wrapper').css("display", "inline-block");
+            $('#not_playing_now_container').css("display", "none");
         },
         error: function(req, stat, err){
-            if(err == "Not Found") console.log("게임 중이 아님");
+            if(err == "Not Found") {
+                $('#current_game_info_content_wrapper').css("display", "none");
+                $('#not_playing_now_container').css("display", "inline-block");
+                console.log("게임 중이 아님");
+            }
             else console.log(err);
         },
     });
@@ -373,7 +380,7 @@ function loadSummonerMatchHistory(userInfo, info){
     const gameHistoryItemBundle = $('.game-history-item-wrapper');
 
     //Point
-    gameHistoryItemBundle.remove();
+    // gameHistoryItemBundle.remove();
 
     let nativeHistoryItemBundle = [];
     let loadHistoryItemCallback = [];
@@ -784,7 +791,7 @@ function loadSummonerMatchHistory(userInfo, info){
             rolledTab.css("z-index", (9900-i)+"");
         
             const animationStyle = 'easeOutQuint';
-            const animationDelay = 600;
+            const animationDelay = 500;
         
             innerItem.on("click", function(){
                 let isFolded = totalItemWrapper.hasClass('folded');
