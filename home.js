@@ -1,4 +1,6 @@
-const key = "RGAPI-47b9b85b-9100-415c-9085-11f54a00084d";
+const key = "RGAPI-09e75494-bbae-4510-bd97-917f2e356480";
+const DebugLevel = 3;
+
 let championData = undefined;
 let spellData = undefined;
 let perkData = undefined;
@@ -11,7 +13,18 @@ let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
 
-const maxHistoryItemCall = 7;
+let maxHistoryItemCall = 0;
+switch(DebugLevel){
+    case 3:
+        maxHistoryItemCall = 3;
+        break;
+    case 2:
+        maxHistoryItemCall = 10;
+        break;
+    case 1:
+        maxHistoryItemCall = 20;
+        break;
+}
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
@@ -195,8 +208,41 @@ $(document).ready(function(){
         $(this).css("background-color", "#222");
     });
 
+    const detailMenuListTabContainer = $('.detail-menu-list-tab');
+    const generalMatchInfoTab = $('#general_match_info_tab');
+    const dealAmountInfoTab = $('#deal_amount_info_tab');
+    const pulledByDealInfo = $('.participant-info .pulled-deal-container');
+    const pushedByDealInfo = $('.participant-info .pushed-deal-container');
+
+    dealAmountInfoTab.on("click", function(){
+        pulledByDealInfo.animate({
+            left: '200px',
+        }, animationDelay, animationStyle);
+        pushedByDealInfo.animate({
+            left: '280px',
+        }, animationDelay, animationStyle);
+        detailMenuListTabContainer.removeClass("focused");
+        detailMenuListTabContainer.addClass("unfocused");
+        $(this).removeClass("unfocused");
+        $(this).addClass("focused");
+    });
+
+    generalMatchInfoTab.on("click", function(){
+        pulledByDealInfo.animate({
+            left: 0,
+        }, animationDelay, animationStyle);
+        pushedByDealInfo.animate({
+            left: '480px',
+        }, animationDelay, animationStyle);
+        detailMenuListTabContainer.removeClass("focused");
+        detailMenuListTabContainer.addClass("unfocused");
+        $(this).removeClass("unfocused");
+        $(this).addClass("focused");
+    });
+
     //Point
-    // currentGameInfoTab.click();
+    currentGameInfoTab.click();
+    // dealAmountInfoTab.click();
 });
 
 function getSummonerInfo(method, data){
@@ -220,7 +266,7 @@ function getSummonerInfo(method, data){
             "api_key": key,
         },
         success: function(res){
-            // console.log("Success to get Summoner's Data");
+            //Point
             loadSummonerGeneralInfo(res);
             getSummonerLeagueInfoBySummonerID(res.id)
             getSummonerRecentGameHistoryBySummonerAccountID(res);
@@ -301,21 +347,26 @@ function getCurrentMatchBySummonerID(id){
             "api_key": key,
         },
         success: function(res){
-            // console.log(res);
-            $('#current_game_info_tab').css("box-shadow", "0 0 8px rgb(9, 255, 9)");
-
-            $('#current_game_info_content_wrapper').css("display", "inline-block");
-            $('#not_playing_now_container').css("display", "none");
+            // 게임 중
+            loadCurremtMatchInfo(res);
         },
         error: function(req, stat, err){
             if(err == "Not Found") {
-                $('#current_game_info_content_wrapper').css("display", "none");
+                // $('#current_game_info_content_wrapper').css("display", "none");
                 $('#not_playing_now_container').css("display", "inline-block");
                 console.log("게임 중이 아님");
             }
             else console.log(err);
         },
     });
+}
+
+function loadCurremtMatchInfo(info){
+    let queueTypeInfo = getQueueTypeInfo(info.gameQueueConfigId);
+    $('#current_game_info_tab').css("box-shadow", "0 0 8px rgb(9, 255, 9)");
+    $('#current_game_info_content_wrapper').css("display", "inline-block");
+    $('#not_playing_now_container').css("display", "none");
+    $('#current_game_info_content_wrapper .current-game-map-type').text(queueTypeInfo.MapLabel);
 }
 
 function loadSummonerMasteryList(masteryEntries){
@@ -371,7 +422,6 @@ function loadSummonerMasteryList(masteryEntries){
         masterySegAmountView.text(masteryLevelStack[i]);
     }
     $('#total_mastery').text(numberWithCommas(masteryTotalScore)+" 점");
-    // console.log(masteryEntries);
 }
 
 function loadSummonerMatchHistory(userInfo, info){
@@ -380,7 +430,7 @@ function loadSummonerMatchHistory(userInfo, info){
     const gameHistoryItemBundle = $('.game-history-item-wrapper');
 
     //Point
-    // gameHistoryItemBundle.remove();
+    gameHistoryItemBundle.remove();
 
     let nativeHistoryItemBundle = [];
     let loadHistoryItemCallback = [];
@@ -413,49 +463,16 @@ function loadSummonerMatchHistory(userInfo, info){
                 let curChampionInfo = getChampionInfoFromKey(curUserInfo.championId);
                 let KDA = (curUserInfo.stats.kills + curUserInfo.stats.assists)/curUserInfo.stats.deaths;
                 let curUserStat = curUserInfo.stats;
-                // console.log(res.participants);
+                let team1WinInfoLabel = res.teams[0].win === "Win" ? ["win", "승리"] : ["lose", "패배"];
+                let team2WinInfoLabel = res.teams[1].win === "Win" ? ["win", "승리"] : ["lose", "패배"];
                 // console.log(res.participantIdentities);
                 // console.log("Queue ID: "+res.queueId);
+                console.log(res);
 
                 //http://static.developer.riotgames.com/docs/lol/queues.json 참고
-                switch(res.queueId){
-                    case 450:
-                        MapType = "howling-abyss";
-                        MapLabel = "무작위 총력전";
-                        break;
-                    case 420:
-                        MapLabel = "솔로 랭크";
-                        MapType = "summoners-rift";
-                        break;
-                    case 430:
-                        MapLabel = "일반";
-                        MapType = "summoners-rift";
-                        break;
-                    case 440:
-                        MapLabel = "자유 랭크";
-                        MapType = "summoners-rift";
-                        break;
-                    case 830:
-                        MapLabel = "입문 봇전";
-                        MapType = "summoners-rift";
-                        break;
-                    case 840:
-                        MapLabel = "초보 봇전";
-                        MapType = "summoners-rift";
-                        break;
-                    case 850:
-                        MapLabel = "중급 봇전";
-                        MapType = "summoners-rift";
-                        break;
-                    case 920:
-                        MapLabel = "포로왕";
-                        MapType = "howling-abyss";
-                        break;
-                    default:
-                        MapLabel = "qType "+res.queueId;
-                        break;
-                }
-                let lastSecondContainer = MapLabel==="무작위 총력전"?`
+
+                let queueTypeInfo = getQueueTypeInfo(res.queueId);
+                let lastSecondContainer = queueTypeInfo.MapLabel==="무작위 총력전"?`
                 <div class="cc-wrapper">
                     <span>CC</span>
                     <span>${curUserStat.totalTimeCrowdControlDealt}s</span>
@@ -469,11 +486,11 @@ function loadSummonerMatchHistory(userInfo, info){
                 `
                 let timeGap = new Date() - matchItemInfo.timestamp;
                 let historyHTMLdocSegment = (`
-                <div class="game-history-item-wrapper ${MapType} folded" id="game_history_item_wrapper_${i}">
+                <div class="game-history-item-wrapper ${queueTypeInfo.MapType} folded" id="game_history_item_wrapper_${i}">
                     <div class="game-history-item ${isWinType}-type" id="game_history_item_${i}">
                         <div class="item-wrapper">
                             <div class="item-detail-1">
-                                <span class="map-type">${MapLabel}</span>
+                                <span class="map-type">${queueTypeInfo.MapLabel}</span>
                                 <span class="win-or-lose">${isWinLabel}</span>
                                 <span class="timelapse">${elapsedTimeFormatter(timeGap)}</span>
                             </div>
@@ -540,26 +557,26 @@ function loadSummonerMatchHistory(userInfo, info){
                     </div>
                     <div class="game-history-item-description-tab" id="game_history_item_desc_${i}">
                         <div class="item-detail-menu-list-tab">
-                            <div class="detail-menu-list-tab" style="grid-column: 1;">
+                            <div class="detail-menu-list-tab general-info focused" style="grid-column: 1;" id="general_match_info_tab_${i}">
                                 <span>일반 정보</span>
                             </div>
-                            <div class="detail-menu-list-tab" style="grid-column: 2;">
+                            <div class="detail-menu-list-tab deal-amount-info unfocused" style="grid-column: 2;" id="deal_amount_info_tab_${i}">
                                 <span>딜량 확인</span>
                             </div>
                         </div>
                         <div class="item-detail-desc-content-wrapper">
                             <div class="item-detail-desc-content">
-                                <div class="team-desc-label-wrapper win">
-                                    <span class="team-desc-win-or-lose">승리</span>
-                                    <span class="team-label">레드 팀</span>
-                                </div>
-                                <div class="participant-info-container win" id="participant_info_container_1_${i}">
-                                </div>
-                                <div class="team-desc-label-wrapper lose">
-                                    <span class="team-desc-win-or-lose">패배</span>
+                                <div class="team-desc-label-wrapper ${team1WinInfoLabel[0]}">
+                                    <span class="team-desc-win-or-lose">${team1WinInfoLabel[1]}</span>
                                     <span class="team-label">블루 팀</span>
                                 </div>
-                                <div class="participant-info-container lose" id="participant_info_container_2_${i}">
+                                <div class="participant-info-container ${team1WinInfoLabel[0]}" id="participant_info_container_1_${i}">
+                                </div>
+                                <div class="team-desc-label-wrapper ${team2WinInfoLabel[0]}">
+                                    <span class="team-desc-win-or-lose">${team2WinInfoLabel[1]}</span>
+                                    <span class="team-label">레드 팀</span>
+                                </div>
+                                <div class="participant-info-container ${team2WinInfoLabel[0]}" id="participant_info_container_2_${i}">
                                 </div>
                             </div>
                         </div>
@@ -609,13 +626,13 @@ function loadSummonerMatchHistory(userInfo, info){
                                 </span>
                             </div>
                         </div>
-                        <div class="participant-detail-info-5">
+                        <div class="participant-detail-info-5 pulled-deal-container">
                             <div class="participant-cs-wrapper">
                                 <span class="participant-gold">${numberWithCommas(participantStat.goldEarned)} G</span>
                                 <span class="participant-cs">CS ${participantStat.totalMinionsKilled}(15.6)</span>
                             </div>
                         </div>
-                        <div class="participant-detail-info-6">
+                        <div class="participant-detail-info-6 pulled-deal-container">
                             <div class="participant-item-wrapper">
                                 <div class="participant-item" id="participant_item0_${i}_${j}"></div>
                                 <div class="participant-item" id="participant_item1_${i}_${j}"></div>
@@ -626,8 +643,22 @@ function loadSummonerMatchHistory(userInfo, info){
                                 <div class="participant-item" id="participant_item5_${i}_${j}"></div>
                             </div>
                         </div>
+                        <div class="participant-detail-info-7 pushed-deal-container">
+                            <div class="deal-amount-wrapper">
+                                <span class="total-dealt-amount">${participantStat.totalDamageDealtToChampions}</span> (
+                                <span class="physical-dealt-amount">${participantStat.physicalDamageDealtToChampions}</span> /
+                                <span class="magical-dealt-amount">${participantStat.magicDamageDealtToChampions}</span> /
+                                <span class="true-dealt-amount">${participantStat.trueDamageDealtToChampions}</span> )
+                            </div>
+                            <div class="max-dealt-bar" id="deal_damage_bar_${i}_${j}">
+                                <div class="physical-dealt-bar"></div><!--
+                                --><div class="magical-dealt-bar"></div><!--
+                                --><div class="true-dealt-bar"></div>
+                            </div>
+                        </div>
                     </div>
                     `;
+
                     if(participantTeam == 100){
                         team1infoBundle.push(historyItemDescriptionSegment);
                     }else{
@@ -640,8 +671,8 @@ function loadSummonerMatchHistory(userInfo, info){
                     curChampInfo: getChampionInfoFromKey(curUserInfo.championId),
                     curUserInfo: curUserInfo,
                     userKDA: KDA,
-                    team1infoBundle, team1infoBundle,
-                    team2infoBundle, team2infoBundle,
+                    team1infoBundle: team1infoBundle,
+                    team2infoBundle: team2infoBundle,
                 };
 
                 participantInfoBundle[i] = {
@@ -661,6 +692,7 @@ function loadSummonerMatchHistory(userInfo, info){
     $.when.apply(null, loadHistoryItemCallback).done(function(){
         for(let i=0;i<matchList.length;i++){
             nativeInfoSegment = nativeHistoryItemBundle[i];
+            participantInfoSegment = participantInfoBundle[i];
 
             gameHistoryListContainer.append(nativeInfoSegment.segment);
             let curChampionInfo = nativeInfoSegment.curChampInfo;
@@ -670,8 +702,8 @@ function loadSummonerMatchHistory(userInfo, info){
             let curTeam2Info = nativeInfoSegment.team2infoBundle;
 
 
-            let participantIdentitiesInfo = participantInfoBundle[i].participantIdentities;
-            let participantsInfo = participantInfoBundle[i].participants;
+            let participantIdentitiesInfo = participantInfoSegment.participantIdentities;
+            let participantsInfo = participantInfoSegment.participants;
 
             let champion_img_url = getLatestDataDragonURL()+"/img/champion/"+curChampionInfo.id+".png";
             let spell1_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(curUserInfo.spell1Id).id+".png";
@@ -694,6 +726,7 @@ function loadSummonerMatchHistory(userInfo, info){
             $('.rune-img').css("background-color", "#111");
             
             $('#KDA_score_'+i).css("background-color", getColorFromKDA(curUserKDA));
+
 
             let itemList = [];
             for(let j=0; j<=5; j++) {
@@ -725,7 +758,18 @@ function loadSummonerMatchHistory(userInfo, info){
             for(let j=0;j<curTeam2Info.length;j++){
                 team2Container.append(curTeam2Info[j]);
             }
+
             //팀 유저 정보
+            let maxDealtFromTeam = -1;
+            for(let j=0;j<participantsInfo.length;j++){
+                let totalDealt = participantsInfo[j].stats.totalDamageDealtToChampions;
+                if(totalDealt > maxDealtFromTeam) maxDealtFromTeam = totalDealt;
+            }
+
+            if(maxDealtFromTeam === -1){
+                console.log("Error getting max dealt damage from team!");
+                maxDealtFromTeam = 200000;
+            }
 
             for(let j=0;j<participantsInfo.length;j++){
                 let participantChampionImageView = $('#participant_champion_image_'+i+"_"+j);
@@ -733,10 +777,11 @@ function loadSummonerMatchHistory(userInfo, info){
                 let participantSpell2ImageView = $('#participant_spell2_'+i+"_"+j);
                 let participantPerk1ImageView = $('#participant_perk1_'+i+"_"+j);
                 let participantPerk2ImageView = $('#participant_perk2_'+i+"_"+j);
-                let participantTierView = $('#participant_tier_level_'+i+"_"+j)
+                let participantTierView = $('#participant_tier_level_'+i+"_"+j);
 
                 let participantInfo = participantsInfo[j];
                 let participantIdentityInfo = participantIdentitiesInfo[j];
+                let participantStat = participantInfo.stats;
                 let participantChampInfo = getChampionInfoFromKey(participantInfo.championId);
                 let perk1Info = getDetailPerkInfoFromKey(participantInfo.stats.perk0);
                 let perk2Info = getPerkInfoFromKey(participantInfo.stats.perkSubStyle);
@@ -776,6 +821,31 @@ function loadSummonerMatchHistory(userInfo, info){
                     let pdecoItemURL = getLatestDataDragonURL()+"/img/item/"+itemImageData[pdecoItemCode].image.full;
                     $('#participant_item_deco'+"_"+i+'_'+j).css("background-image", `url(${pdecoItemURL})`);
                 }
+
+                let participantPhysicalDealtView = $(`#deal_damage_bar_${i}_${j} .physical-dealt-bar`);
+                let participantMagicalDealtView = $(`#deal_damage_bar_${i}_${j} .magical-dealt-bar`);
+                let participantTrueDealtView = $(`#deal_damage_bar_${i}_${j} .true-dealt-bar`);
+                let maxDealtView = $(`#deal_damage_bar_${i}_${j}`);
+                let maxDealtViewWidth = maxDealtView.width();
+
+                let physicalDealt = participantStat.physicalDamageDealtToChampions;
+                let magicalDealt = participantStat.magicDamageDealtToChampions;
+                let trueDealt = participantStat.trueDamageDealtToChampions;
+                let totalDealt = participantStat.totalDamageDealtToChampions;
+
+                let physicalDealtRate = physicalDealt/maxDealtFromTeam;
+                let magicalDealtRate = magicalDealt/maxDealtFromTeam;
+                let trueDealtRate = trueDealt/maxDealtFromTeam;
+
+                let physicalDealtWidth = physicalDealtRate * maxDealtViewWidth;
+                let magicalDealtWidth = magicalDealtRate * maxDealtViewWidth;
+                let trueDealtWidth = trueDealtRate * maxDealtViewWidth;
+                
+                let maxTrueDealtWidth = maxDealtViewWidth - physicalDealtWidth - magicalDealtWidth;
+                
+                participantPhysicalDealtView.css("width", physicalDealtWidth+"px");
+                participantMagicalDealtView.css("width", magicalDealtWidth+"px");
+                participantTrueDealtView.css("width", trueDealtWidth+"px");
             }
 
             //상세 설명 탭 확장 애니메이션
@@ -813,6 +883,38 @@ function loadSummonerMatchHistory(userInfo, info){
                         totalItemWrapper.addClass('folded');
                     });
                 }
+            });
+
+            const detailMenuListTabContainer = $('#game_history_item_desc_'+i+' '+'.detail-menu-list-tab');
+            const generalMatchInfoTab = $('#general_match_info_tab_'+i);
+            const dealAmountInfoTab = $('#deal_amount_info_tab_'+i);
+            const pulledByDealInfo = $('#game_history_item_desc_'+i+' '+'.participant-info .pulled-deal-container');
+            const pushedByDealInfo = $('#game_history_item_desc_'+i+' '+'.participant-info .pushed-deal-container');
+        
+            dealAmountInfoTab.on("click", function(){
+                pulledByDealInfo.animate({
+                    left: '200px',
+                }, animationDelay, animationStyle);
+                pushedByDealInfo.animate({
+                    left: '280px',
+                }, animationDelay, animationStyle);
+                detailMenuListTabContainer.removeClass("focused");
+                detailMenuListTabContainer.addClass("unfocused");
+                $(this).removeClass("unfocused");
+                $(this).addClass("focused");
+            });
+        
+            generalMatchInfoTab.on("click", function(){
+                pulledByDealInfo.animate({
+                    left: 0,
+                }, animationDelay, animationStyle);
+                pushedByDealInfo.animate({
+                    left: '480px',
+                }, animationDelay, animationStyle);
+                detailMenuListTabContainer.removeClass("focused");
+                detailMenuListTabContainer.addClass("unfocused");
+                $(this).removeClass("unfocused");
+                $(this).addClass("focused");
             });
         }
 
@@ -982,6 +1084,56 @@ function loadSummonerLeagueInfo(info){
 }
 
 //user func
+
+function getQueueTypeInfo(type){
+    switch(type){
+        case 450:
+            MapType = "howling-abyss";
+            MapLabel = "무작위 총력전";
+            MapName = "일반(칼바람 나락)";
+            break;
+        case 420:
+            MapLabel = "솔로 랭크";
+            MapType = "summoners-rift";
+            MapName = "솔로 랭크";
+            break;
+        case 430:
+            MapLabel = "일반";
+            MapType = "summoners-rift";
+            MapName = "일반(소환사의 협곡)";
+            break;
+        case 440:
+            MapLabel = "자유 랭크";
+            MapType = "summoners-rift";
+            MapName = "자유 랭크";
+            break;
+        case 830:
+            MapLabel = "입문 봇전";
+            MapType = "summoners-rift";
+            MapName = "입문 봇전(소환사의 협곡)";
+            break;
+        case 840:
+            MapLabel = "초보 봇전";
+            MapType = "summoners-rift";
+            MapName = "초보 봇전(소환사의 협곡)";
+            break;
+        case 850:
+            MapLabel = "중급 봇전";
+            MapType = "summoners-rift";
+            MapName = "중급 봇전(소환사의 협곡)";
+            break;
+        case 920:
+            MapLabel = "포로왕";
+            MapType = "howling-abyss";
+            MapName = "포로왕(칼바람 나락)";
+            break;
+        default:
+            MapLabel = "qType "+type;
+            MapName = "QueueType "+type;
+            break;
+    }
+    return {MapType: MapType, MapLabel: MapLabel};
+}
 
 function findNewSummoner(username){
     console.log(username);

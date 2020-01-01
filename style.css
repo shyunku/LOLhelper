@@ -2,6 +2,8 @@ body{
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #252525;
     color: white;
+    width: 500px;
+    overflow-x: hidden;
 }
 
 .searcher{
@@ -690,6 +692,7 @@ body{
 }
 
 .participant-info{
+    position: relative;
     display: inline-block;
     width: 100%;
     height: 45px;
@@ -792,6 +795,8 @@ body{
     font-size: 11px;
     text-shadow: 1px 1px 2px black;
     text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .participant-tier-level{
@@ -1167,7 +1172,7 @@ body{
 
 .current-game-content-wrapper{
     position: relative;
-    display: none;
+    display: inline-block;
     width: 100%;
 
     background-image: url('img/howling_abyss_bg.png');
@@ -1213,5 +1218,145 @@ body{
 
 .current-game-participant-info-container{
     height: 150px;
+    background-color: rgba(255, 0, 0, 0.459);
+}
+
+.current-game-participant-info-container .team-info-label{
+    display: block;
+    padding: 8px 15px;
+    text-align: left;
+    background-color: rgba(29, 29, 29, 0.5);
+}
+
+.current-game-participant-info-container .team-info-container{
+    display: block;
+    background-color: rgba(29, 29, 29, 0.5);
+}
+
+.current-game-participant-info-container .teammate-info-item{
+    width: 100%;
+    background-color: cyan;
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+.current-game-content .teammate-info-champion-image{
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/9.24.2/img/champion/Aatrox.png');
+    background-size: cover;
+}
+
+.current-game-content .perk-rune-wrapper{
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-color: gray;
+}
+
+.current-game-content .username-wrapper{
+    display: inline-block;
+    height: 40px;
+    width: 150px;
     background-color: red;
+    vertical-align: top;
+}
+
+.current-game-content .username{
+    display: inline-block;
+    font-size: 13px;
+    padding: 13px 0 13px 8px;
+}
+
+
+/* 일반정보 딜량 */
+.detail-menu-list-tab.unfocused{
+    background-color: rgba(0, 0, 0, 0.788);
+}
+
+.detail-menu-list-tab.unfocused:hover{
+    background-color: rgba(0, 0, 0, 0.582);
+}
+
+
+.detail-menu-list-tab.focused{
+    background-color: rgba(0, 0, 0, 0.418);
+}
+
+.pulled-deal-container{
+    position: relative;
+}
+
+.participant-detail-info-7{
+    position: absolute;
+    display: inline-block;
+    height: 86%;
+    width: 38%;
+
+    left: 480px;
+    padding: 5px 0;
+
+    text-align: center;
+
+    vertical-align: top;
+    box-sizing: border-box;
+
+    /* background-color: cyan; */
+}
+
+.deal-amount-wrapper{
+    font-size: 12px;
+    font-weight: lighter;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-shadow: 1px 1px 1px rgb(53, 53, 53);
+}
+
+.total-dealt-amount{
+    font-weight: normal;
+}
+
+.physical-dealt-amount{
+    color: rgb(255, 156, 126);
+}
+
+.magical-dealt-amount{
+    color: rgb(113, 194, 255);
+}
+
+.true-dealt-amount{
+    color: rgb(255, 255, 255);
+}
+
+.max-dealt-bar{
+    display: inline-block;
+    width: 176px;
+    height: 15px;
+    background-color: rgb(46, 46, 46);
+    margin-top: 4px;
+    text-align: left;
+}
+
+.physical-dealt-bar{
+    display: inline-block;
+    height: 100%;
+    width: 100px;
+    background-color: rgb(221, 123, 94);
+}
+
+.magical-dealt-bar{
+    display: inline-block;
+    height: 100%;
+    width: 20px;
+    background-color: rgb(73, 160, 226);
+}
+
+.true-dealt-bar{
+    display: inline-block;
+    height: 100%;
+    width: 40px;
+    background-color: rgb(240, 240, 240);
 }

@@ -126,10 +126,10 @@
                         </div>
                         <div class="game-history-item-description-tab" id="game_history_item_desc">
                             <div class="item-detail-menu-list-tab">
-                                <div class="detail-menu-list-tab" style="grid-column: 1;">
+                                <div class="detail-menu-list-tab general-info focused" style="grid-column: 1;" id="general_match_info_tab">
                                     <span>일반 정보</span>
                                 </div>
-                                <div class="detail-menu-list-tab" style="grid-column: 2;">
+                                <div class="detail-menu-list-tab deal-amount-info unfocused" style="grid-column: 2;" id="deal_amount_info_tab">
                                     <span>딜량 확인</span>
                                 </div>
                             </div>
@@ -137,7 +137,7 @@
                                 <div class="item-detail-desc-content">
                                     <div class="team-desc-label-wrapper win">
                                         <span class="team-desc-win-or-lose">승리</span>
-                                        <span class="team-label">레드 팀</span>
+                                        <span class="team-label">블루 팀</span>
                                     </div>
                                     <div class="participant-info-container win">
                                         <div class="participant-info">
@@ -171,13 +171,13 @@
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="participant-detail-info-5">
+                                            <div class="participant-detail-info-5 pulled-deal-container">
                                                 <div class="participant-cs-wrapper">
                                                     <span class="participant-gold">612,563 G</span>
                                                     <span class="participant-cs">CS 325(15.6)</span>
                                                 </div>
                                             </div>
-                                            <div class="participant-detail-info-6">
+                                            <div class="participant-detail-info-6 pulled-deal-container">
                                                 <div class="participant-item-wrapper">
                                                     <div class="participant-item"></div>
                                                     <div class="participant-item"></div>
@@ -188,11 +188,24 @@
                                                     <div class="participant-item"></div>
                                                 </div>
                                             </div>
+                                            <div class="participant-detail-info-7 pushed-deal-container">
+                                                <div class="deal-amount-wrapper">
+                                                    <span class="total-dealt-amount">-</span> (
+                                                    <span class="physical-dealt-amount">-</span> /
+                                                    <span class="magical-dealt-amount">-</span> /
+                                                    <span class="true-dealt-amount">-</span> )
+                                                </div>
+                                                <div class="max-dealt-bar">
+                                                    <div class="physical-dealt-bar"></div><!--
+                                                    --><div class="magical-dealt-bar"></div><!--
+                                                    --><div class="true-dealt-bar"></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="team-desc-label-wrapper lose">
                                         <span class="team-desc-win-or-lose">패배</span>
-                                        <span class="team-label">블루 팀</span>
+                                        <span class="team-label">레드 팀</span>
                                     </div>
                                 </div>
                             </div>
@@ -234,19 +247,35 @@
             </div>
             <div class="current-game-info main-info-tab" id="current_game_info_container">
                 <!-- current game doesn't exist -->
-                <div class="not-playing-now-msg-container" id="not_playing_now_container">
+                <!-- <div class="not-playing-now-msg-container" id="not_playing_now_container">
                     <span class="not-playing-title">해당 플레이어는<br>현재 게임 중이 아닙니다.</span>
-                </div>
+                </div> -->
                 <div class="current-game-content-wrapper" id="current_game_info_content_wrapper">
                     <div class="current-game-content">
                         <span class="current-game-map-type">칼바람 나락</span>
-                        <span class="current-game-elapsed-time">23분 10초</span>
+                        <span class="current-game-elapsed-time">17분 33초</span>
                         <div class="current-game-participant-info-container">
                             <div class="current-team-info-container">
-
+                                <div class="team-info-label">
+                                    <span>블루 팀</span>
+                                </div>
+                                <div class="team-info-container">
+                                    <div class="teammate-info-item">
+                                        <div class="teammate-info-champion-image"></div>
+                                        <div class="perk-rune-wrapper"></div>
+                                        <div class="username-wrapper">
+                                            <span class="username">단단한뵨태승후니</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="current-team-info-container">
-                                
+                                <div class="team-info-label">
+                                    <span>레드 팀</span>
+                                </div>
+                                <div class="team-info-container">
+
+                                </div>
                             </div>
                         </div>
                     </div>
