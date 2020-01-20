@@ -1,5 +1,5 @@
-const key = "RGAPI-09e75494-bbae-4510-bd97-917f2e356480";
-const DebugLevel = 3;
+const key = "RGAPI-7cd3fd67-b572-42b2-aa63-ef0c7a958234";
+const DebugLevel = true;
 
 let championData = undefined;
 let spellData = undefined;
@@ -13,104 +13,99 @@ let perkKeyDict = {};
 let detailPerkKeyDict = {};
 let latestDataDragonVer = "";
 
-let maxHistoryItemCall = 0;
-switch(DebugLevel){
-    case 3:
-        maxHistoryItemCall = 3;
-        break;
-    case 2:
-        maxHistoryItemCall = 10;
-        break;
-    case 1:
-        maxHistoryItemCall = 20;
-        break;
-}
+let maxHistoryItemCall = DebugLevel?3:15;
+
+let currentGameTimer = null;
 
 $(document).ready(function(){
     const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
 
-    let loadInitialDataRequestCallback = [];
-    let getItemJsonRequest = $.ajax({
-        url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/ko_KR/item.json",
-        type: "GET",
-        dataType: "json",
-        success: function(res){
-            itemImageData = res.data;
-        }
-    });
-    let getPerkJsonRequest = $.ajax({
-        url: "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json",
-        type: "GET",
-        dataType: "json",
-        success: function(res){
-            for(let i=0;i<res.length;i++){
-                let val = res[i];
-                detailPerkKeyDict[val.id] = val;
-            }
-        }
-    });
-    let getRuneJsonRequest = $.ajax({
-        url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/en_US/runesReforged.json",
-        type: "GET",
-        dataType: "json",
-        success: function(res){
-            for(let i=0;i<res.length;i++){
-                let val = res[i];
-                perkKeyDict[val.id] = val;
-            }
-        }
-    });
-    let getSummonerSpellJsonRequest = $.ajax({
-        url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/en_US/summoner.json",
-        type: "GET",
-        dataType: "json",
-        success: function(res){
-            spellData = res.data;
-            for(let key in spellData){
-                let value = spellData[key];
-                spellKeyDict[value.key] = value.id;
-            }
-        }
-    });
-    let getChampionJsonRequest = $.ajax({
-        url: "http://ddragon.leagueoflegends.com/cdn/9.24.2/data/ko_KR/champion.json",
-        type: "GET",
-        dataType: "json",
-        success: function(res){
-            championData = res.data;
-            for(let key in championData){
-                let value = championData[key];
-                championKeyDict[value.key] = value.id;
-            }
-        }
-    });
     let getLatestDataDragonVersionRequest = $.ajax({
         url: "https://ddragon.leagueoflegends.com/api/versions.json",
         type: "GET",
         dataType: "json",
         success: function(res){
             latestDataDragonVer = res[0];
-        },
-    });
-    loadInitialDataRequestCallback.push(getItemJsonRequest);
-    loadInitialDataRequestCallback.push(getPerkJsonRequest);
-    loadInitialDataRequestCallback.push(getRuneJsonRequest);
-    loadInitialDataRequestCallback.push(getSummonerSpellJsonRequest);
-    loadInitialDataRequestCallback.push(getChampionJsonRequest);
-    loadInitialDataRequestCallback.push(getLatestDataDragonVersionRequest);
 
-    //Load
-    $.when.apply(null, loadInitialDataRequestCallback).done(function(){
-        getSummonerInfo("puuid", puuid);
+            let loadInitialDataRequestCallback = [];
+            let getItemJsonRequest = $.ajax({
+                url: getLatestDataDragonURL() + "/data/ko_KR/item.json",
+                type: "GET",
+                dataType: "json",
+                success: function(res){
+                    itemImageData = res.data;
+                }
+            });
+            let getPerkJsonRequest = $.ajax({
+                url: "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json",
+                type: "GET",
+                dataType: "json",
+                success: function(res){
+                    for(let i=0;i<res.length;i++){
+                        let val = res[i];
+                        detailPerkKeyDict[val.id] = val;
+                    }
+                }
+            });
+            let getRuneJsonRequest = $.ajax({
+                url: getLatestDataDragonURL() + "/data/en_US/runesReforged.json",
+                type: "GET",
+                dataType: "json",
+                success: function(res){
+                    for(let i=0;i<res.length;i++){
+                        let val = res[i];
+                        perkKeyDict[val.id] = val;
+                    }
+                }
+            });
+            let getSummonerSpellJsonRequest = $.ajax({
+                url:  getLatestDataDragonURL() + "/data/en_US/summoner.json",
+                type: "GET",
+                dataType: "json",
+                success: function(res){
+                    spellData = res.data;
+                    for(let key in spellData){
+                        let value = spellData[key];
+                        spellKeyDict[value.key] = value.id;
+                    }
+                }
+            });
+            let getChampionJsonRequest = $.ajax({
+                url: getLatestDataDragonURL() + "/data/ko_KR/champion.json",
+                type: "GET",
+                dataType: "json",
+                success: function(res){
+                    championData = res.data;
+                    for(let key in championData){
+                        let value = championData[key];
+                        championKeyDict[value.key] = value.id;
+                    }
+                }
+            });
+
+            loadInitialDataRequestCallback.push(getItemJsonRequest);
+            loadInitialDataRequestCallback.push(getPerkJsonRequest);
+            loadInitialDataRequestCallback.push(getRuneJsonRequest);
+            loadInitialDataRequestCallback.push(getSummonerSpellJsonRequest);
+            loadInitialDataRequestCallback.push(getChampionJsonRequest);
+            loadInitialDataRequestCallback.push(getLatestDataDragonVersionRequest);
+
+                //Load
+            $.when.apply(null, loadInitialDataRequestCallback).done(function(){
+                getSummonerInfo("puuid", puuid);
+            });
+        },
     });
 
     const searcherInput = $('#search_summoner_input');
     $('#search_summoner_btn').on("click", function(){
         getSummonerInfo("name", searcherInput.val());
+        findNewSummoner();
     });
 
     searcherInput.on("keydown", function(e){
         if(e.key == "Enter") getSummonerInfo("name", searcherInput.val());
+        findNewSummoner();
     });
 
     let totalItemWrapper = $('#game_history_item_wrapper');
@@ -352,7 +347,7 @@ function getCurrentMatchBySummonerID(id){
         },
         error: function(req, stat, err){
             if(err == "Not Found") {
-                // $('#current_game_info_content_wrapper').css("display", "none");
+                $('#current_game_info_content_wrapper').css("display", "none");
                 $('#not_playing_now_container').css("display", "inline-block");
                 console.log("게임 중이 아님");
             }
@@ -363,10 +358,94 @@ function getCurrentMatchBySummonerID(id){
 
 function loadCurremtMatchInfo(info){
     let queueTypeInfo = getQueueTypeInfo(info.gameQueueConfigId);
+    console.log(info);
+    console.log(new Date().getTime() - info.gameStartTime);
     $('#current_game_info_tab').css("box-shadow", "0 0 8px rgb(9, 255, 9)");
     $('#current_game_info_content_wrapper').css("display", "inline-block");
     $('#not_playing_now_container').css("display", "none");
     $('#current_game_info_content_wrapper .current-game-map-type').text(queueTypeInfo.MapLabel);
+
+    const startTime = info.gameStartTime;
+    const elapsedTimeText = $('#current_game_elapsed_time');
+    currentGameTimer = setInterval(function(){
+        let current = new Date().getTime();
+        let elapsed = parseInt((current - startTime)/1000);
+        let min = parseInt(elapsed/60);
+        let sec = elapsed%60;
+
+        let timeText = min + "분 " + sec + "초";
+
+        elapsedTimeText.text(timeText);
+    }, 1000);
+
+    const blueTeam = $('.blue-team .team-info-container');
+    const redTeam = $('.red-team .team-info-container');
+
+    const originalItems = $('.teammate-info-item');
+    originalItems.remove();
+
+    let currentPlayersInfoBundle = info.participants;
+    let segmentBundle = [];
+
+    for(let i=0;i<currentPlayersInfoBundle.length;i++){
+        let currentPlayerInfo = currentPlayersInfoBundle[i];
+        let itemSegment = `
+        <div class="teammate-info-item">
+            <div class="teammate-info-champion-image" id="current_player_champion_image_${i}"></div>
+            <div class="perk-rune-wrapper">
+                <div class="spell-perk-container">
+                    <div id="current_player_rune_img1_${i}"></div>
+                    <div id="current_player_rune_img2_${i}"class="sec-spell-perk-img"></div>
+                </div>
+                <div class="spell-perk-container perk-container">
+                    <div id="current_player_perk_img1_${i}"></div>
+                    <div id="current_player_perk_img2_${i}" class="sec-spell-perk-img"></div>
+                </div>
+            </div>
+            <div class="username-wrapper">
+                <span class="username">${currentPlayerInfo.summonerName}</span>
+            </div>
+            <div class="current-season-rank-wrapper rank-position">
+                <span class="current-season-rank">GrandMaster 1</span>
+            </div>
+            <div class="previous-season-rank-wrapper rank-position">
+                <span class="previos-season-rank">Diamond 4</span>
+            </div>
+        </div>`;
+        segmentBundle.push(itemSegment);
+    }
+    for(let i=0;i<5;i++){
+        blueTeam.append(segmentBundle[i]);
+    }
+    for(let i=5;i<segmentBundle.length;i++){
+        redTeam.append(segmentBundle[i]);
+    }
+
+    for(let i=0;i<currentPlayersInfoBundle.length;i++){
+        let currentPlayerInfo = currentPlayersInfoBundle[i];
+        let currentPlayerChampionImgDiv = $('#current_player_champion_image_'+i);
+        let currentPlayerRune1Div = $('#current_player_rune_img1_'+i);
+        let currentPlayerRune2Div = $('#current_player_rune_img2_'+i);
+        let currentPlayerPerk1Div = $('#current_player_perk_img1_'+i);
+        let currentPlayerPerk2Div = $('#current_player_perk_img2_'+i);
+
+        let curChampionInfo = getChampionInfoFromKey(currentPlayerInfo.championId);
+        let champion_img_url = getLatestDataDragonURL()+"/img/champion/"+curChampionInfo.id+".png";
+        let spell1_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(currentPlayerInfo.spell1Id).id+".png";
+        let spell2_url_def = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(currentPlayerInfo.spell2Id).id+".png";
+        
+        let perk1_info = getPerkInfoFromKey(currentPlayerInfo.perks.perkStyle);
+        let perk2_info = getPerkInfoFromKey(currentPlayerInfo.perks.perkSubStyle);
+
+        let perk1ImageURL = "https://ddragon.leagueoflegends.com/cdn/img/"+perk1_info.icon;
+        let perk2ImageURL = "https://ddragon.leagueoflegends.com/cdn/img/"+perk2_info.icon;
+
+        currentPlayerChampionImgDiv.css("background-image", `url(${champion_img_url})`);
+        currentPlayerRune1Div.css("background-image", `url(${spell1_url_def})`);
+        currentPlayerRune2Div.css("background-image", `url(${spell2_url_def})`);
+        currentPlayerPerk1Div.css("background-image", `url(${perk1ImageURL})`);
+        currentPlayerPerk2Div.css("background-image", `url(${perk2ImageURL})`);
+    }
 }
 
 function loadSummonerMasteryList(masteryEntries){
@@ -384,6 +463,7 @@ function loadSummonerMasteryList(masteryEntries){
         let entryIndex = i+1;
         if(i<3) entryLabel = "highest"+entryIndex+"-mastery";
         let championInfo = getChampionInfoFromKey(masteryEntry.championId);
+        if(championInfo == undefined) continue;
         let championImgPath = getLatestDataDragonURL()+"/img/champion/"+championInfo.id+".png";
         let masteryAmount = masteryEntry.championPoints;
         let masteryLevel = masteryEntry.championLevel;
@@ -786,7 +866,7 @@ function loadSummonerMatchHistory(userInfo, info){
                 let perk1Info = getDetailPerkInfoFromKey(participantInfo.stats.perk0);
                 let perk2Info = getPerkInfoFromKey(participantInfo.stats.perkSubStyle);
 
-                let participantChampionImgURL = getLatestDataDragonURL()+"/img/champion/"+participantChampInfo.id+".png";
+                let participantChampionImgURL = participantChampInfo == undefined?"unknown":getLatestDataDragonURL()+"/img/champion/"+participantChampInfo.id+".png";
                 let spell1ImageURL = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(participantInfo.spell1Id).id+".png";
                 let spell2ImageURL = getLatestDataDragonURL()+"/img/spell/"+getSpellInfoFromKey(participantInfo.spell2Id).id+".png";
                 let perk1ImageURL = "https://ddragon.leagueoflegends.com/cdn/img/"+getRightPathOfDetailPerkImage(perk1Info.iconPath);
@@ -1085,6 +1165,13 @@ function loadSummonerLeagueInfo(info){
 
 //user func
 
+function findNewSummoner(){
+    //새로운 소환사 검색 시 호출
+    if(currentGameTimer != null){
+        clearInterval(currentGameTimer);
+    }
+}
+
 function getQueueTypeInfo(type){
     switch(type){
         case 450:
@@ -1121,6 +1208,11 @@ function getQueueTypeInfo(type){
             MapLabel = "중급 봇전";
             MapType = "summoners-rift";
             MapName = "중급 봇전(소환사의 협곡)";
+            break;
+        case 900:
+            MapLabel = "U.R.F";
+            MapType = "summoners-rift";
+            MapName = "우르프";
             break;
         case 920:
             MapLabel = "포로왕";
@@ -1239,8 +1331,9 @@ function getSpellInfoFromKey(keyIn){
 
 function getChampionInfoFromKey(keyIn){
     let keyword = championKeyDict[keyIn];
+    if(keyword == undefined) keyword = "Unknown";
     let refined = keyword.replace(" ","");
-    return championData[championKeyDict[keyIn]];
+    return championData[refined];
 }
 
 function getUserIndexFromMatchInfo(userInfo, participants){

@@ -950,6 +950,8 @@ body{
 .mastery-info{
     left: 100%;
     width: 100%;
+    z-index: 50000;
+    /* 딜량 정보 왼쪽에서 오는걸 막기 위함 */
 }
 
 .mastery-summary{
@@ -1188,7 +1190,7 @@ body{
     height: 100%;
 
     /* filter: blur(55px); */
-    background: rgba(15, 15, 15, 0.767);
+    background: rgba(15, 15, 15, 0.671);
     z-index: 5;
 }
 
@@ -1218,14 +1220,21 @@ body{
 
 .current-game-participant-info-container{
     height: 150px;
+}
+
+.current-team-info-container.red-team{
     background-color: rgba(255, 0, 0, 0.459);
+}
+
+.current-team-info-container.blue-team{
+    background-color: rgba(0, 174, 255, 0.459);
 }
 
 .current-game-participant-info-container .team-info-label{
     display: block;
     padding: 8px 15px;
     text-align: left;
-    background-color: rgba(29, 29, 29, 0.5);
+    background-color: rgba(29, 29, 29, 0.13);
 }
 
 .current-game-participant-info-container .team-info-container{
@@ -1235,41 +1244,81 @@ body{
 
 .current-game-participant-info-container .teammate-info-item{
     width: 100%;
-    background-color: cyan;
+    background-color: rgba(0, 0, 0, 0.158);
     padding: 5px;
     box-sizing: border-box;
     text-align: left;
+    border-bottom: 1px solid rgb(94, 94, 94);
 }
 
 .current-game-content .teammate-info-champion-image{
     display: inline-block;
-    height: 40px;
-    width: 40px;
-    background-image: url('http://ddragon.leagueoflegends.com/cdn/9.24.2/img/champion/Aatrox.png');
+    height: 45px;
+    width: 45px;
     background-size: cover;
 }
 
 .current-game-content .perk-rune-wrapper{
     display: inline-block;
-    height: 40px;
-    width: 40px;
-    background-color: gray;
+    height: 45px;
 }
 
 .current-game-content .username-wrapper{
     display: inline-block;
-    height: 40px;
+    height: 45px;
     width: 150px;
-    background-color: red;
     vertical-align: top;
 }
 
 .current-game-content .username{
     display: inline-block;
-    font-size: 13px;
-    padding: 13px 0 13px 8px;
+    font-size: 14px;
+    padding: 15px 0 15px 10px;
 }
 
+.current-game-content .rank-position{
+    display: inline-block;
+    height: 45px;
+    width: 110px;
+    vertical-align: top;
+    font-size: 14px;
+}
+
+.current-game-content .spell-perk-container{
+    display: inline-block;
+    width: 20px;
+    height: 100%;
+}
+
+.current-game-info .spell-perk-container > div{
+    background-color: rgb(20, 20, 20);
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.current-game-info .perk-container > div{
+    background-size: 80%;
+}
+
+.current-game-content .sec-spell-perk-img{
+    margin-top: 1px;
+}
+
+.current-game-content .rank-position > span{
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 5px;
+    border: 1px solid white;
+}
+
+.current-game-content .previous-season-rank-wrapper{
+    filter: blur(1px);
+}
 
 /* 일반정보 딜량 */
 .detail-menu-list-tab.unfocused{
