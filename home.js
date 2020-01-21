@@ -1,4 +1,4 @@
-const key = "RGAPI-7cd3fd67-b572-42b2-aa63-ef0c7a958234";
+const key = "RGAPI-596afcec-275d-4b00-89ae-8985e8c3c2a9";
 const DebugLevel = true;
 
 let championData = undefined;
@@ -100,12 +100,12 @@ $(document).ready(function(){
     const searcherInput = $('#search_summoner_input');
     $('#search_summoner_btn').on("click", function(){
         getSummonerInfo("name", searcherInput.val());
-        findNewSummoner();
     });
 
     searcherInput.on("keydown", function(e){
-        if(e.key == "Enter") getSummonerInfo("name", searcherInput.val());
-        findNewSummoner();
+        if(e.key == "Enter") {
+            getSummonerInfo("name", searcherInput.val());
+        }
     });
 
     let totalItemWrapper = $('#game_history_item_wrapper');
@@ -241,6 +241,7 @@ $(document).ready(function(){
 });
 
 function getSummonerInfo(method, data){
+    whenFindNewSummoner();
     let AfterURL = "https://kr.api.riotgames.com/lol/summoner/v4/summoners/";
     switch(method){
         case "name":
@@ -267,7 +268,6 @@ function getSummonerInfo(method, data){
             getSummonerRecentGameHistoryBySummonerAccountID(res);
             getCurrentMatchBySummonerID(res.id);
             getSummonerMasteryInfoBySummonerID(res.id);
-            console.log(res);
         },
         error: function(req, stat, err){
             console.log(err);
@@ -349,6 +349,7 @@ function getCurrentMatchBySummonerID(id){
             if(err == "Not Found") {
                 $('#current_game_info_content_wrapper').css("display", "none");
                 $('#not_playing_now_container').css("display", "inline-block");
+                $('#current_game_info_tab').css("box-shadow", "none");
                 console.log("게임 중이 아님");
             }
             else console.log(err);
@@ -375,6 +376,7 @@ function loadCurremtMatchInfo(info){
 
         let timeText = min + "분 " + sec + "초";
 
+        if(info.gameStartTime == 0) timeText = "오류 발생"
         elapsedTimeText.text(timeText);
     }, 1000);
 
@@ -545,9 +547,7 @@ function loadSummonerMatchHistory(userInfo, info){
                 let curUserStat = curUserInfo.stats;
                 let team1WinInfoLabel = res.teams[0].win === "Win" ? ["win", "승리"] : ["lose", "패배"];
                 let team2WinInfoLabel = res.teams[1].win === "Win" ? ["win", "승리"] : ["lose", "패배"];
-                // console.log(res.participantIdentities);
-                // console.log("Queue ID: "+res.queueId);
-                console.log(res);
+                //console.log(res);
 
                 //http://static.developer.riotgames.com/docs/lol/queues.json 참고
 
@@ -1165,7 +1165,7 @@ function loadSummonerLeagueInfo(info){
 
 //user func
 
-function findNewSummoner(){
+function whenFindNewSummoner(){
     //새로운 소환사 검색 시 호출
     if(currentGameTimer != null){
         clearInterval(currentGameTimer);
