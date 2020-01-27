@@ -1,4 +1,4 @@
-const key = "RGAPI-596afcec-275d-4b00-89ae-8985e8c3c2a9";
+const key = "RGAPI-99824528-b829-4354-87c6-7f2fc24b8f6c";
 const DebugLevel = true;
 
 let championData = undefined;
@@ -37,7 +37,7 @@ $(document).ready(function(){
                 }
             });
             let getPerkJsonRequest = $.ajax({
-                url: "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json",
+                url: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perks.json",
                 type: "GET",
                 dataType: "json",
                 success: function(res){
@@ -157,8 +157,14 @@ $(document).ready(function(){
     const masteryInfoTab = $('#mastery_info_tab');
     const InfoTabBundle = $('.info-tab');
 
+    const bodyContent = $('#body_content');
+
     animationDelay = 500;
     animationStyle = "easeOutQuint";
+
+    const originHeight = 242;
+
+    let recentGameInfoContentHeight = 
 
     recentGameHistoryInfoTab.on("click", function(){
         recentGameInfoContent.animate({
@@ -170,6 +176,10 @@ $(document).ready(function(){
         currentGameInfo.animate({
             left: '200%',
         }, animationDelay, animationStyle);
+
+        // bodyContent.animate({
+        //     height: recentGameInfoContent.outerHeight()+originHeight,
+        // }, animationDelay, animationStyle);
 
         InfoTabBundle.css("background-color", "#444");
         $(this).css("background-color", "#222");
@@ -185,6 +195,10 @@ $(document).ready(function(){
             left: '100%',
         }, animationDelay, animationStyle);
 
+        // bodyContent.animate({
+        //     height: masteryInfo.outerHeight()+originHeight,
+        // }, animationDelay, animationStyle);
+
         InfoTabBundle.css("background-color", "#444");
         $(this).css("background-color", "#222");
     });
@@ -198,6 +212,10 @@ $(document).ready(function(){
         currentGameInfo.animate({
             left: 0,
         }, animationDelay, animationStyle);
+
+        // bodyContent.animate({
+        //     height: currentGameInfo.outerHeight()+originHeight,
+        // }, animationDelay, animationStyle);
 
         InfoTabBundle.css("background-color", "#444");
         $(this).css("background-color", "#222");
@@ -1417,5 +1435,5 @@ function getConvertedLeagueTier(tier){
 }
 
 function getLatestDataDragonURL(){
-    return "http://ddragon.leagueoflegends.com/cdn/"+latestDataDragonVer;
+    return "https://ddragon.leagueoflegends.com/cdn/"+latestDataDragonVer;
 }

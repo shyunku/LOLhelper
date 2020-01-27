@@ -1,8 +1,19 @@
+html{
+    height: 100vh;
+}
+
 body{
     font-family: 'Noto Sans KR', sans-serif;
     background-color: #252525;
     color: white;
     width: 500px;
+    height: 100%;
+}
+
+.body-content{
+    display: inline-block;
+    width: 500px;
+    height: 100%;
     overflow-x: hidden;
 }
 
@@ -14,12 +25,14 @@ body{
 #search_summoner_input{
     display: inline-block;
     padding: 5px 10px;
-    width: 75%;
+    width: 100%;
     border: none;
     border-bottom: 2px solid white;
     background-color: transparent;
     font-size: 15px;
     color: white;
+
+    box-sizing: border-box;
 }
 
 #search_summoner_input:focus{
@@ -1088,7 +1101,7 @@ body{
 .champion-mastery{
     float: right;
     vertical-align: top;
-    width: 140px;
+    width: 180px;
     margin-top: 3px;
     margin-right: 5px;
     /* background-color: cyan; */
@@ -1146,6 +1159,7 @@ body{
 .current-game-info{
     left: 200%;
     width: 100%;
+    height: 300px;
 }
 
 .not-playing-now-msg-container{
