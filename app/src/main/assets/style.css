@@ -1,0 +1,1425 @@
+html{
+    height: 100vh;
+}
+
+body{
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #252525;
+    color: white;
+    width: 500px;
+    height: 100%;
+}
+
+.body-content{
+    display: inline-block;
+    width: 500px;
+    height: 100%;
+    overflow-x: hidden;
+}
+
+.searcher{
+    display: block;
+    padding: 10px;
+}
+
+#search_summoner_input{
+    display: inline-block;
+    padding: 5px 10px;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid white;
+    background-color: transparent;
+    font-size: 15px;
+    color: white;
+
+    box-sizing: border-box;
+}
+
+#search_summoner_input:focus{
+    outline: none;
+}
+
+#search_summoner_btn{
+    float: right;
+    padding: 5px 25px;
+    background-color: rgb(236, 236, 236);
+    border: none;
+    font-family: inherit;
+}
+
+#search_summoner_btn:hover{
+    background-color: rgb(143, 143, 143);
+    font-family: inherit;
+}
+
+.user-repr-info{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: 15px 0 20px 15px;
+
+    box-sizing: border-box;
+    background-color: rgb(37, 37, 37);
+
+    z-index: 5;
+}
+
+#current_summoner_profile_icon_img{
+    width: 100%;
+    height: 100%;
+    box-shadow:  0 0 5px #CCC;
+}
+
+.profile-icon-wrapper{
+    position: relative;
+    float: left;
+    width: 100px;
+    height: 100px;
+}
+
+.user-repr-info-wrapper{
+    display: inline-block;
+    width: 75%;
+}
+
+.summoner-name{
+    font-size: 30px;
+    font-weight: bold;
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+
+    color: white;
+    box-sizing: border-box;
+}
+
+.summoner-level{
+    position: absolute;
+    margin-left: -17px;
+    margin-top: -15px;
+    top: 100%;
+    left: 50%;
+    font-size: 12px;
+    padding: 5px 7px;
+    width: 20px;
+
+    color: rgb(136, 255, 249);
+    text-align: center;
+
+    background-color: #111;
+    border: 1px solid #AAA;
+    border-radius: 8px;
+}
+
+.info-detail-wrapper{
+    display: inline-block;
+    width: 100%;
+    padding: 10px 5px;
+
+    box-sizing: border-box;
+}
+
+.small-info-box{
+    display: inline-block;
+    font-size: 12px;
+    padding: 5px;
+    margin-left: 5px;
+    background-color: #151515;
+
+    color: white;
+}
+
+.info-tab-container{
+    position: relative;
+    display: grid;
+    border-top: 1px solid #999;
+    border-bottom: 1px solid #999;
+
+    z-index: 9998;
+}
+
+.info-tab-container > div{
+    background-color: #444;
+    display: inline-block;
+    text-align: center;
+}
+
+#recent_game_history_info_tab{
+    background-color: #222;
+}
+
+.info-tab-container > div:hover{
+    background-color: #666;
+    cursor: pointer;
+}
+
+.info-tab-container span{
+    display: inline-block;
+    width: 100%;
+    padding: 12px 0;
+
+    box-sizing: border-box;
+    border-left: 1px solid #666;
+}
+
+.main-content{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.game-history-summary-container{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    background-color: rgb(37, 37, 37);
+
+    padding: 10px 15px 15px 15px;
+    box-sizing: border-box;
+
+    z-index: 9997;
+}
+
+.win-rate-pie-chart{
+    /* display: inline-block; */
+    /* background-color: red; */
+    transform: scaleX(-1);
+}
+
+.recent-game-summary-chart-wrapper{
+    position: relative;
+    display: inline-block;
+    width: 120px;
+    height: 120px;
+    /* background-color: cyan; */
+}
+
+#win_rate_chart_desc{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    transform:  translate(-50%, -50%);
+    margin-top: -8px;
+
+    font-size: 12px;
+
+    z-index: 3;
+}
+
+#user_win_num{
+    color: rgb(0, 214, 230);
+}
+
+#user_lose_num{
+    color: rgb(250, 40, 40);
+}
+
+#win_rate_chart_percentage{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 18px;
+
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    /* background-color: rgb(37, 37, 37); */
+    border-radius: 50%;
+    transform:  translate(-50%, -50%);
+    margin-top: 12px;
+}
+
+.game-history-list{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    /* background-color: cyan; */
+}
+
+.game-history-item-wrapper{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 80px;
+    z-index: 9999;
+
+    background-size: cover;
+}
+
+.game-history-item{
+    display: inline-block;
+    width: 100%;
+    height: 80px;
+
+    z-index: 10000;
+}
+
+.howling-abyss{
+    background-image: url("img/howling_abyss_bg.png");
+    background-position: 0px -40px;
+}
+
+.summoners-rift{
+    background-image: url("img/summoners_rift_bg.jpg");
+    background-position: 0px -80px;
+}
+
+.win-type{
+    background: linear-gradient(to right,rgba(51, 107, 170, 0.85), rgba(17, 34, 59, 0.35));
+    /* background: rgba(0, 108, 196, 0.452); */
+}
+
+.lose-type{
+    background: linear-gradient(to right,rgba(185, 49, 49, 0.85), rgba(59, 17, 17, 0.35));
+    /* background: rgba(233, 17, 17, 0.603); */
+}
+
+.game-history-item .item-wrapper{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    z-index: 10001;
+}
+
+.game-history-item .item-detail-1{
+    display: inline-block;
+    width: 16%;
+    height: 100%;
+    text-align: center;
+    /* background-color: #33952855; */
+    vertical-align: top;
+}
+
+.game-history-item .item-detail-2{
+    display: inline-block;
+    width: 21%;
+    height: 100%;
+    /* background-color: #33952855; */
+    vertical-align: top;
+}
+
+.game-history-item .item-detail-3{
+    display: inline-block;
+    width: 18%;
+    height: 100%;
+    /* background-color: #33952855; */
+    /* background-color: #00000045; */
+    padding: 10px 0;
+
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.game-history-item .item-detail-4{
+    display: inline-block;
+    width: 24%;
+    height: 100%;
+    /* background-color: #33952855; */
+
+    padding: 15px 0;
+
+    box-sizing: border-box;
+    vertical-align: top;
+
+    text-align: center;
+}
+
+.game-history-item .item-detail-5{
+    display: inline-block;
+    width: 17%;
+    height: 100%;
+    /* background-color: #33952855; */
+
+    box-sizing: border-box;
+    vertical-align: top;
+}
+
+.map-type{
+    display: inline-block;
+    width: 100%;
+    font-size: 12px;
+    margin-top: 15px;
+
+    text-shadow: 2px 2px 2px #222;
+}
+
+.win-or-lose{
+    display: block;
+    font-size: 11px;
+    margin-top: 8px;
+    text-shadow: 2px 2px 2px #333;
+}
+
+.timelapse{
+    display: block;
+    font-size: 10px;
+    margin-top: 8px;
+    color: rgb(201, 201, 201);
+    text-shadow: 2px 2px 2px #333;
+}
+
+.win-type .win-or-lose{
+    color: rgb(167, 208, 255);
+}
+
+.lose-type .win-or-lose{
+    color: rgb(255, 167, 167);
+}
+
+.main-champion-illust-wrapper{
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-size: 110%;
+    background-position: center;
+    box-shadow: 0 0 5px black;
+}
+
+.last-champion-level{
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    margin-left: -14px;
+    margin-top: -14px;
+    background-color: #000000A0;
+    padding: 3px;
+
+    font-size: 10px;
+    font-weight: lighter;
+
+    border-radius: 50%;
+}
+
+.item-detail-2 .upper-div{
+    display: inline-block;
+    padding: 7px 3px 3px 3px;
+
+    box-sizing: border-box;
+}
+
+.item-detail-2 .champion-name{
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 100;
+    padding: 5px 0;
+    text-shadow: 1px 1px 1px black;
+}
+
+.item-detail-3 .KDA-wrapper{
+    padding: 8px 0;
+    text-align: center;
+    /* background-color: cyan; */
+    /* background-color: #00000060; */
+    /* background-image: radial-gradient(ellipse, #00000080 50%, #00000010 70%, transparent 60%); */
+    /* border-radius: 15px;  */
+    /* box-shadow: 0 0 10px #00000060; */
+}
+
+.KDA-wrapper > div{
+    text-align: center;
+}
+
+.KDA-wrapper .KDA{
+    margin-top: 5px;
+    font-size: 15px;
+    /* background-color: #00000060; */
+}
+
+.KDA-wrapper .KDA-score{
+    display: inline-block;
+    font-weight: 400;
+    font-size: 11px;
+    text-shadow: 1px 1px 3px black;
+    background-color: rgba(145, 86, 255, 0.941);
+    border-radius: 4px;
+    padding: 3px 4px;
+
+    box-shadow: 2px 2px 3px rgb(26, 26, 26);
+}
+
+.kill{
+    color: rgb(93, 190, 255);
+}
+
+.death{
+    color: rgb(255, 118, 118);
+}
+
+.assist{
+    color: rgb(224, 211, 137);
+}
+
+.KDA > .slash{
+    color: rgb(185, 185, 185);
+}
+
+.KDA span{
+    text-shadow: 1px 1px 3px black;
+    font-size: 13px;
+}
+
+.spell-wrapper{
+    display: inline-block;
+    width: 20px;
+    height: 50px;
+
+    vertical-align: top;
+}
+
+.spell-wrapper .mid-container{
+    display: inline-block;
+    margin-top: 4px;
+}
+
+.spell-img{
+    width: 20px;
+    height: 20px;
+    background-color: gray;
+    background-size: cover;
+    margin-top: 4px;
+
+    border-radius: 3px;
+
+    box-shadow: 0 0 3px #111;
+}
+
+.rune-img{
+    width: 20px;
+    height: 20px;
+    background-color: gray;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: 4px;
+
+    border-radius: 3px;
+    box-shadow: 0 0 3px #111;
+}
+
+.item-detail-4 > .item-wrapper{
+    display: inline-block;
+    /* background-color: orange; */
+    padding: 2px;
+    height: 100%;
+    padding-top: 5px;
+    padding-left: 5px;
+
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.item-detail-4 .item-item{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-color: #111;
+    background-position: center;
+    background-size: cover;
+    border-radius: 3px;
+    box-shadow: 0 0 3px black;
+
+    margin-bottom: 2px;
+}
+
+.item-detail-5{
+    text-align: center;
+}
+
+.item-detail-5 > div{
+    margin-top: 8px;
+}
+
+.item-detail-5 .gold-wrapper{
+    margin-top: 14px;
+    font-weight: 300;
+    font-size: 12px;
+    display: block;
+
+    color: rgb(255, 226, 64);
+}
+
+.item-detail-5 span{
+    text-shadow: 1px 1px 2px black;
+}
+
+.item-detail-5 .ward-wrapper{
+    font-weight: 300;
+    font-size: 12px;
+    display: block;
+
+    color: rgb(226, 226, 226);
+}
+
+.item-detail-5 .cc-wrapper{
+    font-weight: 300;
+    font-size: 12px;
+    display: block;
+
+    color: rgb(255, 45, 45)
+}
+
+.item-detail-5 .cs-wrapper{
+    font-weight: 300;
+    font-size: 12px;
+    display: block;
+}
+
+.item-detail-5 .normal-ward-num{
+    color: rgb(255, 175, 55);
+}
+
+.item-detail-5 .pink-ward-num{
+    color: rgb(255, 61, 255)
+}
+
+.item-detail-5 .average-cs{
+    color: rgb(140, 255, 188);
+}
+
+.item-detail-5 .total-cs{
+    /* color: rgb(9, 108, 255); */
+}
+
+.item-detail-2 .champ-wrapper{
+    display: block;
+    height: 100%;
+    text-align: center;
+}
+
+.info-tab{
+    z-index: 5;
+}
+
+.game-history-item-description-tab{
+    /* position: relative; */
+    position: absolute;
+    display: none;
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: rgba(255, 255, 255, 0.295);
+    left: 0;
+
+}
+
+.game-history-item-description-tab::after{
+    position: absolute;
+    content: "";
+    left: 0;
+
+    width: 100%;
+    height: calc(100% - 22px);
+
+    box-shadow: 0 0 8px 8px rgba(0, 0, 0, 0.678) inset;
+    pointer-events: none;
+}
+
+.item-detail-menu-list-tab{
+    display: grid;
+}
+
+.detail-menu-list-tab{
+    text-align: center;
+    padding: 5px 0;
+    font-size: 12px;
+    background-color: rgba(0, 0, 0, 0.788);
+    color: rgb(236, 236, 236);
+    /* text-shadow: 1px 1px 1px rgb(212, 212, 212); */
+
+    cursor: pointer;
+}
+
+.detail-menu-list-tab:hover{
+    background-color: rgba(0, 0, 0, 0.418);
+}
+
+.item-detail-desc-content-wrapper{
+    display: inline-block;
+    width: 100%;
+    /* background-color: cyan; */
+}
+
+.item-detail-desc-content{
+    display: inline-block;
+    width: 100%;
+}
+
+.team-desc-label-wrapper{
+    display: inline-block;
+    width: 100%;
+    padding: 8px 10px;
+}
+
+.team-desc-label-wrapper.win{
+    background-color: rgba(0, 57, 95, 0.863);
+}
+
+.team-desc-label-wrapper.lose{
+    background-color: rgba(129, 7, 7, 0.863);
+}
+
+.team-desc-label-wrapper > span{
+    display: inline-block;
+    text-align: center;
+}
+
+.team-desc-win-or-lose{
+    width: 50px;
+}
+
+.win .team-desc-win-or-lose{
+    color: rgb(95, 196, 255);
+}
+
+.lose .team-desc-win-or-lose{
+    color: rgb(255, 95, 95);
+}
+
+.team-label{
+    font-size: 11px;
+    color: rgb(207, 207, 207);
+}
+
+.participant-info-container{
+    display: inline-block;
+    width: 100%;
+}
+
+.participant-info-container.win{
+    background-color: rgba(25, 112, 170, 0.863);
+}
+
+.participant-info-container.lose{
+    background-color: rgba(170, 25, 25, 0.863);
+}
+
+.participant-info{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 45px;
+    /* background-color: cyan; */
+    padding: 3px 3px;
+
+    border-bottom: 1px solid #9b9b9b;
+    box-sizing: border-box;
+}
+
+.participant-detail-info-1{
+    display: inline-block;
+    width: 9%;
+    height: 100%;
+
+    text-align: center;
+    /* background-color: rgba(255, 78, 78, 0.637); */
+}
+
+.participant-champion-img{
+    display: inline-block;
+    background: rgb(51, 51, 51);
+    background-size: cover;
+    width: 39px;
+    height: 39px;
+    /* background-color: red; */
+}
+
+.participant-detail-info-2{
+    display: inline-block;
+    height: 100%;
+    margin-left: -2px;
+
+    text-align: center;
+    /* background-color: red; */
+}
+
+.participant-summoner-spell-wrapper{
+    display: inline-block;
+    height: 100%;
+    /* background-color: yellow; */
+}
+
+.participant-summoner-perk-wrapper{
+    display: inline-block;
+    height: 100%;
+    margin-left: 3px;
+    /* background-color: yellow; */
+}
+
+.participant-spell{
+    width: 18px;
+    height: 18px;
+    background-color: black;
+    margin-top: 1px;
+
+    background-size: cover;
+}
+
+.participant-perk{
+    width: 18px;
+    height: 18px;
+    background-color: black;
+    border-radius: 50%;
+    margin-top: 1px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.participant-detail-info-3{
+    display: inline-block;
+    height: 100%;
+    width: 19%;
+
+    /* background-color: rgba(255, 78, 78, 0.637); */
+    text-align: left;
+
+    vertical-align: top;
+    font-size: 10px;
+
+    margin-left: 2px;
+
+    box-sizing: border-box;
+}
+
+.participant-info-wrapper{
+    width: 100%;
+}
+
+.participant-info-wrapper span{
+    display: inline-block;
+}
+
+.participant-username{
+    width: 100%;
+    margin-top: 5px;
+    /* background-color: orange; */
+    font-weight: normal;
+    font-size: 11px;
+    text-shadow: 1px 1px 2px black;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.participant-tier-level{
+    margin-top: 5px;
+    background-color: rgb(235, 235, 235);
+    border-radius: 3px;
+    font-weight: normal;
+    padding: 3px 4px;
+    color: black;
+    box-shadow: 1px 1px 2px rgb(34, 34, 34);
+}
+
+.participant-detail-info-4{
+    display: inline-block;
+    height: 100%;
+    width: 17%;
+
+    text-align: left;
+
+    vertical-align: top;
+    font-size: 11px;
+    margin-left: 3px;
+    box-sizing: border-box;
+    /* background-color: orange; */
+}
+
+.participant-detail-info-4 > span{
+    background-color: black;
+    border-radius: 4px;
+    padding: 2px 0;
+}
+
+.participant-kda-wrapper{
+    display: inline-block;
+    width: 100%;
+    /* background-color: orange; */
+    vertical-align: top;
+}
+
+.participant-kda-wrapper > span{
+    padding: 3px 0;
+    display: block;
+    text-align: center;
+}
+
+.participant-kda-score{
+    margin-top: 2px;
+    color: rgb(216, 216, 216);
+    text-shadow: 1px 1px 2px black;
+    /* background-color: orange; */
+}
+
+.participant-kda{
+    margin-top: 0px;
+    text-shadow: 1px 1px 2px black;
+}
+
+.participant-detail-info-5{
+    display: inline-block;
+    height: 100%;
+    width: 17%;
+
+    text-align: left;
+
+    vertical-align: top;
+    font-size: 12px;
+    margin-left: 2px;
+    box-sizing: border-box;
+    /* background-color: red; */
+    /* font-weight: lighter; */
+}
+
+.participant-detail-info-5 > span{
+    background-color: black;
+    border-radius: 4px;
+}
+
+.participant-cs-wrapper{
+    display: inline-block;
+    width: 100%;
+    /* background-color: orange; */
+    vertical-align: top;
+}
+
+.participant-cs-wrapper span{
+    padding: 3px 0;
+    display: block;
+    text-align: center;
+    text-shadow: 1px 1px 2px black;
+}
+
+.participant-gold{
+    margin-top: 1px;
+    color: rgb(255, 251, 23);
+    text-shadow: 1px 1px 2px black;
+    font-weight: lighter;
+    /* background-color: orange; */
+}
+
+.participant-cs{
+    margin-top: 0px;
+}
+
+.participant-detail-info-6{
+    display: inline-block;
+    height: 100%;
+    width: 20%;
+
+    text-align: center;
+
+    vertical-align: top;
+    font-size: 11px;
+    margin-left: 2px;
+    box-sizing: border-box;
+    /* background-color: red; */
+}
+
+.participant-item-wrapper{
+    display: inline-block;
+    width: 85px;
+    height: 100%;
+    /* background-color: cyan; */
+    text-align: left;
+    padding-top: 2px;
+
+    box-sizing: border-box;
+}
+
+.participant-item{
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: rgb(46, 46, 46);
+    background-size: cover;
+    padding-right: 1px;
+    border-radius: 3px;
+}
+
+.recent-game-info{
+    display: inline-block;
+    width: 100%;
+}
+
+.main-info-tab{
+    position: absolute;
+    top: -15px;
+}
+
+
+/* 숙련도 탭 */
+.mastery-info{
+    left: 100%;
+    width: 100%;
+    z-index: 50000;
+    /* 딜량 정보 왼쪽에서 오는걸 막기 위함 */
+}
+
+.mastery-summary{
+    display: inline-block;
+    width: 100%;
+    /* background-color: red; */
+
+    box-sizing: border-box;
+}
+
+.total-mastery{
+    display: inline-block;
+    width: 100%;
+    height: 65px;
+    /* background-color: blue; */
+    padding: 0 10px;
+
+    box-sizing: border-box;
+    background-color: rgb(24, 24, 24);
+}
+
+.total-mastery > span{
+    line-height: 65px;
+    vertical-align: middle;
+}
+
+#total_mastery_label{
+    font-size: 25px;
+}
+
+#total_mastery{
+    float: right;
+    font-size: 40px;
+    text-shadow: 0 0 5px rgb(0, 255, 170);
+    /* font-weight: bold; */
+}
+
+.detail-mastery{
+    display: inline-block;
+    width: 100%;
+    padding: 8px 5px;
+    background: linear-gradient(to left, #1b1b1b, rgb(99, 99, 99));
+    box-sizing: border-box;
+}
+
+.mastery-amount-box{
+    float: left;
+    background-color: rgb(17, 17, 17);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 3px;
+    padding: 1px 6px 1px 3px;
+    margin-right: 5px;
+
+    box-shadow: 0 0 4px rgb(255, 0, 0);
+}
+
+.champion_mastery_img{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    /* background-color: yellow; */
+}
+
+.champion-mastery-level-amount{
+    display: inline-block;
+    vertical-align: top;
+    padding: 6px 0;
+    /* background-color: cyan; */
+}
+
+.champion-mastery-list{
+    display: inline-block;
+    width: 100%;
+}
+
+.champion-mastery-item{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid black;
+    padding: 4px;
+
+    box-sizing: border-box;
+}
+
+.mastery-champion-img{
+    float: left;
+    background-size: cover;
+    background-image: url('http://ddragon.leagueoflegends.com/cdn/9.24.2/img/champion/Aatrox.png');
+}
+
+.highest1-mastery .mastery-champion-img{
+    width: 50px;
+    height: 50px;
+}
+
+.highest2-mastery .mastery-champion-img{
+    width: 40px;
+    height: 40px;
+}
+
+.highest3-mastery .mastery-champion-img{
+    width: 33px;
+    height: 33px;
+}
+
+.normal-mastery .mastery-champion-img{
+    width: 30px;
+    height: 30px;
+}
+
+.mastery-champion-info{
+    position: absolute;
+    display: inline-block;
+    top: 5px;
+    right: 15px;
+    width: 380px;
+    /* background-color: cyan; */
+}
+
+.mastery-champion-info > span{
+    display: inline-block;
+    width: 100%;
+    text-align: right;
+}
+
+.mastery-champion-name{
+    font-weight: bold;
+    padding: 0 5px;
+    margin-left: 8px;
+    /* background-color: green; */
+}
+
+.champion-mastery{
+    float: right;
+    vertical-align: top;
+    width: 180px;
+    margin-top: 3px;
+    margin-right: 5px;
+    /* background-color: cyan; */
+    text-align: right;
+    text-shadow: 1px 1px 3px rgb(0, 0, 0);
+}
+
+
+.highest1-mastery .mastery-champion-name{
+    font-size: 30px;
+    line-height: 50px;
+    text-shadow: 2px 2px 3px rgb(0, 0, 0);
+}
+
+.highest2-mastery .mastery-champion-name{
+    font-size: 25px;
+    line-height: 40px;
+    text-shadow: 2px 2px 2px rgb(0, 0, 0);
+}
+
+.highest3-mastery .mastery-champion-name{
+    font-size: 20px;
+    line-height: 33px;
+    text-shadow: 2px 2px 2px rgb(0, 0, 0);
+}
+
+.normal-mastery .mastery-champion-name{
+    font-size: 18px;
+    line-height: 30px;
+    text-shadow: 1px 1px 1px rgb(0, 0, 0);
+}
+
+.highest1-mastery .champion-mastery{
+    font-size: 23px;
+    padding: 11px 5px;
+}
+
+.highest2-mastery .champion-mastery{
+    font-size: 20px;
+    padding: 8px 5px;
+}
+
+.highest3-mastery .champion-mastery{
+    font-size: 18px;
+    padding: 5px 5px;
+}
+
+.normal-mastery .champion-mastery{
+    font-size: 17px;
+    padding: 3px 5px;
+}
+
+
+/* 현재 진행중 게임 탭 */
+.current-game-info{
+    left: 200%;
+    width: 100%;
+    height: 300px;
+}
+
+.not-playing-now-msg-container{
+    position: absolute;
+    display: inline-block;
+    left: 50%;
+    top: 50px;
+
+    width: 60%;
+
+    transform: translateX(-50%);
+    border: 1px solid white;
+    background-color: #111;
+
+    text-align: center;
+    box-shadow: 0 0 5px 5px rgba(255, 0, 0, 0.418);
+}
+
+.not-playing-title{
+    display: inline-block;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 0;
+    line-height: 35px;
+}
+
+.current-game-content-wrapper{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+
+    background-image: url('img/howling_abyss_bg.png');
+    background-size: cover;
+}
+
+.current-game-content-wrapper::after{
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* filter: blur(55px); */
+    background: rgba(15, 15, 15, 0.671);
+    z-index: 5;
+}
+
+.current-game-content{
+    position: relative;
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+
+    z-index: 6;
+}
+
+.current-game-content > *{
+    display: block;
+}
+
+.current-game-map-type{
+    padding: 15px 0 5px 0;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.current-game-elapsed-time{
+    padding: 10px 0;
+}
+
+.current-game-participant-info-container{
+    height: 150px;
+}
+
+.current-team-info-container.red-team{
+    background-color: rgba(255, 0, 0, 0.459);
+}
+
+.current-team-info-container.blue-team{
+    background-color: rgba(0, 174, 255, 0.459);
+}
+
+.current-game-participant-info-container .team-info-label{
+    display: block;
+    padding: 8px 15px;
+    text-align: left;
+    background-color: rgba(29, 29, 29, 0.13);
+}
+
+.current-game-participant-info-container .team-info-container{
+    display: block;
+    background-color: rgba(29, 29, 29, 0.5);
+}
+
+.current-game-participant-info-container .teammate-info-item{
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.158);
+    padding: 5px;
+    box-sizing: border-box;
+    text-align: left;
+    border-bottom: 1px solid rgb(94, 94, 94);
+}
+
+.current-game-content .teammate-info-champion-image{
+    display: inline-block;
+    height: 45px;
+    width: 45px;
+    background-size: cover;
+}
+
+.current-game-content .perk-rune-wrapper{
+    display: inline-block;
+    height: 45px;
+}
+
+.current-game-content .username-wrapper{
+    display: inline-block;
+    height: 45px;
+    width: 150px;
+    vertical-align: top;
+}
+
+.current-game-content .username{
+    display: inline-block;
+    font-size: 14px;
+    padding: 15px 0 15px 10px;
+}
+
+.current-game-content .rank-position{
+    display: inline-block;
+    height: 45px;
+    width: 110px;
+    vertical-align: top;
+    font-size: 14px;
+}
+
+.current-game-content .spell-perk-container{
+    display: inline-block;
+    width: 20px;
+    height: 100%;
+}
+
+.current-game-info .spell-perk-container > div{
+    background-color: rgb(20, 20, 20);
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.current-game-info .perk-container > div{
+    background-size: 80%;
+}
+
+.current-game-content .sec-spell-perk-img{
+    margin-top: 1px;
+}
+
+.current-game-content .rank-position > span{
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 5px;
+    border: 1px solid white;
+}
+
+.current-game-content .previous-season-rank-wrapper{
+    filter: blur(1px);
+}
+
+/* 일반정보 딜량 */
+.detail-menu-list-tab.unfocused{
+    background-color: rgba(0, 0, 0, 0.788);
+}
+
+.detail-menu-list-tab.unfocused:hover{
+    background-color: rgba(0, 0, 0, 0.582);
+}
+
+
+.detail-menu-list-tab.focused{
+    background-color: rgba(0, 0, 0, 0.418);
+}
+
+.pulled-deal-container{
+    position: relative;
+}
+
+.participant-detail-info-7{
+    position: absolute;
+    display: inline-block;
+    height: 86%;
+    width: 38%;
+
+    left: 480px;
+    padding: 5px 0;
+
+    text-align: center;
+
+    vertical-align: top;
+    box-sizing: border-box;
+
+    /* background-color: cyan; */
+}
+
+.deal-amount-wrapper{
+    font-size: 12px;
+    font-weight: lighter;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-shadow: 1px 1px 1px rgb(53, 53, 53);
+}
+
+.total-dealt-amount{
+    font-weight: normal;
+}
+
+.physical-dealt-amount{
+    color: rgb(255, 156, 126);
+}
+
+.magical-dealt-amount{
+    color: rgb(113, 194, 255);
+}
+
+.true-dealt-amount{
+    color: rgb(255, 255, 255);
+}
+
+.max-dealt-bar{
+    display: inline-block;
+    width: 176px;
+    height: 15px;
+    background-color: rgb(46, 46, 46);
+    margin-top: 4px;
+    text-align: left;
+}
+
+.physical-dealt-bar{
+    display: inline-block;
+    height: 100%;
+    width: 100px;
+    background-color: rgb(221, 123, 94);
+}
+
+.magical-dealt-bar{
+    display: inline-block;
+    height: 100%;
+    width: 20px;
+    background-color: rgb(73, 160, 226);
+}
+
+.true-dealt-bar{
+    display: inline-block;
+    height: 100%;
+    width: 40px;
+    background-color: rgb(240, 240, 240);
+}
