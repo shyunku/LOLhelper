@@ -1,5 +1,5 @@
-const key = "RGAPI-99824528-b829-4354-87c6-7f2fc24b8f6c";
-const DebugLevel = true;
+const key = "RGAPI-69cf2126-79cc-4ede-8874-da42d4b4fef3";
+const DebugLevel = false;
 
 let championData = undefined;
 let spellData = undefined;
@@ -18,7 +18,7 @@ let maxHistoryItemCall = DebugLevel?3:15;
 let currentGameTimer = null;
 
 $(document).ready(function(){
-    const puuid = "0Fpa02zuqg6zIg1Gi-RDSZlYWzgv3fx1uJOQr6045clKUS1jJYiydLc-AWxBnQW5TqSCYFVN1-iKTw";
+    const puuid = "zo9mNHs2R7Q7AT1aS-IReDSbVZcxa1uVyBIyr6_InnKkSgvgq8eBN1D7726cbWxldCClfP-9WH6iQg";
 
     let getLatestDataDragonVersionRequest = $.ajax({
         url: "https://ddragon.leagueoflegends.com/api/versions.json",
@@ -90,7 +90,7 @@ $(document).ready(function(){
             loadInitialDataRequestCallback.push(getChampionJsonRequest);
             loadInitialDataRequestCallback.push(getLatestDataDragonVersionRequest);
 
-                //Load
+            //Load
             $.when.apply(null, loadInitialDataRequestCallback).done(function(){
                 getSummonerInfo("puuid", puuid);
             });
@@ -98,10 +98,6 @@ $(document).ready(function(){
     });
 
     const searcherInput = $('#search_summoner_input');
-    $('#search_summoner_btn').on("click", function(){
-        getSummonerInfo("name", searcherInput.val());
-    });
-
     searcherInput.on("keydown", function(e){
         if(e.key == "Enter") {
             getSummonerInfo("name", searcherInput.val());
@@ -120,30 +116,30 @@ $(document).ready(function(){
     rolledTab.css("z-index", "9950");
 
     // 디버깅용 탭 상세 펼치기
-    let animationStyle = 'easeOutCirc';
-    let animationDelay = 500;
+    // let animationStyle = 'easeOutCirc';
+    // let animationDelay = 500;
 
-    innerItem.on("click", function(){
-        let isFolded = totalItemWrapper.hasClass('folded');
-        if(isFolded){
-            rolledTab.css("display", "inline-block");
-            totalItemWrapper.animate({
-                height: strechedTotalWrapperHeight
-            }, animationDelay, animationStyle, function(){
-                totalItemWrapper.removeClass('folded');
-                totalItemWrapper.addClass('unfolded');
-            });
-        }
-        else {
-            totalItemWrapper.animate({
-                height: originalTotalWrapperHeight
-            }, animationDelay, animationStyle, function(){
-                rolledTab.css("display", "none");
-                totalItemWrapper.removeClass('unfolded');
-                totalItemWrapper.addClass('folded');
-            });
-        }
-    });
+    // innerItem.on("click", function(){
+    //     let isFolded = totalItemWrapper.hasClass('folded');
+    //     if(isFolded){
+    //         rolledTab.css("display", "inline-block");
+    //         totalItemWrapper.animate({
+    //             height: strechedTotalWrapperHeight
+    //         }, animationDelay, animationStyle, function(){
+    //             totalItemWrapper.removeClass('folded');
+    //             totalItemWrapper.addClass('unfolded');
+    //         });
+    //     }
+    //     else {
+    //         totalItemWrapper.animate({
+    //             height: originalTotalWrapperHeight
+    //         }, animationDelay, animationStyle, function(){
+    //             rolledTab.css("display", "none");
+    //             totalItemWrapper.removeClass('unfolded');
+    //             totalItemWrapper.addClass('folded');
+    //         });
+    //     }
+    // });
 
     //Content Containers
     const recentGameInfoContent = $('#recent_game_info_container');
@@ -164,8 +160,6 @@ $(document).ready(function(){
 
     const originHeight = 242;
 
-    let recentGameInfoContentHeight = 
-
     recentGameHistoryInfoTab.on("click", function(){
         recentGameInfoContent.animate({
             left: 0,
@@ -176,10 +170,6 @@ $(document).ready(function(){
         currentGameInfo.animate({
             left: '200%',
         }, animationDelay, animationStyle);
-
-        // bodyContent.animate({
-        //     height: recentGameInfoContent.outerHeight()+originHeight,
-        // }, animationDelay, animationStyle);
 
         InfoTabBundle.css("background-color", "#444");
         $(this).css("background-color", "#222");
@@ -195,10 +185,6 @@ $(document).ready(function(){
             left: '100%',
         }, animationDelay, animationStyle);
 
-        // bodyContent.animate({
-        //     height: masteryInfo.outerHeight()+originHeight,
-        // }, animationDelay, animationStyle);
-
         InfoTabBundle.css("background-color", "#444");
         $(this).css("background-color", "#222");
     });
@@ -212,10 +198,6 @@ $(document).ready(function(){
         currentGameInfo.animate({
             left: 0,
         }, animationDelay, animationStyle);
-
-        // bodyContent.animate({
-        //     height: currentGameInfo.outerHeight()+originHeight,
-        // }, animationDelay, animationStyle);
 
         InfoTabBundle.css("background-color", "#444");
         $(this).css("background-color", "#222");
@@ -254,7 +236,7 @@ $(document).ready(function(){
     });
 
     //Point
-    currentGameInfoTab.click();
+    //currentGameInfoTab.click();
     // dealAmountInfoTab.click();
 });
 
@@ -724,34 +706,36 @@ function loadSummonerMatchHistory(userInfo, info){
                                 </span>
                             </div>
                         </div>
-                        <div class="participant-detail-info-5 pulled-deal-container">
-                            <div class="participant-cs-wrapper">
-                                <span class="participant-gold">${numberWithCommas(participantStat.goldEarned)} G</span>
-                                <span class="participant-cs">CS ${participantStat.totalMinionsKilled}(15.6)</span>
+                        <div class="participant-detail-flexible-box">
+                            <div class="participant-detail-info-5 pulled-deal-container">
+                                <div class="participant-cs-wrapper">
+                                    <span class="participant-gold">${numberWithCommas(participantStat.goldEarned)} G</span>
+                                    <span class="participant-cs">CS ${participantStat.totalMinionsKilled}(15.6)</span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="participant-detail-info-6 pulled-deal-container">
-                            <div class="participant-item-wrapper">
-                                <div class="participant-item" id="participant_item0_${i}_${j}"></div>
-                                <div class="participant-item" id="participant_item1_${i}_${j}"></div>
-                                <div class="participant-item" id="participant_item2_${i}_${j}"></div>
-                                <div class="participant-item" id="participant_item_deco_${i}_${j}"></div>
-                                <div class="participant-item" id="participant_item3_${i}_${j}"></div>
-                                <div class="participant-item" id="participant_item4_${i}_${j}"></div>
-                                <div class="participant-item" id="participant_item5_${i}_${j}"></div>
+                            <div class="participant-detail-info-6 pulled-deal-container">
+                                <div class="participant-item-wrapper">
+                                    <div class="participant-item" id="participant_item0_${i}_${j}"></div>
+                                    <div class="participant-item" id="participant_item1_${i}_${j}"></div>
+                                    <div class="participant-item" id="participant_item2_${i}_${j}"></div>
+                                    <div class="participant-item" id="participant_item_deco_${i}_${j}"></div>
+                                    <div class="participant-item" id="participant_item3_${i}_${j}"></div>
+                                    <div class="participant-item" id="participant_item4_${i}_${j}"></div>
+                                    <div class="participant-item" id="participant_item5_${i}_${j}"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="participant-detail-info-7 pushed-deal-container">
-                            <div class="deal-amount-wrapper">
-                                <span class="total-dealt-amount">${participantStat.totalDamageDealtToChampions}</span> (
-                                <span class="physical-dealt-amount">${participantStat.physicalDamageDealtToChampions}</span> /
-                                <span class="magical-dealt-amount">${participantStat.magicDamageDealtToChampions}</span> /
-                                <span class="true-dealt-amount">${participantStat.trueDamageDealtToChampions}</span> )
-                            </div>
-                            <div class="max-dealt-bar" id="deal_damage_bar_${i}_${j}">
-                                <div class="physical-dealt-bar"></div><!--
-                                --><div class="magical-dealt-bar"></div><!--
-                                --><div class="true-dealt-bar"></div>
+                            <div class="participant-detail-info-7 pushed-deal-container">
+                                <div class="deal-amount-wrapper">
+                                    <span class="total-dealt-amount">${participantStat.totalDamageDealtToChampions}</span> (
+                                    <span class="physical-dealt-amount">${participantStat.physicalDamageDealtToChampions}</span> /
+                                    <span class="magical-dealt-amount">${participantStat.magicDamageDealtToChampions}</span> /
+                                    <span class="true-dealt-amount">${participantStat.trueDamageDealtToChampions}</span> )
+                                </div>
+                                <div class="max-dealt-bar" id="deal_damage_bar_${i}_${j}">
+                                    <div class="physical-dealt-bar"></div><!--
+                                    --><div class="magical-dealt-bar"></div><!--
+                                    --><div class="true-dealt-bar"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -898,7 +882,7 @@ function loadSummonerMatchHistory(userInfo, info){
                 participantPerk2ImageView.css("background-size", "80%");
 
                 //전적 아이템마다 같이한 사람들 정보 로드 - request가 많으므로 Product 검사 끝나면 주석 처리 뺄 것
-                // getAndLoadParticipantsLeagueInfoBySummonerID(participantTierView, participantIdentityInfo.player.summonerId);
+                //getAndLoadParticipantsLeagueInfoBySummonerID(participantTierView, participantIdentityInfo.player.summonerId);
             
                 let participantItemList = [];
                 for(let k=0; k<=5; k++) {
@@ -939,7 +923,7 @@ function loadSummonerMatchHistory(userInfo, info){
                 let magicalDealtWidth = magicalDealtRate * maxDealtViewWidth;
                 let trueDealtWidth = trueDealtRate * maxDealtViewWidth;
                 
-                let maxTrueDealtWidth = maxDealtViewWidth - physicalDealtWidth - magicalDealtWidth;
+                // let maxTrueDealtWidth = maxDealtViewWidth - physicalDealtWidth - magicalDealtWidth;
                 
                 participantPhysicalDealtView.css("width", physicalDealtWidth+"px");
                 participantMagicalDealtView.css("width", magicalDealtWidth+"px");
@@ -959,7 +943,7 @@ function loadSummonerMatchHistory(userInfo, info){
             rolledTab.css("z-index", (9900-i)+"");
         
             const animationStyle = 'easeOutQuint';
-            const animationDelay = 500;
+            const animationDelay = 300;
         
             innerItem.on("click", function(){
                 let isFolded = totalItemWrapper.hasClass('folded');
@@ -988,14 +972,12 @@ function loadSummonerMatchHistory(userInfo, info){
             const dealAmountInfoTab = $('#deal_amount_info_tab_'+i);
             const pulledByDealInfo = $('#game_history_item_desc_'+i+' '+'.participant-info .pulled-deal-container');
             const pushedByDealInfo = $('#game_history_item_desc_'+i+' '+'.participant-info .pushed-deal-container');
+            const originalPulledTabLeft = $('.participant-detail-info-5').first();
+            console.log(originalPulledTabLeft.position().left);
         
             dealAmountInfoTab.on("click", function(){
-                pulledByDealInfo.animate({
-                    left: '200px',
-                }, animationDelay, animationStyle);
-                pushedByDealInfo.animate({
-                    left: '280px',
-                }, animationDelay, animationStyle);
+                pulledByDealInfo.fadeOut(animationDelay);
+                pushedByDealInfo.fadeIn(animationDelay);
                 detailMenuListTabContainer.removeClass("focused");
                 detailMenuListTabContainer.addClass("unfocused");
                 $(this).removeClass("unfocused");
@@ -1003,12 +985,8 @@ function loadSummonerMatchHistory(userInfo, info){
             });
         
             generalMatchInfoTab.on("click", function(){
-                pulledByDealInfo.animate({
-                    left: 0,
-                }, animationDelay, animationStyle);
-                pushedByDealInfo.animate({
-                    left: '480px',
-                }, animationDelay, animationStyle);
+                pulledByDealInfo.fadeIn(animationDelay);
+                pushedByDealInfo.fadeOut(animationDelay);
                 detailMenuListTabContainer.removeClass("focused");
                 detailMenuListTabContainer.addClass("unfocused");
                 $(this).removeClass("unfocused");
@@ -1151,6 +1129,7 @@ function getAndLoadParticipantsLeagueInfoBySummonerID(span, id){
 }
 
 function loadSummonerGeneralInfo(info){
+    console.log(info);
     $('#current_summoner_profile_icon_img').attr("src", getLatestDataDragonURL()+"/img/profileicon/"+info.profileIconId+".png");
     $('#current_summoner_name').text(info.name);
     $('#current_summoner_level').text(info.summonerLevel);
