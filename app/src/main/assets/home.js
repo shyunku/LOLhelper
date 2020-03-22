@@ -1,4 +1,5 @@
-const key = "RGAPI-69cf2126-79cc-4ede-8874-da42d4b4fef3";
+let key;
+let puuid;
 const DebugLevel = false;
 
 let championData = undefined;
@@ -18,7 +19,22 @@ let maxHistoryItemCall = DebugLevel?3:15;
 let currentGameTimer = null;
 
 $(document).ready(function(){
-    const puuid = "zo9mNHs2R7Q7AT1aS-IReDSbVZcxa1uVyBIyr6_InnKkSgvgq8eBN1D7726cbWxldCClfP-9WH6iQg";
+    $.ajax({
+        url: "/credentials.json",
+        type: 'GET',
+        dataType: 'json',
+        async: false,
+        success: function(res){
+            console.log("credentials load complete!");
+            console.log(res);
+
+            key = res.riot_api_key;
+            puuid = res.my_account_puuid;
+        },
+        error: function(req, stat, err){
+            console.log(err);
+        },
+    });
 
     let getLatestDataDragonVersionRequest = $.ajax({
         url: "https://ddragon.leagueoflegends.com/api/versions.json",
